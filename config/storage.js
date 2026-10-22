@@ -2,46 +2,26 @@ const { Redis } = require('@upstash/redis');
 
 class StorageConfig {
   constructor() {
-    this.redisKey = 'hotspot_users_data';
     this.redis = Redis.fromEnv();
-    this.data = {
-      users: []
-    };
+    this.userIndexKey = 'hotspot_users_index'; // Menyimpan daftar username
   }
 
-  async initialize() {
-    try {
-      // Ambil data users dari Upstash Redis Cloud
-      const existingData = await this.redis.get(this.redisKey);
-      
-      if (existingData) {
-        this.data = typeof existingData === 'string' ? JSON.parse(existingData) : existingData;
-        console.log('Storage loaded successfully from Upstash Redis');
-      } else {
-        // Jika Redis masih kosong, simpan struktur awal
-        await this.saveData();
-        console.log('Storage initialized successfully on Upstash Redis');
-      }
-    } catch (error) {
-      console.error('Error initializing storage:', error);
-      throw error;
-    }
-  }
-
-  async saveData() {
-    try {
-      // Simpan seluruh object this.data ke Upstash Redis
-      await this.redis.set(this.redisKey, JSON.stringify(this.data));
-    } catch (error) {
-      console.error('Error saving data:', error);
-      throw error;
-    }
+  // Helper untuk membuat key unik per user
+  getUserKey(username) {
+    return `hotspot_user:${username}`;
   }
 
   async addUser(userData) {
     try {
-      await this.initialize(); // Sinkronisasi data terbaru dari Redis
-      
+      const username = userData.username;
+      const userKey = this.getUserKey(username);
+
+      // Cek apakah username sudah ada
+      const existingUser = await this.redis.get(userKey);
+      if (existingUser) {
+        throw new Error('Username sudah terdaftar');
+      }
+
       const timestamp = new Date().toISOString();
       const newUser = {
         id: Date.now().toString(),
@@ -49,16 +29,19 @@ class StorageConfig {
         name: userData.name,
         email: userData.email,
         phone: userData.phone,
-        username: userData.username,
-        password: userData.password,
+        username: username,
+        password: userData.password, // Catatan: Sebaiknya di-hash menggunakan bcrypt di production
         status: 'pending',
         approvedAt: '',
         approvedBy: ''
       };
 
-      this.data.users.push(newUser);
-      await this.saveData();
-      
+      // Simpan data user ke key individu
+      await this.redis.set(userKey, JSON.stringify(newUser));
+
+      // Tambahkan username ke dalam Set index utama agar mudah dilacak
+      await this.redis.sadd(this.userIndexKey, username);
+
       return newUser;
     } catch (error) {
       console.error('Error adding user:', error);
@@ -68,30 +51,54 @@ class StorageConfig {
 
   async getAllUsers() {
     try {
-      await this.initialize(); // Sinkronisasi data terbaru dari Redis
-      return this.data.users;
+      // Ambil semua username dari index
+      const usernames = await this.redis.smembers(this.userIndexKey);
+      
+      if (!usernames || usernames.length === 0) {
+        return [];
+      }
+
+      // Ambil data setiap user secara paralel
+      const userKeys = usernames.map(username => this.getUserKey(username));
+      const usersData = await this.redis.mget(...userKeys);
+
+      // Parse hasil JSON dan filter null jika ada data yang terhapus manual
+      return usersData
+        .filter(data => data !== null)
+        .map(data => (typeof data === 'string' ? JSON.parse(data) : data));
     } catch (error) {
       console.error('Error getting users:', error);
       throw error;
     }
   }
 
+  async getUserByUsername(username) {
+    try {
+      const userKey = this.getUserKey(username);
+      const data = await this.redis.get(userKey);
+      
+      if (!data) return null;
+      return typeof data === 'string' ? JSON.parse(data) : data;
+    } catch (error) {
+      console.error('Error getting user:', error);
+      throw error;
+    }
+  }
+
   async approveUser(username, adminName) {
     try {
-      await this.initialize(); // Sinkronisasi data terbaru dari Redis
-      const userIndex = this.data.users.findIndex(u => u.username === username);
-      
-      if (userIndex === -1) {
+      const user = await this.getUserByUsername(username);
+      if (!user) {
         throw new Error('User not found');
       }
-      
-      this.data.users[userIndex].status = 'approved';
-      this.data.users[userIndex].approvedAt = new Date().toISOString();
-      this.data.users[userIndex].approvedBy = adminName;
-      
-      await this.saveData();
-      
-      return this.data.users[userIndex];
+
+      user.status = 'approved';
+      user.approvedAt = new Date().toISOString();
+      user.approvedBy = adminName;
+
+      // Update data di Redis
+      await this.redis.set(this.getUserKey(username), JSON.stringify(user));
+      return user;
     } catch (error) {
       console.error('Error approving user:', error);
       throw error;
@@ -100,48 +107,37 @@ class StorageConfig {
 
   async rejectUser(username, adminName) {
     try {
-      await this.initialize(); // Sinkronisasi data terbaru dari Redis
-      const userIndex = this.data.users.findIndex(u => u.username === username);
-      
-      if (userIndex === -1) {
+      const user = await this.getUserByUsername(username);
+      if (!user) {
         throw new Error('User not found');
       }
-      
-      this.data.users[userIndex].status = 'rejected';
-      this.data.users[userIndex].approvedAt = new Date().toISOString();
-      this.data.users[userIndex].approvedBy = adminName;
-      
-      await this.saveData();
-      
-      return this.data.users[userIndex];
+
+      user.status = 'rejected';
+      user.approvedAt = new Date().toISOString();
+      user.approvedBy = adminName;
+
+      // Update data di Redis
+      await this.redis.set(this.getUserKey(username), JSON.stringify(user));
+      return user;
     } catch (error) {
       console.error('Error rejecting user:', error);
       throw error;
     }
   }
 
-  async getUserByUsername(username) {
-    try {
-      await this.initialize(); // Sinkronisasi data terbaru dari Redis
-      return this.data.users.find(u => u.username === username) || null;
-    } catch (error) {
-      console.error('Error getting user:', error);
-      throw error;
-    }
-  }
-
   async deleteUser(username) {
     try {
-      await this.initialize(); // Sinkronisasi data terbaru dari Redis
-      const userIndex = this.data.users.findIndex(u => u.username === username);
+      const userKey = this.getUserKey(username);
+      const user = await this.redis.get(userKey);
       
-      if (userIndex === -1) {
+      if (!user) {
         throw new Error('User not found');
       }
-      
-      this.data.users.splice(userIndex, 1);
-      await this.saveData();
-      
+
+      // Hapus key user dan hapus dari index set
+      await this.redis.del(userKey);
+      await this.redis.srem(this.userIndexKey, username);
+
       return true;
     } catch (error) {
       console.error('Error deleting user:', error);
