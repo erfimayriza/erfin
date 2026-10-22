@@ -3,36 +3,30 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TKJ Hotspot Gateway - F1 Telemetry Admin Panel</title>
+    <title>TKJ Hotspot Gateway - Digital Navy Admin Panel</title>
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Inter & JetBrains Mono -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&family=Rajdhani:wght@500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
     
     <script>
         tailwind.config = {
             theme: {
                 extend: {
                     colors: {
-                        dark: {
-                            base: '#030508',
-                            card: 'rgba(8, 12, 22, 0.85)',
-                            panel: '#0d1322',
-                            border: 'rgba(255, 255, 255, 0.1)'
-                        },
-                        cyber: {
-                            cyan: '#00f3ff',
-                            blue: '#3b82f6',
-                            green: '#00ff66',
-                            amber: '#ffcc00',
-                            red: '#ff1801',
+                        navy: {
+                            base: '#0B132B',   // Dark Navy Background
+                            card: '#1C2541',   // Card / Panel Navy
+                            accent: '#3A506B', // Border / Neutral Navy
+                            light: '#5BC0BE',  // Cyber Teal Glow
+                            cyan: '#00F0FF',   // Neon Digital Cyan
                         }
                     },
                     fontFamily: {
-                        sans: ['Rajdhani', 'sans-serif'],
+                        sans: ['Inter', 'sans-serif'],
                         mono: ['JetBrains Mono', 'monospace'],
-                        display: ['Orbitron', 'sans-serif'],
                     }
                 }
             }
@@ -40,168 +34,164 @@
     </script>
 
     <style>
-        :root {
-            --f1-red: #ff1801;
-            --f1-red-glow: rgba(255, 24, 1, 0.6);
-            --neon-cyan: #00f3ff;
-            --neon-cyan-glow: rgba(0, 243, 255, 0.5);
-            --bg-dark: #030508;
-        }
-
         body {
-            background-color: var(--bg-dark);
+            background-color: #0B132B;
             background-image: 
-                radial-gradient(circle at 50% 10%, rgba(255, 24, 1, 0.25) 0%, transparent 60%),
-                radial-gradient(circle at 90% 80%, rgba(0, 243, 255, 0.18) 0%, transparent 50%),
-                linear-gradient(rgba(0, 243, 255, 0.03) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(0, 243, 255, 0.03) 1px, transparent 1px);
-            background-size: 100% 100%, 100% 100%, 30px 30px, 30px 30px;
-            color: #f8fafc;
+                radial-gradient(circle at 50% 0%, rgba(91, 192, 190, 0.12) 0%, transparent 50%),
+                radial-gradient(circle at 100% 100%, rgba(0, 240, 255, 0.05) 0%, transparent 50%);
+            color: #F8FAFC;
             min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
         }
 
-        body::before {
-            content: " ";
-            position: fixed;
-            top: 0; left: 0; bottom: 0; right: 0;
-            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%);
-            background-size: 100% 4px;
-            z-index: 10;
-            pointer-events: none;
-            opacity: 0.6;
+        /* Subtle Glow Card Border */
+        .navy-card {
+            background: rgba(28, 37, 65, 0.75);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(91, 192, 190, 0.18);
+            box-shadow: 0 10px 30px -10px rgba(11, 19, 43, 0.5);
         }
 
-        .led-dot {
-            width: 8px;
-            height: 8px;
+        .navy-card:hover {
+            border-color: rgba(91, 192, 190, 0.35);
+        }
+
+        /* Digital Indicator LED */
+        .digital-dot {
+            width: 7px;
+            height: 7px;
             border-radius: 50%;
             display: inline-block;
         }
-        .led-green {
-            background-color: #00ff66;
-            box-shadow: 0 0 8px #00ff66;
-            animation: pulseGlow 1.8s infinite ease-in-out;
-        }
-        .led-cyan {
-            background-color: var(--neon-cyan);
-            box-shadow: 0 0 8px var(--neon-cyan);
-        }
-        .led-red {
-            background-color: var(--f1-red);
-            box-shadow: 0 0 8px var(--f1-red);
-        }
-
-        @keyframes pulseGlow {
-            0%, 100% { opacity: 1; transform: scale(1); }
-            50% { opacity: 0.4; transform: scale(0.85); }
+        .dot-online {
+            background-color: #10B981;
+            box-shadow: 0 0 10px #10B981;
         }
     </style>
 </head>
-<body class="antialiased">
+<body class="font-sans antialiased flex flex-col justify-between p-4 sm:p-6 lg:p-8">
 
     <!-- LOGIN MODAL -->
-    <div id="loginModal" class="fixed inset-0 z-50 flex items-center justify-center bg-black/85 backdrop-blur-md p-4">
-        <div class="w-full max-w-md bg-dark-card border border-white/15 rounded-2xl p-6 shadow-2xl relative overflow-hidden" style="border-top: 3px solid var(--f1-red); border-bottom: 2px solid var(--neon-cyan);">
-            <div class="text-center mb-6">
-                <h2 class="text-lg font-bold font-display text-white tracking-wide uppercase italic">TKJ HOTSPOT GATEWAY</h2>
-                <p class="text-xs text-cyber-cyan mt-1 font-mono tracking-widest uppercase">Admin Telemetry Authentication</p>
+    <div id="loginModal" class="fixed inset-0 z-50 flex items-center justify-center bg-navy-base/90 backdrop-blur-md p-4">
+        <div class="w-full max-w-md navy-card rounded-2xl p-8 shadow-2xl relative overflow-hidden border-t-2 border-t-navy-cyan">
+            
+            <div class="flex items-center justify-center space-x-2 mb-3">
+                <span class="digital-dot dot-online"></span>
+                <span class="font-mono text-xs text-navy-light uppercase tracking-widest font-semibold">RouterOS v7.12 Gateway</span>
             </div>
 
-            <form id="loginForm" class="space-y-4">
+            <div class="text-center mb-8">
+                <h2 class="text-2xl font-bold text-white tracking-tight">Admin Gateway</h2>
+                <p class="text-xs text-gray-400 mt-1 font-mono">Silakan masukkan kata sandi otentikasi</p>
+            </div>
+
+            <form id="loginForm" class="space-y-5">
                 <div>
-                    <label class="block text-xs font-mono font-bold text-gray-400 mb-1 uppercase tracking-wider">ADMIN PASSWORD</label>
-                    <input type="password" id="adminPassword" placeholder="••••••••" required class="w-full bg-dark-base border border-white/15 rounded-xl px-3 py-2.5 text-sm font-mono text-white focus:border-cyber-cyan focus:outline-none transition-all shadow-inner">
+                    <label class="block text-xs font-mono font-medium text-gray-300 mb-2 uppercase tracking-wider">KATA SANDI ADMIN</label>
+                    <input type="password" id="adminPassword" placeholder="••••••••" required class="w-full bg-navy-base border border-navy-accent/50 rounded-xl px-4 py-3 text-sm font-mono text-white focus:border-navy-cyan focus:outline-none transition-all shadow-inner placeholder-gray-600">
                 </div>
-                <button type="submit" class="w-full py-3 bg-gradient-to-r from-red-600 to-orange-600 hover:from-red-500 hover:to-orange-500 text-white font-display font-black text-xs tracking-widest uppercase rounded-xl transition-all shadow-[0_0_20px_rgba(255,24,1,0.4)]">
-                    CONNECT TO ROUTER
+                <button type="submit" class="w-full py-3.5 bg-gradient-to-r from-navy-light to-navy-cyan hover:opacity-90 text-navy-base font-semibold text-xs tracking-widest uppercase rounded-xl transition-all shadow-[0_0_20px_rgba(91,192,190,0.3)]">
+                    MASUK KONTROL PANEL
                 </button>
             </form>
-            <div id="loginError" class="hidden mt-4 p-2.5 rounded-xl bg-red-950/40 border border-red-500/40 text-red-400 text-xs font-mono text-center">
-                Access Denied: Invalid Security Key
+
+            <div id="loginError" class="hidden mt-4 p-3 rounded-xl bg-red-500/10 border border-red-500/30 text-red-400 text-xs font-mono text-center">
+                Akses Ditolak: Password Salah
             </div>
         </div>
     </div>
 
-    <!-- MAIN DASHBOARD -->
-    <div id="dashboardApp" class="hidden flex-1 flex flex-col max-w-7xl w-full mx-auto p-4 sm:p-6 lg:p-8 space-y-6 relative z-10">
+    <!-- MAIN DASHBOARD CONTENT -->
+    <div id="dashboardApp" class="hidden flex-1 flex flex-col max-w-7xl w-full mx-auto space-y-6">
         
-        <!-- HEADER -->
-        <header class="bg-dark-card border border-white/15 rounded-2xl p-4 sm:px-6 flex flex-col md:flex-row md:items-center justify-between gap-4 shadow-xl" style="border-top: 3px solid var(--neon-cyan);">
-            <div>
-                <h1 class="text-base font-display font-black text-white tracking-wide uppercase italic">GATEKEEPER-CORE</h1>
-                <p class="text-xs font-mono text-cyber-cyan">RouterOS v7.12 • Interface: wlan1-hotspot</p>
+        <!-- TOP NAVBAR / HEADER -->
+        <header class="navy-card rounded-2xl px-6 py-4 flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-t-2 border-t-navy-light">
+            <div class="flex items-center space-x-3">
+                <div class="w-10 h-10 rounded-xl bg-navy-light/10 border border-navy-light/30 flex items-center justify-center text-navy-light">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+                </div>
+                <div>
+                    <h1 class="text-lg font-bold text-white tracking-wide">GATEKEEPER-CORE</h1>
+                    <p class="text-xs font-mono text-navy-light">RouterOS Hotspot Management System</p>
+                </div>
             </div>
-            <div class="flex items-center gap-3">
-                <button onclick="logout()" class="bg-red-500/10 hover:bg-red-500/20 text-red-400 border border-red-500/30 px-3 py-1.5 rounded-xl text-xs font-mono font-bold transition-all">
-                    LOGOUT
+
+            <div class="flex items-center space-x-4">
+                <div class="hidden sm:flex items-center space-x-2 bg-navy-base px-3 py-1.5 rounded-xl border border-navy-accent/40 text-xs font-mono text-gray-300">
+                    <span class="digital-dot dot-online"></span>
+                    <span>SYSTEM ONLINE</span>
+                </div>
+                <button onclick="logout()" class="bg-red-500/10 hover:bg-red-500/20 text-red-400 border border-red-500/20 px-4 py-2 rounded-xl text-xs font-semibold transition-all">
+                    KELUAR
                 </button>
             </div>
         </header>
 
-        <!-- STATS OVERVIEW -->
+        <!-- STATS OVERVIEW CARDS -->
         <section class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-            <div class="bg-dark-card border border-white/15 rounded-2xl p-4">
-                <div class="text-xs font-mono text-gray-400 mb-2 uppercase">Total Registrations</div>
-                <div id="statTotal" class="text-2xl font-display font-black text-white">0</div>
+            <div class="navy-card rounded-2xl p-5">
+                <div class="text-xs font-mono text-gray-400 uppercase tracking-wider mb-2">Total Terdaftar</div>
+                <div id="statTotal" class="text-3xl font-bold text-white font-mono">0</div>
             </div>
-            <div class="bg-dark-card border border-white/15 rounded-2xl p-4">
-                <div class="text-xs font-mono text-cyber-amber mb-2 uppercase">Pending Approval</div>
-                <div id="statPending" class="text-2xl font-display font-black text-cyber-amber">0</div>
+            <div class="navy-card rounded-2xl p-5">
+                <div class="text-xs font-mono text-amber-400 uppercase tracking-wider mb-2">Menunggu Persetujuan</div>
+                <div id="statPending" class="text-3xl font-bold text-amber-400 font-mono">0</div>
             </div>
-            <div class="bg-dark-card border border-white/15 rounded-2xl p-4">
-                <div class="text-xs font-mono text-cyber-green mb-2 uppercase">Approved / Active</div>
-                <div id="statApproved" class="text-2xl font-display font-black text-cyber-green">0</div>
+            <div class="navy-card rounded-2xl p-5">
+                <div class="text-xs font-mono text-emerald-400 uppercase tracking-wider mb-2">Disetujui / Aktif</div>
+                <div id="statApproved" class="text-3xl font-bold text-emerald-400 font-mono">0</div>
             </div>
-            <div class="bg-dark-card border border-white/15 rounded-2xl p-4">
-                <div class="text-xs font-mono text-red-400 mb-2 uppercase">Blocked / Rejected</div>
-                <div id="statRejected" class="text-2xl font-display font-black text-cyber-red">0</div>
+            <div class="navy-card rounded-2xl p-5">
+                <div class="text-xs font-mono text-red-400 uppercase tracking-wider mb-2">Ditolak / Ditolak</div>
+                <div id="statRejected" class="text-3xl font-bold text-red-400 font-mono">0</div>
             </div>
         </section>
 
         <!-- MAIN TABLE PANEL -->
-        <main class="bg-dark-card border border-white/15 rounded-2xl p-5 shadow-xl flex-1">
-            <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-5">
-                <h2 class="text-sm font-display font-bold text-white tracking-wide uppercase">SUBSCRIBER ACTIVE SESSION TABLE</h2>
-                <button onclick="refreshData()" class="bg-dark-base hover:bg-white/10 border border-white/15 text-gray-300 px-3.5 py-2 rounded-xl text-xs font-mono font-semibold">
-                    REFRESH DATA
+        <main class="navy-card rounded-2xl p-6 flex-1 flex flex-col shadow-2xl">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
+                <div>
+                    <h2 class="text-base font-semibold text-white">Sesi Pelanggan Aktif</h2>
+                    <p class="text-xs text-gray-400 mt-0.5">Kelola data pendaftaran dan status akses pengguna MikroTik</p>
+                </div>
+                <button onclick="refreshData()" class="bg-navy-base hover:bg-navy-accent/50 text-navy-light border border-navy-light/30 px-4 py-2 rounded-xl text-xs font-mono font-medium flex items-center justify-center space-x-2 transition-all">
+                    <svg id="refreshSpinner" class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
+                    <span>SINKRONKAN DATA</span>
                 </button>
             </div>
 
-            <div id="notifyBanner" class="hidden mb-4 p-3 rounded-xl border font-mono text-xs"></div>
-
-            <div class="overflow-x-auto rounded-xl border border-white/10">
+            <!-- TABLE CONTAINER -->
+            <div class="overflow-x-auto rounded-xl border border-navy-accent/30">
                 <table class="w-full text-left border-collapse">
                     <thead>
-                        <tr class="bg-dark-base border-b border-white/10 text-[11px] font-display font-bold text-gray-400 uppercase">
-                            <th class="p-3.5">User & Credentials</th>
-                            <th class="p-3.5">Contact / Phone</th>
-                            <th class="p-3.5">Status</th>
-                            <th class="p-3.5">Traffic / Uptime</th>
-                            <th class="p-3.5 text-right">Actions</th>
+                        <tr class="bg-navy-base/80 border-b border-navy-accent/40 text-[11px] font-mono text-gray-400 uppercase tracking-wider">
+                            <th class="p-4">Pengguna & Akun</th>
+                            <th class="p-4">Kontak Telepon</th>
+                            <th class="p-4">Status Akses</th>
+                            <th class="p-4">Lalu Lintas / Uptime</th>
+                            <th class="p-4 text-right">Tindakan Admin</th>
                         </tr>
                     </thead>
-                    <tbody id="userTableBody" class="divide-y divide-white/10 text-xs font-mono">
-                        <!-- Rendered via JS -->
+                    <tbody id="userTableBody" class="divide-y divide-navy-accent/20 text-xs font-mono">
+                        <!-- Data dimasukkan secara dinamis melalui JavaScript -->
                     </tbody>
                 </table>
             </div>
-            <div id="emptyState" class="hidden py-12 text-center text-gray-500 font-mono text-xs">
-                Tidak ada data user terdaftar di database.
+
+            <!-- EMPTY STATE -->
+            <div id="emptyState" class="hidden py-16 text-center text-gray-500 font-mono text-xs">
+                Belum ada data pendaftar terbaru yang masuk di database.
             </div>
         </main>
     </div>
 
-    <!-- SCRIPT LOGIC -->
+    <!-- SCRIPT LOGIC (Integrasi Server.js) -->
     <script>
         let usersData = [];
         const BACKEND_URL = window.location.origin.includes('vercel.app') 
             ? window.location.origin 
             : '';
 
-        // Login Handler (Validasi password admin ke server)
+        // Handlers Login Admin
         document.getElementById('loginForm').addEventListener('submit', async function(e) {
             e.preventDefault();
             const password = document.getElementById('adminPassword').value;
@@ -238,7 +228,7 @@
             document.getElementById('adminPassword').value = '';
         }
 
-        // Ambil data user dari endpoint yang sesuai dengan server.js (/api/users)
+        // Ambil Data Asli Pendaftar dari backend /api/users
         async function fetchRealUsers() {
             try {
                 const response = await fetch(`${BACKEND_URL}/api/users`);
@@ -250,7 +240,7 @@
                     updateStats();
                 }
             } catch (error) {
-                console.error('Gagal mengambil data:', error);
+                console.error('Gagal mengambil data user:', error);
             }
         }
 
@@ -269,30 +259,31 @@
             data.forEach(user => {
                 let statusBadge = '';
                 if (user.status === 'approved') {
-                    statusBadge = `<span class="px-2.5 py-1 rounded-lg border border-emerald-500/30 bg-emerald-500/10 text-emerald-400 font-semibold">ACCEPTED</span>`;
+                    statusBadge = `<span class="px-2.5 py-1 rounded-full border border-emerald-500/30 bg-emerald-500/10 text-emerald-400 font-semibold text-[10px]">DISETUJUI</span>`;
                 } else if (user.status === 'pending') {
-                    statusBadge = `<span class="px-2.5 py-1 rounded-lg border border-amber-500/30 bg-amber-500/10 text-amber-400 font-semibold">PENDING</span>`;
+                    statusBadge = `<span class="px-2.5 py-1 rounded-full border border-amber-500/30 bg-amber-500/10 text-amber-400 font-semibold text-[10px]">PENDING</span>`;
                 } else {
-                    statusBadge = `<span class="px-2.5 py-1 rounded-lg border border-red-500/30 bg-red-500/10 text-red-400 font-semibold">BLOCKED</span>`;
+                    statusBadge = `<span class="px-2.5 py-1 rounded-full border border-red-500/30 bg-red-500/10 text-red-400 font-semibold text-[10px]">DIBLOKIR</span>`;
                 }
 
                 const tr = document.createElement('tr');
+                tr.className = "hover:bg-navy-accent/20 transition-colors";
                 tr.innerHTML = `
-                    <td class="p-3.5">
-                        <div class="font-bold text-white">${escapeHtml(user.name)}</div>
+                    <td class="p-4">
+                        <div class="font-bold text-white text-sm font-sans">${escapeHtml(user.name)}</div>
                         <div class="text-[11px] text-gray-400">${escapeHtml(user.email)}</div>
-                        <div class="text-[10px] text-cyber-cyan font-mono">user: ${escapeHtml(user.username)}</div>
+                        <div class="text-[10px] text-navy-light mt-0.5">user: ${escapeHtml(user.username)}</div>
                     </td>
-                    <td class="p-3.5 text-cyber-green">${escapeHtml(user.phone || '-')}</td>
-                    <td class="p-3.5">${statusBadge}</td>
-                    <td class="p-3.5 text-[11px] text-gray-300">
+                    <td class="p-4 text-gray-300 font-mono">${escapeHtml(user.phone || '-')}</td>
+                    <td class="p-4">${statusBadge}</td>
+                    <td class="p-4 text-[11px] text-gray-300 font-mono">
                         Uptime: <span class="text-white">${user.uptime || 'Off'}</span><br>
-                        ↓ ${user.bytesIn || 0} B | ↑ ${user.bytesOut || 0} B
+                        <span class="text-navy-light">↓ ${user.bytesIn || 0} B</span> | <span class="text-amber-400">↑ ${user.bytesOut || 0} B</span>
                     </td>
-                    <td class="p-3.5 text-right space-x-1">
-                        <button onclick="updateStatus('${user.username}', 'approve')" class="bg-emerald-500/10 text-emerald-400 border border-emerald-500/30 px-2.5 py-1 rounded text-[10px] font-semibold">APPROVE</button>
-                        <button onclick="updateStatus('${user.username}', 'reject')" class="bg-amber-500/10 text-amber-400 border border-amber-500/30 px-2.5 py-1 rounded text-[10px] font-semibold">BLOCK</button>
-                        <button onclick="deleteUser('${user.username}')" class="bg-red-500/10 text-red-400 border border-red-500/30 px-2.5 py-1 rounded text-[10px] font-semibold">DROP</button>
+                    <td class="p-4 text-right space-x-1.5">
+                        <button onclick="updateStatus('${user.username}', 'approve')" class="bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 px-3 py-1.5 rounded-lg text-[10px] font-semibold transition-all">SETUJU</button>
+                        <button onclick="updateStatus('${user.username}', 'reject')" class="bg-amber-500/10 hover:bg-amber-500/20 text-amber-400 border border-amber-500/30 px-3 py-1.5 rounded-lg text-[10px] font-semibold transition-all">BLOKIR</button>
+                        <button onclick="deleteUser('${user.username}')" class="bg-red-500/10 hover:bg-red-500/20 text-red-400 border border-red-500/30 px-3 py-1.5 rounded-lg text-[10px] font-semibold transition-all">HAPUS</button>
                     </td>
                 `;
                 tbody.appendChild(tr);
@@ -321,12 +312,12 @@
                     alert(result.message);
                 }
             } catch (err) {
-                alert('Gagal memperbarui status user.');
+                alert('Gagal memperbarui status pengguna.');
             }
         }
 
         async function deleteUser(username) {
-            if (!confirm(`Hapus user ${username}?`)) return;
+            if (!confirm(`Hapus pendaftaran pengguna ${username}?`)) return;
             try {
                 const res = await fetch(`${BACKEND_URL}/api/users/${username}`, {
                     method: 'DELETE'
@@ -338,12 +329,16 @@
                     alert(result.message);
                 }
             } catch (err) {
-                alert('Gagal menghapus user.');
+                alert('Gagal menghapus pengguna.');
             }
         }
 
         function refreshData() {
-            fetchRealUsers();
+            const spinner = document.getElementById('refreshSpinner');
+            spinner.classList.add('animate-spin');
+            fetchRealUsers().finally(() => {
+                setTimeout(() => spinner.classList.remove('animate-spin'), 500);
+            });
         }
 
         function escapeHtml(str) {
