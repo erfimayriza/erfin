@@ -3,369 +3,100 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Registrasi Akun - TKJ F1 Telemetry Gateway</title>
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&family=Rajdhani:wght@500;600;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
-    <style>
-        * { 
-            margin: 0; 
-            padding: 0; 
-            box-sizing: border-box; 
+    <title>Enterprise Gateway - Registrasi Akun</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Plus Jakarta Sans & Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        navy: {
+                            900: '#0a192f', /* Biru Tua Utama Background */
+                            800: '#112240', /* Biru Tua Card & Modal */
+                            700: '#1d3557', /* Border & Accent */
+                            600: '#2563eb', /* Biru Utama Tombol */
+                            500: '#3b82f6', /* Blue Glow */
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        heading: ['Plus Jakarta Sans', 'sans-serif'],
+                    }
+                }
+            }
         }
-
-        :root {
-            --f1-red: #ff1801;
-            --f1-red-glow: rgba(255, 24, 1, 0.6);
-            --neon-cyan: #00f3ff;
-            --neon-cyan-glow: rgba(0, 243, 255, 0.5);
-            --bg-dark: #030508;
-            --panel-bg: rgba(8, 12, 22, 0.85);
-        }
-        
-        body {
-            background-color: var(--bg-dark);
-            background-image: 
-                radial-gradient(circle at 50% 10%, rgba(255, 24, 1, 0.25) 0%, transparent 60%),
-                radial-gradient(circle at 90% 80%, rgba(0, 243, 255, 0.18) 0%, transparent 50%),
-                linear-gradient(rgba(0, 243, 255, 0.03) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(0, 243, 255, 0.03) 1px, transparent 1px);
-            background-size: 100% 100%, 100% 100%, 30px 30px, 30px 30px;
-            background-position: 0 0, 0 0, -1px -1px, -1px -1px;
-            min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 20px;
-            color: #f8fafc;
-            font-family: 'Rajdhani', sans-serif;
-            overflow-x: hidden;
-            position: relative;
-        }
-
-        /* Scanline Animasi Layar Telemetri */
-        body::before {
-            content: " ";
-            position: fixed;
-            top: 0; left: 0; bottom: 0; right: 0;
-            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%);
-            background-size: 100% 4px;
-            z-index: 10;
-            pointer-events: none;
-            opacity: 0.6;
-        }
-
-        .glow-sphere-1 {
-            position: absolute;
-            width: 400px;
-            height: 400px;
-            background: radial-gradient(circle, var(--f1-red-glow), transparent 70%);
-            top: -50px;
-            left: -50px;
-            filter: blur(80px);
-            pointer-events: none;
-            z-index: 0;
-        }
-
-        .glow-sphere-2 {
-            position: absolute;
-            width: 350px;
-            height: 350px;
-            background: radial-gradient(circle, var(--neon-cyan-glow), transparent 70%);
-            bottom: -50px;
-            right: -50px;
-            filter: blur(80px);
-            pointer-events: none;
-            z-index: 0;
-        }
-
-        .container {
-            background: var(--panel-bg);
-            backdrop-filter: blur(25px);
-            -webkit-backdrop-filter: blur(25px);
-            border: 1px solid rgba(255, 255, 255, 0.15);
-            border-top: 3px solid var(--neon-cyan);
-            border-bottom: 2px solid var(--f1-red);
-            border-radius: 20px;
-            box-shadow: 
-                0 0 40px rgba(0, 0, 0, 0.9),
-                0 0 30px var(--neon-cyan-glow),
-                inset 0 0 15px rgba(255, 255, 255, 0.05);
-            padding: 35px 30px;
-            max-width: 440px;
-            width: 100%;
-            position: relative;
-            z-index: 1;
-            overflow: hidden;
-            margin: auto; /* Memastikan posisi card center sempurna */
-        }
-
-        .terminal-bar {
-            display: flex;
-            align-items: center;
-            justify-content: space-between; /* Membuat isi bar tersebar rapi secara simetris */
-            margin-bottom: 22px;
-            padding-bottom: 10px;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-        }
-
-        .terminal-dot-group {
-            display: flex;
-            gap: 6px;
-        }
-
-        .terminal-dot {
-            width: 10px;
-            height: 10px;
-            border-radius: 50%;
-        }
-        .dot-red { background: #ff3b30; box-shadow: 0 0 8px #ff3b30; }
-        .dot-yellow { background: #ffcc00; box-shadow: 0 0 8px #ffcc00; }
-        .dot-green { background: #34c759; box-shadow: 0 0 8px #34c759; }
-
-        .terminal-title {
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 11px;
-            color: var(--neon-cyan);
-            letter-spacing: 0.1em;
-            text-transform: uppercase;
-            font-weight: 700;
-            text-shadow: 0 0 8px var(--neon-cyan-glow);
-        }
-
-        .header { 
-            text-align: center; 
-            margin-bottom: 24px; 
-        }
-        
-        .header h1 { 
-            color: #ffffff; 
-            font-family: 'Orbitron', sans-serif;
-            font-size: 22px; 
-            font-weight: 900; 
-            margin-bottom: 4px; 
-            letter-spacing: 0.05em;
-            text-transform: uppercase;
-            font-style: italic;
-            text-shadow: 0 0 12px rgba(255,255,255,0.3);
-        }
-        
-        .header p { 
-            color: var(--neon-cyan); 
-            font-size: 12px; 
-            font-weight: 700;
-            font-family: 'JetBrains Mono', monospace;
-            text-transform: uppercase; 
-            letter-spacing: 0.2em; 
-            text-shadow: 0 0 8px var(--neon-cyan-glow);
-        }
-
-        .form-group { 
-            margin-bottom: 15px; 
-        }
-        
-        .form-group label { 
-            display: block; 
-            margin-bottom: 5px; 
-            color: #a0aec0; 
-            font-weight: 700; 
-            font-size: 11px;
-            font-family: 'Orbitron', sans-serif;
-            text-transform: uppercase;
-            letter-spacing: 0.1em;
-        }
-        
-        .form-group input {
-            width: 100%; 
-            padding: 11px 14px; 
-            background: rgba(3, 6, 12, 0.9); 
-            border: 1px solid rgba(255, 255, 255, 0.15);
-            border-radius: 10px; 
-            font-size: 13px; 
-            font-family: 'JetBrains Mono', monospace;
-            color: #ffffff; 
-            outline: none; 
-            transition: all 0.3s ease;
-            box-shadow: inset 0 2px 4px rgba(0,0,0,0.8);
-        }
-        
-        .form-group input::placeholder { 
-            color: #4a5568; 
-        }
-        
-        .form-group input:focus { 
-            border-color: var(--neon-cyan); 
-            box-shadow: 0 0 15px var(--neon-cyan-glow), inset 0 0 5px var(--neon-cyan-glow); 
-            background: rgba(2, 4, 8, 0.95);
-        }
-
-        .btn {
-            width: 100%; 
-            padding: 14px; 
-            background: linear-gradient(135deg, #ff1801 0%, #ff5500 100%);
-            color: #ffffff; 
-            border: none; 
-            border-radius: 10px; 
-            font-size: 13px; 
-            font-weight: 900;
-            font-family: 'Orbitron', sans-serif;
-            text-transform: uppercase;
-            letter-spacing: 0.2em;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            margin-top: 6px;
-            box-shadow: 0 0 20px var(--f1-red-glow);
-        }
-        
-        .btn:hover { 
-            box-shadow: 0 0 35px var(--f1-red), 0 0 10px var(--f1-red);
-            transform: translateY(-2px);
-            background: linear-gradient(135deg, #ff331e 0%, #ff661a 100%);
-        }
-        
-        .btn:active { 
-            transform: translateY(1px); 
-        }
-        
-        .btn:disabled { 
-            background: #1e293b; 
-            color: #64748b; 
-            cursor: not-allowed; 
-            box-shadow: none;
-            transform: none;
-        }
-
-        .message { 
-            padding: 12px 14px; 
-            border-radius: 8px; 
-            margin-top: 16px; 
-            display: none; 
-            font-size: 12px; 
-            text-align: center; 
-            font-weight: 600;
-            font-family: 'JetBrains Mono', monospace;
-            backdrop-filter: blur(10px);
-        }
-        
-        .message.success { 
-            background: rgba(0, 255, 102, 0.15); 
-            color: #00ff66; 
-            border: 1px solid rgba(0, 255, 102, 0.4); 
-            box-shadow: 0 0 15px rgba(0,255,102,0.2); 
-        }
-        
-        .message.error { 
-            background: rgba(255, 24, 1, 0.15); 
-            color: #ff5555; 
-            border: 1px solid rgba(255, 24, 1, 0.4); 
-            box-shadow: 0 0 15px rgba(255,24,1,0.2); 
-        }
-
-        .login-link { 
-            text-align: center; 
-            margin-top: 20px; 
-            color: #94a3b8; 
-            font-size: 13px; 
-            font-weight: 600;
-        }
-        
-        .login-link a { 
-            color: var(--neon-cyan); 
-            text-decoration: none; 
-            font-weight: 700; 
-            font-family: 'Orbitron', sans-serif;
-            transition: all 0.3s;
-            text-shadow: 0 0 5px var(--neon-cyan-glow);
-        }
-        
-        .login-link a:hover { 
-            color: var(--f1-red); 
-            text-shadow: 0 0 8px var(--f1-red-glow);
-            text-decoration: underline; 
-        }
-
-        .loading {
-            display: inline-block; 
-            width: 14px; 
-            height: 14px;
-            border: 2px solid rgba(255, 255, 255, 0.3); 
-            border-radius: 50%; 
-            border-top-color: #ffffff;
-            animation: spin 0.8s linear infinite; 
-            margin-right: 8px; 
-            vertical-align: middle;
-        }
-        
-        @keyframes spin { 
-            to { transform: rotate(360deg); } 
-        }
-    </style>
+    </script>
 </head>
-<body>
-    <div class="glow-sphere-1"></div>
-    <div class="glow-sphere-2"></div>
+<body class="bg-navy-900 text-slate-100 font-sans antialiased min-h-screen flex items-center justify-center p-4">
 
-    <div class="container">
-        <!-- Terminal Bar Header -->
-        <div class="terminal-bar">
-            <div class="terminal-dot-group">
-                <div class="terminal-dot dot-red"></div>
-                <div class="terminal-dot dot-yellow"></div>
-                <div class="terminal-dot dot-green"></div>
+    <div class="w-full max-w-md bg-navy-800 border border-navy-700/80 rounded-2xl p-8 shadow-2xl relative overflow-hidden my-6">
+        
+        <!-- Header / Logo -->
+        <div class="text-center mb-6">
+            <div class="inline-flex items-center justify-center w-12 h-12 rounded-xl bg-blue-500/10 text-blue-400 border border-blue-500/20 mb-3">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z"/></svg>
             </div>
-            <div class="terminal-title">eth0 / erfinmayriza</div>
+            <h1 class="text-xl font-heading font-extrabold text-white tracking-tight">Pendaftaran Akun Baru</h1>
+            <p class="text-xs text-slate-400 mt-1">Lengkapi data diri untuk mendapatkan akses jaringan hotspot</p>
         </div>
 
-        <div class="header">
-            <h1>Registrasi Akun</h1>
-            <p></p>
-        </div>
-
-        <form id="registerForm">
-            <div class="form-group">
-                <label for="name">Nama Lengkap</label>
-                <input type="text" id="name" name="name" required placeholder="Masukkan nama lengkap">
+        <!-- FORM REGISTRASI -->
+        <form id="registerForm" class="space-y-4">
+            <div>
+                <label class="block text-xs font-heading font-bold text-slate-300 mb-1.5 uppercase tracking-wider">Nama Lengkap</label>
+                <input type="text" id="name" name="name" required placeholder="Masukkan nama lengkap" class="w-full bg-navy-900/90 border border-navy-700 rounded-xl px-4 py-2.5 text-sm text-white focus:border-navy-500 focus:outline-none transition-all placeholder-slate-600">
             </div>
 
-            <div class="form-group">
-                <label for="email">Email</label>
-                <input type="email" id="email" name="email" required placeholder="Masukkan email">
+            <div>
+                <label class="block text-xs font-heading font-bold text-slate-300 mb-1.5 uppercase tracking-wider">Email</label>
+                <input type="email" id="email" name="email" required placeholder="Masukkan alamat email" class="w-full bg-navy-900/90 border border-navy-700 rounded-xl px-4 py-2.5 text-sm text-white focus:border-navy-500 focus:outline-none transition-all placeholder-slate-600">
             </div>
 
-            <div class="form-group">
-                <label for="phone">Nomor Telepon</label>
-                <input type="tel" id="phone" name="phone" required placeholder="Masukkan nomor telepon">
+            <div>
+                <label class="block text-xs font-heading font-bold text-slate-300 mb-1.5 uppercase tracking-wider">Nomor Telepon</label>
+                <input type="tel" id="phone" name="phone" required placeholder="Masukkan nomor telepon" class="w-full bg-navy-900/90 border border-navy-700 rounded-xl px-4 py-2.5 text-sm text-white focus:border-navy-500 focus:outline-none transition-all placeholder-slate-600">
             </div>
 
-            <div class="form-group">
-                <label for="username">Username</label>
-                <input type="text" id="username" name="username" required placeholder="Masukkan username">
+            <div>
+                <label class="block text-xs font-heading font-bold text-slate-300 mb-1.5 uppercase tracking-wider">Username</label>
+                <input type="text" id="username" name="username" required placeholder="Buat username unik" class="w-full bg-navy-900/90 border border-navy-700 rounded-xl px-4 py-2.5 text-sm text-white focus:border-navy-500 focus:outline-none transition-all placeholder-slate-600">
             </div>
 
-            <div class="form-group">
-                <label for="password">Password</label>
-                <input type="password" id="password" name="password" required placeholder="Masukkan password">
+            <div>
+                <label class="block text-xs font-heading font-bold text-slate-300 mb-1.5 uppercase tracking-wider">Password</label>
+                <input type="password" id="password" name="password" required placeholder="Buat kata sandi" class="w-full bg-navy-900/90 border border-navy-700 rounded-xl px-4 py-2.5 text-sm text-white focus:border-navy-500 focus:outline-none transition-all placeholder-slate-600">
             </div>
 
-            <div class="form-group">
-                <label for="confirmPassword">Konfirmasi Password</label>
-                <input type="password" id="confirmPassword" name="confirmPassword" required placeholder="Konfirmasi password">
+            <div>
+                <label class="block text-xs font-heading font-bold text-slate-300 mb-1.5 uppercase tracking-wider">Konfirmasi Password</label>
+                <input type="password" id="confirmPassword" name="confirmPassword" required placeholder="Ulangi kata sandi" class="w-full bg-navy-900/90 border border-navy-700 rounded-xl px-4 py-2.5 text-sm text-white focus:border-navy-500 focus:outline-none transition-all placeholder-slate-600">
             </div>
 
-            <button type="submit" class="btn" id="submitBtn">
+            <button type="submit" class="w-full py-3.5 bg-navy-600 hover:bg-blue-600 text-white font-heading font-bold text-xs tracking-wider uppercase rounded-xl transition-all shadow-lg shadow-blue-600/20 mt-2" id="submitBtn">
                 <span id="btnText">Daftar Sekarang</span>
             </button>
         </form>
 
-        <div class="message" id="message"></div>
+        <!-- Message Alert -->
+        <div id="message" class="hidden mt-4 p-3 rounded-xl border text-xs text-center font-medium"></div>
 
-        <div class="login-link">
-            Sudah punya akun? <a href="login.html">Login di sini</a>
+        <!-- Login Link -->
+        <div class="mt-6 text-center text-xs text-slate-400 font-sans">
+            Sudah punya akun? <a href="login.html" class="text-blue-400 hover:text-blue-300 font-heading font-bold ml-1">Login di sini</a>
         </div>
     </div>
 
+    <!-- SCRIPT LOGIC -->
     <script>
         const BACKEND_URL = window.location.origin.includes('vercel.app') 
             ? window.location.origin 
-            : 'https://mikrotik-hostpot-login-done.vercel.app';
+            : '';
 
         const form = document.getElementById('registerForm');
         const submitBtn = document.getElementById('submitBtn');
@@ -379,7 +110,7 @@
             const confirmPassword = document.getElementById('confirmPassword').value;
 
             if (password !== confirmPassword) {
-                showMessage('Password tidak cocok!', 'error');
+                showMessage('Kata sandi konfirmasi tidak cocok!', 'error');
                 return;
             }
 
@@ -392,14 +123,12 @@
             };
 
             submitBtn.disabled = true;
-            btnText.innerHTML = '<span class="loading"></span> Memproses...';
+            btnText.innerHTML = 'Memproses Pendaftaran...';
 
             try {
                 const response = await fetch(`${BACKEND_URL}/api/register`, {
                     method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
+                    headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(formData)
                 });
 
@@ -414,10 +143,11 @@
                     }, 2000);
                 } else {
                     showMessage(data.message, 'error');
+                    submitBtn.disabled = false;
+                    btnText.textContent = 'Daftar Sekarang';
                 }
             } catch (error) {
                 showMessage('Terjadi kesalahan koneksi ke server backend.', 'error');
-            } finally {
                 submitBtn.disabled = false;
                 btnText.textContent = 'Daftar Sekarang';
             }
@@ -425,11 +155,15 @@
 
         function showMessage(text, type) {
             message.textContent = text;
-            message.className = `message ${type}`;
-            message.style.display = 'block';
+            if (type === 'success') {
+                message.className = 'mt-4 p-3 rounded-xl border text-xs text-center font-medium bg-emerald-500/10 border-emerald-500/20 text-emerald-400';
+            } else {
+                message.className = 'mt-4 p-3 rounded-xl border text-xs text-center font-medium bg-red-500/10 border-red-500/20 text-red-400';
+            }
+            message.classList.remove('hidden');
 
             setTimeout(() => {
-                message.style.display = 'none';
+                message.classList.add('hidden');
             }, 5000);
         }
     </script>
