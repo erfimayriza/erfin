@@ -3,588 +3,134 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hotspot Login - TKJ F1 Telemetry Gateway</title>
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&family=Rajdhani:wght@500;600;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <title>Hotspot Login - Digital Navy Gateway</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Inter & JetBrains Mono -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        navy: {
+                            base: '#0B132B',   // Dark Navy Background
+                            card: '#1C2541',   // Card / Panel Navy
+                            accent: '#3A506B', // Border / Neutral Navy
+                            light: '#5BC0BE',  // Cyber Teal Glow
+                            cyan: '#00F0FF',   // Neon Digital Cyan
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'monospace'],
+                    }
+                }
+            }
+        }
+    </script>
+
     <style>
-        * { 
-            margin: 0; 
-            padding: 0; 
-            box-sizing: border-box; 
-        }
-
-        :root {
-            --f1-red: #ff1801;
-            --f1-red-glow: rgba(255, 24, 1, 0.6);
-            --neon-cyan: #00f3ff;
-            --neon-cyan-glow: rgba(0, 243, 255, 0.5);
-            --bg-dark: #030508;
-            --panel-bg: rgba(8, 12, 22, 0.85);
-            --border-glow: rgba(255, 255, 255, 0.15);
-        }
-
         body {
-            background-color: var(--bg-dark);
-            /* Dark Carbon Grid + Ambient Lasers */
+            background-color: #0B132B;
             background-image: 
-                radial-gradient(circle at 50% 10%, rgba(255, 24, 1, 0.25) 0%, transparent 60%),
-                radial-gradient(circle at 90% 80%, rgba(0, 243, 255, 0.18) 0%, transparent 50%),
-                linear-gradient(rgba(0, 243, 255, 0.03) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(0, 243, 255, 0.03) 1px, transparent 1px);
-            background-size: 100% 100%, 100% 100%, 30px 30px, 30px 30px;
-            background-position: 0 0, 0 0, -1px -1px, -1px -1px;
+                radial-gradient(circle at 50% 0%, rgba(91, 192, 190, 0.12) 0%, transparent 50%),
+                radial-gradient(circle at 100% 100%, rgba(0, 240, 255, 0.05) 0%, transparent 50%);
+            color: #F8FAFC;
             min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 20px;
-            color: #f8fafc;
-            font-family: 'Rajdhani', sans-serif;
-            overflow-x: hidden;
-            position: relative;
         }
 
-        /* Scanline Animasi Layar Telemetri */
-        body::before {
-            content: " ";
-            position: fixed;
-            top: 0; left: 0; bottom: 0; right: 0;
-            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%);
-            background-size: 100% 4px;
-            z-index: 10;
-            pointer-events: none;
-            opacity: 0.6;
+        .navy-card {
+            background: rgba(28, 37, 65, 0.75);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(91, 192, 190, 0.18);
+            box-shadow: 0 10px 30px -10px rgba(11, 19, 43, 0.5);
         }
 
-        /* Ambient Glow Spheres */
-        .glow-sphere-1 {
-            position: absolute;
-            width: 400px;
-            height: 400px;
-            background: radial-gradient(circle, var(--f1-red-glow), transparent 70%);
-            top: -50px;
-            left: -50px;
-            filter: blur(80px);
-            pointer-events: none;
-            z-index: 0;
-        }
-
-        .glow-sphere-2 {
-            position: absolute;
-            width: 350px;
-            height: 350px;
-            background: radial-gradient(circle, var(--neon-cyan-glow), transparent 70%);
-            bottom: -50px;
-            right: -50px;
-            filter: blur(80px);
-            pointer-events: none;
-            z-index: 0;
-        }
-
-        /* Main Glass Container */
-        .container {
-            background: var(--panel-bg);
-            backdrop-filter: blur(25px);
-            -webkit-backdrop-filter: blur(25px);
-            border: 1px solid rgba(255, 255, 255, 0.15);
-            border-top: 3px solid var(--f1-red);
-            border-bottom: 2px solid var(--neon-cyan);
-            border-radius: 20px;
-            box-shadow: 
-                0 0 40px rgba(0, 0, 0, 0.9),
-                0 0 30px var(--f1-red-glow),
-                inset 0 0 15px rgba(255, 255, 255, 0.05);
-            padding: 35px 30px;
-            max-width: 440px;
-            width: 100%;
-            position: relative;
-            z-index: 1;
-            overflow: hidden;
-        }
-
-        /* Rev Limiter Shift Lights */
-        .rev-limiter {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            gap: 6px;
-            margin-bottom: 22px;
-            padding: 8px 12px;
-            background: rgba(2, 4, 8, 0.9);
-            border-radius: 10px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            box-shadow: inset 0 0 10px rgba(0,0,0,0.8);
-        }
-
-        .rev-led-group {
-            display: flex;
-            gap: 5px;
-        }
-
-        .rev-led {
-            width: 14px;
-            height: 8px;
-            border-radius: 2px;
-            opacity: 0.2;
-            transition: all 0.3s ease;
-        }
-
-        .rev-led.green { background: #00ff66; }
-        .rev-led.red { background: var(--f1-red); }
-        .rev-led.blue { background: #00bfff; }
-
-        .rev-led.active {
-            opacity: 1;
-            box-shadow: 0 0 10px currentColor, 0 0 4px currentColor;
-            animation: pulse-led 1.5s infinite alternate;
-        }
-
-        @keyframes pulse-led {
-            0% { filter: brightness(1); }
-            100% { filter: brightness(1.5); }
-        }
-
-        .gear-indicator {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 11px;
-            font-weight: 900;
-            color: var(--f1-red);
-            letter-spacing: 0.12em;
-            text-shadow: 0 0 8px var(--f1-red-glow);
-        }
-
-        /* Terminal Bar Header */
-        .terminal-bar {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            margin-bottom: 22px;
-            padding-bottom: 10px;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-        }
-
-        .terminal-dot-group {
-            display: flex;
-            gap: 6px;
-        }
-
-        .terminal-dot {
-            width: 10px;
-            height: 10px;
-            border-radius: 50%;
-        }
-        .dot-red { background: #ff3b30; box-shadow: 0 0 8px #ff3b30; }
-        .dot-yellow { background: #ffcc00; box-shadow: 0 0 8px #ffcc00; }
-        .dot-green { background: #34c759; box-shadow: 0 0 8px #34c759; }
-
-        .terminal-title {
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 11px;
-            color: var(--neon-cyan);
-            letter-spacing: 0.1em;
-            text-transform: uppercase;
-            font-weight: 700;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            text-shadow: 0 0 8px var(--neon-cyan-glow);
-        }
-
-        .terminal-title::before {
-            content: '';
-            display: inline-block;
+        .digital-dot {
             width: 7px;
             height: 7px;
-            background: var(--neon-cyan);
             border-radius: 50%;
-            box-shadow: 0 0 8px var(--neon-cyan);
-            animation: pulse 1.2s infinite;
+            display: inline-block;
         }
-
-        @keyframes pulse {
-            0%, 100% { opacity: 1; transform: scale(1); }
-            50% { opacity: 0.3; transform: scale(0.6); }
+        .dot-online {
+            background-color: #10B981;
+            box-shadow: 0 0 10px #10B981;
         }
-
-        /* Telemetry Live Strip */
-        .telemetry-strip {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 10px;
-            margin-bottom: 25px;
-        }
-
-        .telemetry-box {
-            background: rgba(4, 8, 16, 0.8);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            border-radius: 10px;
-            padding: 10px 6px;
-            text-align: center;
-            box-shadow: inset 0 0 10px rgba(0,0,0,0.5);
-            transition: border-color 0.3s;
-        }
-
-        .telemetry-box:hover {
-            border-color: rgba(0, 243, 255, 0.4);
-        }
-
-        .telemetry-label {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 9px;
-            color: #64748b;
-            text-transform: uppercase;
-            letter-spacing: 0.08em;
-            margin-bottom: 3px;
-        }
-
-        .telemetry-value {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 12px;
-            font-weight: 700;
-        }
-
-        .val-cyan { color: var(--neon-cyan); text-shadow: 0 0 8px var(--neon-cyan-glow); }
-        .val-red { color: var(--f1-red); text-shadow: 0 0 8px var(--f1-red-glow); }
-        .val-green { color: #00ff66; text-shadow: 0 0 8px rgba(0, 255, 102, 0.5); }
-
-        /* Header Visuals */
-        .header { 
-            text-align: center; 
-            margin-bottom: 26px; 
-        }
-
-        .racing-icon {
-            width: 65px; 
-            height: 65px; 
-            margin: 0 auto 14px;
-            background: radial-gradient(circle, rgba(255, 24, 1, 0.25) 0%, rgba(0,0,0,0) 80%);
-            color: var(--f1-red);
-            border: 1px solid var(--f1-red);
-            border-radius: 16px; 
-            display: flex; 
-            justify-content: center; 
-            align-items: center; 
-            box-shadow: 0 0 25px var(--f1-red-glow), inset 0 0 10px var(--f1-red-glow);
-            transition: all 0.4s ease;
-        }
-
-        .racing-icon svg {
-            width: 36px;
-            height: 36px;
-            fill: var(--f1-red);
-            filter: drop-shadow(0 0 8px var(--f1-red));
-        }
-
-        .racing-icon:hover {
-            transform: scale(1.08) rotate(-4deg);
-            box-shadow: 0 0 35px var(--f1-red), inset 0 0 15px var(--f1-red);
-        }
-
-        .header h1 { 
-            color: #ffffff; 
-            font-family: 'Orbitron', sans-serif;
-            font-size: 24px; 
-            font-weight: 900; 
-            margin-bottom: 4px; 
-            letter-spacing: 0.05em;
-            text-transform: uppercase;
-            font-style: italic;
-            text-shadow: 0 0 12px rgba(255,255,255,0.3);
-        }
-
-        .header p { 
-            color: var(--neon-cyan); 
-            font-size: 12px; 
-            font-weight: 700;
-            font-family: 'JetBrains Mono', monospace;
-            text-transform: uppercase; 
-            letter-spacing: 0.2em; 
-            text-shadow: 0 0 8px var(--neon-cyan-glow);
-        }
-
-        /* Form Inputs */
-        .form-group { 
-            margin-bottom: 18px; 
-        }
-
-        .form-group label { 
-            display: block; 
-            margin-bottom: 6px; 
-            color: #a0aec0; 
-            font-weight: 700; 
-            font-size: 11px;
-            font-family: 'Orbitron', sans-serif;
-            text-transform: uppercase;
-            letter-spacing: 0.1em;
-        }
-
-        .form-group input {
-            width: 100%; 
-            padding: 13px 16px; 
-            background: rgba(3, 6, 12, 0.9); 
-            border: 1px solid rgba(255, 255, 255, 0.15);
-            border-radius: 10px; 
-            font-size: 14px; 
-            font-family: 'JetBrains Mono', monospace;
-            color: #ffffff; 
-            outline: none; 
-            transition: all 0.3s ease;
-            box-shadow: inset 0 2px 4px rgba(0,0,0,0.8);
-        }
-
-        .form-group input::placeholder {
-            color: #4a5568;
-        }
-
-        .form-group input:focus { 
-            border-color: var(--neon-cyan); 
-            box-shadow: 0 0 15px var(--neon-cyan-glow), inset 0 0 5px var(--neon-cyan-glow); 
-            background: rgba(2, 4, 8, 0.95);
-        }
-
-        /* Neon Action Button */
-        .btn {
-            width: 100%; 
-            padding: 15px; 
-            background: linear-gradient(135deg, #ff1801 0%, #ff5500 100%);
-            color: #ffffff; 
-            border: none; 
-            border-radius: 10px; 
-            font-size: 13px; 
-            font-weight: 900;
-            font-family: 'Orbitron', sans-serif;
-            text-transform: uppercase;
-            letter-spacing: 0.2em;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            margin-top: 8px;
-            box-shadow: 0 0 20px var(--f1-red-glow);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .btn:hover { 
-            box-shadow: 0 0 35px var(--f1-red), 0 0 10px var(--f1-red);
-            transform: translateY(-2px);
-            background: linear-gradient(135deg, #ff331e 0%, #ff661a 100%);
-        }
-
-        .btn:active { 
-            transform: translateY(1px); 
-        }
-
-        .btn:disabled { 
-            background: #1e293b; 
-            color: #64748b; 
-            cursor: not-allowed; 
-            box-shadow: none;
-            transform: none;
-        }
-
-        /* Messages */
-        .message { 
-            padding: 12px 14px; 
-            border-radius: 8px; 
-            margin-top: 18px; 
-            display: none; 
-            font-size: 12px; 
-            font-weight: 600;
-            font-family: 'JetBrains Mono', monospace;
-            line-height: 1.5;
-            backdrop-filter: blur(10px);
-        }
-        .message.success { background: rgba(0, 255, 102, 0.15); color: #00ff66; border: 1px solid rgba(0, 255, 102, 0.4); box-shadow: 0 0 15px rgba(0,255,102,0.2); }
-        .message.error { background: rgba(255, 24, 1, 0.15); color: #ff5555; border: 1px solid rgba(255, 24, 1, 0.4); box-shadow: 0 0 15px rgba(255,24,1,0.2); }
-        .message.info { background: rgba(0, 243, 255, 0.15); color: var(--neon-cyan); border: 1px solid rgba(0, 243, 255, 0.4); box-shadow: 0 0 15px var(--neon-cyan-glow); }
-
-        /* Status Check Module */
-        .status-check { 
-            margin-top: 18px; 
-            padding: 16px; 
-            background: rgba(3, 6, 12, 0.85); 
-            border: 1px solid rgba(0, 243, 255, 0.3); 
-            border-radius: 12px; 
-            display: none; 
-            box-shadow: 0 0 15px rgba(0, 243, 255, 0.1);
-        }
-        .status-check.show { display: block; animation: fadeIn 0.4s ease; }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(-8px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .status-check input { 
-            width: calc(100% - 70px); 
-            padding: 10px 12px; 
-            background: rgba(8, 12, 22, 0.9); 
-            border: 1px solid rgba(255, 255, 255, 0.2); 
-            border-radius: 8px; 
-            color: #ffffff; 
-            margin-right: 6px; 
-            outline: none; 
-            font-size: 12px; 
-            font-family: 'JetBrains Mono', monospace; 
-            transition: all 0.3s;
-        }
-
-        .status-check input:focus { border-color: var(--neon-cyan); box-shadow: 0 0 10px var(--neon-cyan-glow); }
-
-        .status-check button { 
-            padding: 10px 16px; 
-            background: rgba(0, 243, 255, 0.1); 
-            color: var(--neon-cyan); 
-            border: 1px solid var(--neon-cyan); 
-            border-radius: 8px; 
-            cursor: pointer; 
-            font-weight: 700; 
-            font-size: 11px; 
-            font-family: 'Orbitron', sans-serif; 
-            transition: all 0.3s; 
-            box-shadow: 0 0 10px var(--neon-cyan-glow);
-        }
-        .status-check button:hover { background: var(--f1-red); color: #ffffff; border-color: var(--f1-red); box-shadow: 0 0 15px var(--f1-red-glow); }
-
-        .status-result { margin-top: 12px; padding: 10px; border-radius: 8px; font-size: 11px; font-family: 'JetBrains Mono', monospace; font-weight: 600; display: none; }
-        .status-result.approved { background: rgba(0, 255, 102, 0.15); color: #00ff66; border: 1px solid rgba(0, 255, 102, 0.4); }
-        .status-result.pending { background: rgba(255, 204, 0, 0.15); color: #ffcc00; border: 1px solid rgba(255, 204, 0, 0.4); }
-        .status-result.rejected { background: rgba(255, 24, 1, 0.15); color: #ff5555; border: 1px solid rgba(255, 24, 1, 0.4); }
-        .status-result.not-found { background: rgba(148, 163, 184, 0.15); color: #cbd5e1; border: 1px solid rgba(148, 163, 184, 0.4); }
-
-        /* Navigation Links */
-        .register-link { text-align: center; margin-top: 22px; color: #94a3b8; font-size: 13px; font-weight: 600; }
-        .register-link a { color: var(--neon-cyan); text-decoration: none; font-weight: 700; font-family: 'Orbitron', sans-serif; transition: all 0.3s; text-shadow: 0 0 5px var(--neon-cyan-glow); }
-        .register-link a:hover { color: var(--f1-red); text-shadow: 0 0 8px var(--f1-red-glow); text-decoration: underline; }
-
-        .btn-status-toggle {
-            background: none; 
-            border: none; 
-            color: var(--neon-cyan); 
-            cursor: pointer; 
-            font-size: 11px; 
-            font-family: 'Orbitron', sans-serif; 
-            font-weight: 700; 
-            text-transform: uppercase;
-            letter-spacing: 0.1em;
-            text-decoration: underline;
-            transition: all 0.3s;
-            text-shadow: 0 0 5px var(--neon-cyan-glow);
-        }
-
-        .btn-status-toggle:hover {
-            color: #ffffff;
-            text-shadow: 0 0 10px var(--neon-cyan);
-        }
-
-        /* Spinner Loading */
-        .loading {
-            display: inline-block; width: 14px; height: 14px;
-            border: 2px solid rgba(255, 255, 255, 0.3); border-radius: 50%; border-top-color: #ffffff;
-            animation: spin 0.8s linear infinite; margin-right: 8px; vertical-align: middle;
-        }
-        @keyframes spin { to { transform: rotate(360deg); } }
     </style>
 </head>
-<body>
-    <div class="glow-sphere-1"></div>
-    <div class="glow-sphere-2"></div>
+<body class="font-sans antialiased flex items-center justify-center p-4">
 
-    <div class="container">
-        <!-- F1 Rev Limiter LEDs -->
-        <div class="rev-limiter">
-            <div class="rev-led-group">
-                <div class="rev-led green active"></div>
-                <div class="rev-led green active"></div>
-                <div class="rev-led green active"></div>
-                <div class="rev-led red active"></div>
-                <div class="rev-led red active"></div>
-                <div class="rev-led blue active"></div>
-                <div class="rev-led blue active"></div>
+    <div class="w-full max-w-md navy-card rounded-2xl p-8 shadow-2xl relative overflow-hidden border-t-2 border-t-navy-light">
+        
+        <!-- Top Indicator -->
+        <div class="flex items-center justify-between mb-6 border-b border-navy-accent/30 pb-3">
+            <div class="flex items-center space-x-2">
+                <span class="digital-dot dot-online"></span>
+                <span class="font-mono text-xs text-navy-light uppercase tracking-wider font-semibold">Hotspot Gateway</span>
             </div>
-            <div class="gear-indicator">HOTSPOT</div>
+            <span class="font-mono text-[10px] text-gray-400">RouterOS v7</span>
         </div>
 
-        <!-- Terminal Bar Header -->
-        <div class="terminal-bar">
-            <div class="terminal-dot-group">
-                <div class="terminal-dot dot-red"></div>
-                <div class="terminal-dot dot-yellow"></div>
-                <div class="terminal-dot dot-green"></div>
-            </div>
-            <div class="terminal-title">eth0 / erfinmayriza</div>
+        <!-- Header -->
+        <div class="text-center mb-8">
+            <h1 class="text-2xl font-bold text-white tracking-tight">Selamat Datang</h1>
+            <p class="text-xs text-gray-400 mt-1 font-mono">Silakan masuk menggunakan akun terdaftar</p>
         </div>
 
-        <!-- Telemetry Data Strip -->
-        <div class="telemetry-strip">
-            <div class="telemetry-box">
-                <div class="telemetry-label"></div>
-                <div class="telemetry-value val-green"></div>
-            </div>
-            <div class="telemetry-box">
-                <div class="telemetry-label"></div>
-                <div class="telemetry-value val-red"></div>
-            </div>
-            <div class="telemetry-box">
-                <div class="telemetry-label"></div>
-                <div class="telemetry-value val-cyan"></div>
-            </div>
-        </div>
-
-        <!-- Header with F1 Steering Wheel Icon -->
-        <div class="header">
-            <div class="racing-icon">
-                <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm-7 7c0-2.21.9-4.21 2.35-5.65L9 11H5.08c-.05.33-.08.66-.08 1 0 .68.11 1.33.3 1.95L7.5 12.5 5 12zm7 7c-2.21 0-4.21-.9-5.65-2.35L11 15v3.92c.33.05.66.08 1 .08.68 0 1.33-.11 1.95-.3L12.5 16.5 12 19zm7-7c0 .34-.03.67-.08 1H15l1.65 1.65c.19-.62.3-1.27.3-1.95 0-.34-.03-.67-.08-1H19c.05.33.08.66.08 1z"/>
-                </svg>
-            </div>
-            <h1>Racing Hotspot</h1>
-            <p></p>
-        </div>
-
-        <!-- FORM LOGIN MIKROTIK NATIVE ACTION -->
-        <form id="loginForm" name="login" action="$(link-login-only)" method="post">
+        <!-- MIKROTIK NATIVE LOGIN FORM -->
+        <form id="loginForm" name="login" action="$(link-login-only)" method="post" class="space-y-4">
             <input type="hidden" name="dst" value="$(link-orig)">
             <input type="hidden" name="popup" value="true">
 
-            <div class="form-group">
-                <label for="username">Username</label>
-                <input type="text" id="username" name="username" value="" required placeholder="Masukkan username">
+            <div>
+                <label class="block text-xs font-mono font-medium text-gray-300 mb-1.5 uppercase tracking-wider">Username</label>
+                <input type="text" id="username" name="username" value="" required placeholder="Masukkan username" class="w-full bg-navy-base border border-navy-accent/50 rounded-xl px-4 py-3 text-sm font-mono text-white focus:border-navy-cyan focus:outline-none transition-all shadow-inner placeholder-gray-600">
             </div>
 
-            <div class="form-group">
-                <label for="password">Password</label>
-                <input type="password" id="password" name="password" required placeholder="Masukkan password">
+            <div>
+                <label class="block text-xs font-mono font-medium text-gray-300 mb-1.5 uppercase tracking-wider">Password</label>
+                <input type="password" id="password" name="password" required placeholder="Masukkan password" class="w-full bg-navy-base border border-navy-accent/50 rounded-xl px-4 py-3 text-sm font-mono text-white focus:border-navy-cyan focus:outline-none transition-all shadow-inner placeholder-gray-600">
             </div>
 
-            <button type="submit" class="btn" id="submitBtn">
-                <span id="btnText">MASUK</span>
+            <button type="submit" id="submitBtn" class="w-full py-3.5 bg-gradient-to-r from-navy-light to-navy-cyan hover:opacity-90 text-navy-base font-semibold text-xs tracking-widest uppercase rounded-xl transition-all shadow-[0_0_20px_rgba(91,192,190,0.3)] mt-2">
+                <span id="btnText">MASUK JARINGAN</span>
             </button>
         </form>
 
-        <div class="message" id="message"></div>
+        <!-- Message Alert -->
+        <div id="message" class="hidden mt-4 p-3 rounded-xl border text-xs font-mono text-center"></div>
 
-        <div class="status-check" id="statusCheck">
-            <p style="margin-bottom: 8px; color: #a0aec0; font-size: 10px; font-weight: 700; font-family: 'Orbitron', sans-serif; text-transform: uppercase;">Cek Telemetri Registrasi:</p>
-            <div style="display: flex;">
-                <input type="text" id="checkUsername" placeholder="Username Driver">
-                <button type="button" onclick="checkStatus()">Cek</button>
-            </div>
-            <div class="status-result" id="statusResult"></div>
-        </div>
-
-        <div class="register-link">
-            Belum punya akun? <a href="register.html">Registrasi</a>
-        </div>
-
-        <div style="text-align: center; margin-top: 18px;">
-            <button type="button" class="btn-status-toggle" onclick="toggleStatusCheck()">
-                Cek status registrasi 
+        <!-- Status Check Toggle & Box -->
+        <div class="mt-6 text-center">
+            <button type="button" onclick="toggleStatusCheck()" class="text-xs font-mono text-navy-light hover:text-navy-cyan underline transition-all">
+                Cek status registrasi akun?
             </button>
+        </div>
+
+        <div id="statusCheck" class="hidden mt-4 p-4 bg-navy-base/80 rounded-xl border border-navy-accent/40 space-y-3">
+            <p class="text-[11px] font-mono text-gray-300 uppercase">Cek Status Pendaftaran:</p>
+            <div class="flex gap-2">
+                <input type="text" id="checkUsername" placeholder="Username..." class="flex-1 bg-navy-card border border-navy-accent/60 rounded-lg px-3 py-2 text-xs font-mono text-white focus:border-navy-cyan outline-none">
+                <button type="button" onclick="checkStatus()" class="bg-navy-light/10 hover:bg-navy-light/20 text-navy-light border border-navy-light/30 px-3 py-2 rounded-lg text-xs font-mono font-semibold transition-all">Cek</button>
+            </div>
+            <div id="statusResult" class="hidden p-2.5 rounded-lg text-xs font-mono text-center"></div>
+        </div>
+
+        <!-- Register Link -->
+        <div class="mt-8 text-center text-xs text-gray-400 font-mono">
+            Belum punya akun? <a href="register.html" class="text-navy-light hover:text-navy-cyan font-semibold ml-1">Registrasi di sini</a>
         </div>
     </div>
 
+    <!-- SCRIPT LOGIC -->
     <script>
-        // Menggunakan domain Vercel aktif yang terhubung ke database Upstash
-        const BACKEND_URL = 'https://mamat-git-main-ahmad5-388c.vercel.app';
+        const BACKEND_URL = window.location.origin.includes('vercel.app') 
+            ? window.location.origin 
+            : '';
 
         const form = document.getElementById('loginForm');
         const submitBtn = document.getElementById('submitBtn');
@@ -598,47 +144,37 @@
             const usernameVal = document.getElementById('username').value;
             const passwordVal = document.getElementById('password').value;
 
-            const formData = {
-                username: usernameVal,
-                password: passwordVal
-            };
-
             submitBtn.disabled = true;
-            btnText.innerHTML = '<span class="loading"></span> Connecting Telemetry...';
+            btnText.innerHTML = 'Memproses...';
 
             try {
                 const response = await fetch(`${BACKEND_URL}/api/login`, {
                     method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify(formData)
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ username: usernameVal, password: passwordVal })
                 });
 
                 const data = await response.json();
 
                 if (data.success) {
-                    showMessage(`System initialized, Driver ${data.user.name}! Login berhasil.`, 'success');
-                    
+                    showMessage(`Login berhasil, selamat datang ${data.user.name}!`, 'success');
                     setTimeout(() => {
-                        showMessage('Masuk ke jalur utama...', 'info');
                         HTMLFormElement.prototype.submit.call(form);
-                    }, 1500);
+                    }, 1200);
                 } else {
                     showMessage(data.message, 'error');
                     submitBtn.disabled = false;
-                    btnText.textContent = 'MASUK';
+                    btnText.textContent = 'MASUK JARINGAN';
                 }
             } catch (error) {
-                console.error(error);
                 showMessage('Terjadi kesalahan koneksi ke server backend.', 'error');
                 submitBtn.disabled = false;
-                btnText.textContent = 'MASUK';
+                btnText.textContent = 'MASUK JARINGAN';
             }
         });
 
         function toggleStatusCheck() {
-            statusCheck.classList.toggle('show');
+            statusCheck.classList.toggle('hidden');
         }
 
         async function checkStatus() {
@@ -646,9 +182,9 @@
             const statusResult = document.getElementById('statusResult');
 
             if (!username) {
-                statusResult.textContent = 'Masukkan username driver terlebih dahulu';
-                statusResult.className = 'status-result not-found';
-                statusResult.style.display = 'block';
+                statusResult.textContent = 'Masukkan username terlebih dahulu';
+                statusResult.className = 'p-2.5 rounded-lg text-xs font-mono text-center bg-red-500/10 border border-red-500/30 text-red-400';
+                statusResult.classList.remove('hidden');
                 return;
             }
 
@@ -657,33 +193,42 @@
                 const data = await response.json();
 
                 if (data.success) {
-                    statusResult.textContent = `Status: ${data.status.toUpperCase()}`;
-                    statusResult.className = `status-result ${data.status}`;
-                    statusResult.style.display = 'block';
-
-                    if (data.status === 'pending') {
-                        statusResult.textContent += ' - Menunggu akses dari System (Admin)';
-                    } else if (data.status === 'approved') {
-                        statusResult.textContent += ' - Siap terhubung ke jaringan';
+                    let statusText = `Status: ${data.status.toUpperCase()}`;
+                    let colorClass = 'bg-amber-500/10 border-amber-500/30 text-amber-400';
+                    
+                    if (data.status === 'approved') {
+                        colorClass = 'bg-emerald-500/10 border-emerald-500/30 text-emerald-400';
+                        statusText += ' - Siap terhubung ke jaringan';
+                    } else if (data.status === 'pending') {
+                        statusText += ' - Menunggu persetujuan admin';
                     } else if (data.status === 'rejected') {
-                        statusResult.textContent += ' - Akses ditolak';
+                        colorClass = 'bg-red-500/10 border-red-500/30 text-red-400';
+                        statusText += ' - Akses ditolak';
                     }
+
+                    statusResult.textContent = statusText;
+                    statusResult.className = `p-2.5 rounded-lg text-xs font-mono text-center border ${colorClass}`;
+                    statusResult.classList.remove('hidden');
                 } else {
-                    statusResult.textContent = data.message;
-                    statusResult.className = 'status-result not-found';
-                    statusResult.style.display = 'block';
+                    statusResult.textContent = data.message || 'User tidak ditemukan';
+                    statusResult.className = 'p-2.5 rounded-lg text-xs font-mono text-center bg-red-500/10 border border-red-500/30 text-red-400';
+                    statusResult.classList.remove('hidden');
                 }
             } catch (error) {
-                statusResult.textContent = 'Gagal mengecek status (Server backend tidak aktif)';
-                statusResult.className = 'status-result not-found';
-                statusResult.style.display = 'block';
+                statusResult.textContent = 'Gagal mengecek status server';
+                statusResult.className = 'p-2.5 rounded-lg text-xs font-mono text-center bg-red-500/10 border border-red-500/30 text-red-400';
+                statusResult.classList.remove('hidden');
             }
         }
 
         function showMessage(text, type) {
             message.textContent = text;
-            message.className = `message ${type}`;
-            message.style.display = 'block';
+            if (type === 'success') {
+                message.className = 'mt-4 p-3 rounded-xl border text-xs font-mono text-center bg-emerald-500/10 border-emerald-500/30 text-emerald-400';
+            } else {
+                message.className = 'mt-4 p-3 rounded-xl border text-xs font-mono text-center bg-red-500/10 border-red-500/30 text-red-400';
+            }
+            message.classList.remove('hidden');
         }
     </script>
 </body>
