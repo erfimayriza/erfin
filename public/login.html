@@ -3,13 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hotspot Login - Digital Navy Gateway</title>
+    <title>Enterprise Gateway - Hotspot Login</title>
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Google Fonts: Inter & JetBrains Mono -->
+    <!-- Google Fonts: Plus Jakarta Sans & Inter -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet">
     
     <script>
         tailwind.config = {
@@ -17,68 +17,33 @@
                 extend: {
                     colors: {
                         navy: {
-                            base: '#0B132B',   // Dark Navy Background
-                            card: '#1C2541',   // Card / Panel Navy
-                            accent: '#3A506B', // Border / Neutral Navy
-                            light: '#5BC0BE',  // Cyber Teal Glow
-                            cyan: '#00F0FF',   // Neon Digital Cyan
+                            900: '#0a192f', /* Biru Tua Utama Background */
+                            800: '#112240', /* Biru Tua Card & Modal */
+                            700: '#1d3557', /* Border & Accent */
+                            600: '#2563eb', /* Biru Utama Tombol */
+                            500: '#3b82f6', /* Blue Glow */
                         }
                     },
                     fontFamily: {
                         sans: ['Inter', 'sans-serif'],
-                        mono: ['JetBrains Mono', 'monospace'],
+                        heading: ['Plus Jakarta Sans', 'sans-serif'],
                     }
                 }
             }
         }
     </script>
-
-    <style>
-        body {
-            background-color: #0B132B;
-            background-image: 
-                radial-gradient(circle at 50% 0%, rgba(91, 192, 190, 0.12) 0%, transparent 50%),
-                radial-gradient(circle at 100% 100%, rgba(0, 240, 255, 0.05) 0%, transparent 50%);
-            color: #F8FAFC;
-            min-height: 100vh;
-        }
-
-        .navy-card {
-            background: rgba(28, 37, 65, 0.75);
-            backdrop-filter: blur(12px);
-            border: 1px solid rgba(91, 192, 190, 0.18);
-            box-shadow: 0 10px 30px -10px rgba(11, 19, 43, 0.5);
-        }
-
-        .digital-dot {
-            width: 7px;
-            height: 7px;
-            border-radius: 50%;
-            display: inline-block;
-        }
-        .dot-online {
-            background-color: #10B981;
-            box-shadow: 0 0 10px #10B981;
-        }
-    </style>
 </head>
-<body class="font-sans antialiased flex items-center justify-center p-4">
+<body class="bg-navy-900 text-slate-100 font-sans antialiased min-h-screen flex items-center justify-center p-4">
 
-    <div class="w-full max-w-md navy-card rounded-2xl p-8 shadow-2xl relative overflow-hidden border-t-2 border-t-navy-light">
+    <div class="w-full max-w-md bg-navy-800 border border-navy-700/80 rounded-2xl p-8 shadow-2xl relative overflow-hidden">
         
-        <!-- Top Indicator -->
-        <div class="flex items-center justify-between mb-6 border-b border-navy-accent/30 pb-3">
-            <div class="flex items-center space-x-2">
-                <span class="digital-dot dot-online"></span>
-                <span class="font-mono text-xs text-navy-light uppercase tracking-wider font-semibold">Hotspot Gateway</span>
+        <!-- Header / Logo -->
+        <div class="text-center mb-6">
+            <div class="inline-flex items-center justify-center w-12 h-12 rounded-xl bg-blue-500/10 text-blue-400 border border-blue-500/20 mb-3">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
             </div>
-            <span class="font-mono text-[10px] text-gray-400">RouterOS v7</span>
-        </div>
-
-        <!-- Header -->
-        <div class="text-center mb-8">
-            <h1 class="text-2xl font-bold text-white tracking-tight">Selamat Datang</h1>
-            <p class="text-xs text-gray-400 mt-1 font-mono">Silakan masuk menggunakan akun terdaftar</p>
+            <h1 class="text-xl font-heading font-extrabold text-white tracking-tight">Autentikasi Jaringan</h1>
+            <p class="text-xs text-slate-400 mt-1">Silakan masuk menggunakan kredensial akun terdaftar</p>
         </div>
 
         <!-- MIKROTIK NATIVE LOGIN FORM -->
@@ -87,42 +52,42 @@
             <input type="hidden" name="popup" value="true">
 
             <div>
-                <label class="block text-xs font-mono font-medium text-gray-300 mb-1.5 uppercase tracking-wider">Username</label>
-                <input type="text" id="username" name="username" value="" required placeholder="Masukkan username" class="w-full bg-navy-base border border-navy-accent/50 rounded-xl px-4 py-3 text-sm font-mono text-white focus:border-navy-cyan focus:outline-none transition-all shadow-inner placeholder-gray-600">
+                <label class="block text-xs font-heading font-bold text-slate-300 mb-2 uppercase tracking-wider">Username</label>
+                <input type="text" id="username" name="username" value="" required placeholder="Masukkan username" class="w-full bg-navy-900/90 border border-navy-700 rounded-xl px-4 py-3 text-sm text-white focus:border-navy-500 focus:outline-none transition-all placeholder-slate-600">
             </div>
 
             <div>
-                <label class="block text-xs font-mono font-medium text-gray-300 mb-1.5 uppercase tracking-wider">Password</label>
-                <input type="password" id="password" name="password" required placeholder="Masukkan password" class="w-full bg-navy-base border border-navy-accent/50 rounded-xl px-4 py-3 text-sm font-mono text-white focus:border-navy-cyan focus:outline-none transition-all shadow-inner placeholder-gray-600">
+                <label class="block text-xs font-heading font-bold text-slate-300 mb-2 uppercase tracking-wider">Password</label>
+                <input type="password" id="password" name="password" required placeholder="Masukkan password" class="w-full bg-navy-900/90 border border-navy-700 rounded-xl px-4 py-3 text-sm text-white focus:border-navy-500 focus:outline-none transition-all placeholder-slate-600">
             </div>
 
-            <button type="submit" id="submitBtn" class="w-full py-3.5 bg-gradient-to-r from-navy-light to-navy-cyan hover:opacity-90 text-navy-base font-semibold text-xs tracking-widest uppercase rounded-xl transition-all shadow-[0_0_20px_rgba(91,192,190,0.3)] mt-2">
-                <span id="btnText">MASUK JARINGAN</span>
+            <button type="submit" id="submitBtn" class="w-full py-3.5 bg-navy-600 hover:bg-blue-600 text-white font-heading font-bold text-xs tracking-wider uppercase rounded-xl transition-all shadow-lg shadow-blue-600/20 mt-2">
+                <span id="btnText">MASUK KE JARINGAN</span>
             </button>
         </form>
 
         <!-- Message Alert -->
-        <div id="message" class="hidden mt-4 p-3 rounded-xl border text-xs font-mono text-center"></div>
+        <div id="message" class="hidden mt-4 p-3 rounded-xl border text-xs text-center font-medium"></div>
 
         <!-- Status Check Toggle & Box -->
         <div class="mt-6 text-center">
-            <button type="button" onclick="toggleStatusCheck()" class="text-xs font-mono text-navy-light hover:text-navy-cyan underline transition-all">
+            <button type="button" onclick="toggleStatusCheck()" class="text-xs font-heading font-bold text-blue-400 hover:text-blue-300 underline transition-all">
                 Cek status registrasi akun?
             </button>
         </div>
 
-        <div id="statusCheck" class="hidden mt-4 p-4 bg-navy-base/80 rounded-xl border border-navy-accent/40 space-y-3">
-            <p class="text-[11px] font-mono text-gray-300 uppercase">Cek Status Pendaftaran:</p>
+        <div id="statusCheck" class="hidden mt-4 p-4 bg-navy-900/90 rounded-xl border border-navy-700/80 space-y-3">
+            <p class="text-[11px] font-heading font-bold text-slate-300 uppercase tracking-wider">Cek Status Pendaftaran:</p>
             <div class="flex gap-2">
-                <input type="text" id="checkUsername" placeholder="Username..." class="flex-1 bg-navy-card border border-navy-accent/60 rounded-lg px-3 py-2 text-xs font-mono text-white focus:border-navy-cyan outline-none">
-                <button type="button" onclick="checkStatus()" class="bg-navy-light/10 hover:bg-navy-light/20 text-navy-light border border-navy-light/30 px-3 py-2 rounded-lg text-xs font-mono font-semibold transition-all">Cek</button>
+                <input type="text" id="checkUsername" placeholder="Masukkan username..." class="flex-1 bg-navy-800 border border-navy-700 rounded-lg px-3 py-2 text-xs text-white focus:border-navy-500 outline-none placeholder-slate-600">
+                <button type="button" onclick="checkStatus()" class="bg-navy-700 hover:bg-slate-700 text-slate-200 px-3 py-2 rounded-lg text-xs font-heading font-bold transition-all">Cek</button>
             </div>
-            <div id="statusResult" class="hidden p-2.5 rounded-lg text-xs font-mono text-center"></div>
+            <div id="statusResult" class="hidden p-2.5 rounded-lg text-xs font-medium text-center"></div>
         </div>
 
         <!-- Register Link -->
-        <div class="mt-8 text-center text-xs text-gray-400 font-mono">
-            Belum punya akun? <a href="register.html" class="text-navy-light hover:text-navy-cyan font-semibold ml-1">Registrasi di sini</a>
+        <div class="mt-8 text-center text-xs text-slate-400 font-sans">
+            Belum punya akun? <a href="register.html" class="text-blue-400 hover:text-blue-300 font-heading font-bold ml-1">Registrasi di sini</a>
         </div>
     </div>
 
@@ -145,7 +110,7 @@
             const passwordVal = document.getElementById('password').value;
 
             submitBtn.disabled = true;
-            btnText.innerHTML = 'Memproses...';
+            btnText.textContent = 'Memproses...';
 
             try {
                 const response = await fetch(`${BACKEND_URL}/api/login`, {
@@ -164,12 +129,12 @@
                 } else {
                     showMessage(data.message, 'error');
                     submitBtn.disabled = false;
-                    btnText.textContent = 'MASUK JARINGAN';
+                    btnText.textContent = 'MASUK KE JARINGAN';
                 }
             } catch (error) {
                 showMessage('Terjadi kesalahan koneksi ke server backend.', 'error');
                 submitBtn.disabled = false;
-                btnText.textContent = 'MASUK JARINGAN';
+                btnText.textContent = 'MASUK KE JARINGAN';
             }
         });
 
@@ -183,7 +148,7 @@
 
             if (!username) {
                 statusResult.textContent = 'Masukkan username terlebih dahulu';
-                statusResult.className = 'p-2.5 rounded-lg text-xs font-mono text-center bg-red-500/10 border border-red-500/30 text-red-400';
+                statusResult.className = 'p-2.5 rounded-lg text-xs font-medium text-center bg-red-500/10 border border-red-500/20 text-red-400';
                 statusResult.classList.remove('hidden');
                 return;
             }
@@ -194,29 +159,29 @@
 
                 if (data.success) {
                     let statusText = `Status: ${data.status.toUpperCase()}`;
-                    let colorClass = 'bg-amber-500/10 border-amber-500/30 text-amber-400';
+                    let colorClass = 'bg-amber-500/10 border-amber-500/20 text-amber-400';
                     
                     if (data.status === 'approved') {
-                        colorClass = 'bg-emerald-500/10 border-emerald-500/30 text-emerald-400';
+                        colorClass = 'bg-emerald-500/10 border-emerald-500/20 text-emerald-400';
                         statusText += ' - Siap terhubung ke jaringan';
                     } else if (data.status === 'pending') {
                         statusText += ' - Menunggu persetujuan admin';
                     } else if (data.status === 'rejected') {
-                        colorClass = 'bg-red-500/10 border-red-500/30 text-red-400';
+                        colorClass = 'bg-red-500/10 border-red-500/20 text-red-400';
                         statusText += ' - Akses ditolak';
                     }
 
                     statusResult.textContent = statusText;
-                    statusResult.className = `p-2.5 rounded-lg text-xs font-mono text-center border ${colorClass}`;
+                    statusResult.className = `p-2.5 rounded-lg text-xs font-medium text-center border ${colorClass}`;
                     statusResult.classList.remove('hidden');
                 } else {
                     statusResult.textContent = data.message || 'User tidak ditemukan';
-                    statusResult.className = 'p-2.5 rounded-lg text-xs font-mono text-center bg-red-500/10 border border-red-500/30 text-red-400';
+                    statusResult.className = 'p-2.5 rounded-lg text-xs font-medium text-center bg-red-500/10 border border-red-500/20 text-red-400';
                     statusResult.classList.remove('hidden');
                 }
             } catch (error) {
                 statusResult.textContent = 'Gagal mengecek status server';
-                statusResult.className = 'p-2.5 rounded-lg text-xs font-mono text-center bg-red-500/10 border border-red-500/30 text-red-400';
+                statusResult.className = 'p-2.5 rounded-lg text-xs font-medium text-center bg-red-500/10 border border-red-500/20 text-red-400';
                 statusResult.classList.remove('hidden');
             }
         }
@@ -224,9 +189,9 @@
         function showMessage(text, type) {
             message.textContent = text;
             if (type === 'success') {
-                message.className = 'mt-4 p-3 rounded-xl border text-xs font-mono text-center bg-emerald-500/10 border-emerald-500/30 text-emerald-400';
+                message.className = 'mt-4 p-3 rounded-xl border text-xs text-center font-medium bg-emerald-500/10 border-emerald-500/20 text-emerald-400';
             } else {
-                message.className = 'mt-4 p-3 rounded-xl border text-xs font-mono text-center bg-red-500/10 border-red-500/30 text-red-400';
+                message.className = 'mt-4 p-3 rounded-xl border text-xs text-center font-medium bg-red-500/10 border-red-500/20 text-red-400';
             }
             message.classList.remove('hidden');
         }
