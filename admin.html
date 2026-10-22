@@ -223,7 +223,7 @@
                 <!-- Admin Badge -->
                 <div class="bg-dark-base border border-white/10 px-3 py-1.5 rounded-xl flex items-center space-x-2 text-xs font-mono shadow-inner">
                     <span class="text-gray-400">ADMIN:</span>
-                    <span class="text-white font-bold">Sasuke</span>
+                    <span class="text-white font-bold">Erfin</span>
                 </div>
 
                 <!-- Logout -->
@@ -243,7 +243,7 @@
                 </div>
                 <div class="flex items-baseline justify-between">
                     <span id="statTotal" class="text-2xl font-display font-black text-white">0</span>
-                    <span class="text-[10px] font-mono text-gray-500">DHCP LEASES</span>
+                    <span class="text-[10px] font-mono text-gray-500">DATABASE</span>
                 </div>
             </div>
 
@@ -255,7 +255,7 @@
                 </div>
                 <div class="flex items-baseline justify-between">
                     <span id="statPending" class="text-2xl font-display font-black text-cyber-amber">0</span>
-                    <span class="text-[10px] font-mono text-gray-500">AWAITING MAC AUTH</span>
+                    <span class="text-[10px] font-mono text-gray-500">AWAITING ACTION</span>
                 </div>
             </div>
 
@@ -293,14 +293,14 @@
                         <span>SUBSCRIBER ACTIVE SESSION TABLE</span>
                         <span id="packetBadge" class="text-[10px] bg-cyber-blue/10 border border-cyber-blue/30 text-cyber-blue px-2 py-0.5 rounded font-mono hidden">Fetching Packets...</span>
                     </h2>
-                    <p class="text-xs text-gray-400 mt-0.5 font-mono">Manage connected clients, bandwidth allocations, and RADIUS authorization.</p>
+                    <p class="text-xs text-gray-400 mt-0.5 font-mono">Manage connected clients, credentials, and RADIUS authorization.</p>
                 </div>
 
                 <!-- Controls: Search, Filter, Refresh -->
                 <div class="flex flex-wrap items-center gap-2">
                     <!-- Search Input -->
                     <div class="relative">
-                        <input type="text" id="searchInput" onkeyup="filterUsers()" placeholder="Search Name, IP, MAC..." class="bg-dark-base border border-white/15 rounded-xl pl-8 pr-3 py-2 text-xs font-mono text-white focus:border-cyber-cyan focus:outline-none w-44 sm:w-56 shadow-inner">
+                        <input type="text" id="searchInput" onkeyup="filterUsers()" placeholder="Search Name, Username, Email..." class="bg-dark-base border border-white/15 rounded-xl pl-8 pr-3 py-2 text-xs font-mono text-white focus:border-cyber-cyan focus:outline-none w-44 sm:w-56 shadow-inner">
                         <svg class="w-3.5 h-3.5 text-gray-400 absolute left-2.5 top-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
                     </div>
 
@@ -329,9 +329,9 @@
                     <thead>
                         <tr class="bg-dark-base border-b border-white/10 text-[11px] font-display font-bold text-gray-400 uppercase tracking-wider">
                             <th class="p-3.5">User & Credentials</th>
-                            <th class="p-3.5">Network Lease (IP / MAC)</th>
+                            <th class="p-3.5">Contact / Phone</th>
                             <th class="p-3.5">Status</th>
-                            <th class="p-3.5">Real-time Traffic Metrics</th>
+                            <th class="p-3.5">Timestamp</th>
                             <th class="p-3.5 text-right">Actions</th>
                         </tr>
                     </thead>
@@ -362,65 +362,11 @@
 
     <!-- JAVASCRIPT LOGIC -->
     <script>
-        // Mock Initial TKJ Subscriber Data
-        let usersData = [
-            {
-                id: 101,
-                name: "Ahmad Rizky",
-                email: "ahmad@smk-tkj.sch.id",
-                username: "ahmad_net",
-                ip: "192.168.88.105",
-                mac: "DC:A6:32:89:11:AB",
-                status: "approved",
-                date: "2026-10-15",
-                uptime: "03h 42m 12s",
-                download: "245.8 MB",
-                upload: "34.1 MB",
-                interface: "wlan1-hotspot"
-            },
-            {
-                id: 102,
-                name: "Budi Santoso",
-                email: "budi.student@gmail.com",
-                username: "budi_wifi",
-                ip: "192.168.88.142",
-                mac: "90:09:D0:44:88:FF",
-                status: "pending",
-                date: "2026-10-15",
-                uptime: "00h 00m 00s",
-                download: "0.0 B",
-                upload: "0.0 B",
-                interface: "wlan1-hotspot"
-            },
-            {
-                id: 103,
-                name: "Siti Rahma",
-                email: "siti.rahma@yahoo.com",
-                username: "siti_lab",
-                ip: "192.168.88.188",
-                mac: "74:E5:F9:12:34:56",
-                status: "approved",
-                date: "2026-10-14",
-                uptime: "12h 10m 05s",
-                download: "1.2 GB",
-                upload: "180.5 MB",
-                interface: "ether2-master"
-            },
-            {
-                id: 104,
-                name: "Doni Pratama",
-                email: "doni@rog.net",
-                username: "doni_gamer",
-                ip: "192.168.88.210",
-                mac: "00:1A:2B:3C:4D:5E",
-                status: "rejected",
-                date: "2026-10-13",
-                uptime: "00h 00m 00s",
-                download: "0.0 B",
-                upload: "0.0 B",
-                interface: "wlan1-hotspot"
-            }
-        ];
+        let usersData = [];
+
+        const BACKEND_URL = window.location.origin.includes('vercel.app') 
+            ? window.location.origin 
+            : 'https://mikrotik-hostpot-login-done.vercel.app';
 
         // Auth Login Handler
         document.getElementById('loginForm').addEventListener('submit', function(e) {
@@ -444,10 +390,28 @@
         }
 
         // Dashboard Initializer
-        function initDashboard() {
-            renderTable(usersData);
-            updateStats();
+        async function initDashboard() {
+            await fetchRealUsers();
             startLatencySimulation();
+        }
+
+        // Fetch Data from Backend (Upstash Redis)
+        async function fetchRealUsers() {
+            try {
+                const response = await fetch(`${BACKEND_URL}/api/admin/users`);
+                const result = await response.json();
+                
+                if (result.success && result.users) {
+                    usersData = result.users;
+                } else if (Array.isArray(result)) {
+                    usersData = result;
+                }
+                filterUsers();
+                updateStats();
+            } catch (error) {
+                console.error('Gagal mengambil data dari server:', error);
+                logTerminal('ERROR: Gagal sinkronisasi data dari Redis server.');
+            }
         }
 
         // Render User Table
@@ -477,34 +441,28 @@
                 tr.className = 'hover:bg-white/5 transition-colors';
                 tr.innerHTML = `
                     <td class="p-3.5">
-                        <div class="font-bold text-white">${escapeHtml(user.name)}</div>
-                        <div class="text-[11px] text-gray-400">${escapeHtml(user.email)}</div>
-                        <div class="text-[10px] text-cyber-cyan font-mono mt-0.5">user: ${escapeHtml(user.username)}</div>
+                        <div class="font-bold text-white">${escapeHtml(user.name || '-') }</div>
+                        <div class="text-[11px] text-gray-400">${escapeHtml(user.email || '-')}</div>
+                        <div class="text-[10px] text-cyber-cyan font-mono mt-0.5">user: ${escapeHtml(user.username || '-')}</div>
                     </td>
                     <td class="p-3.5">
-                        <div class="text-cyber-green font-semibold">${user.ip}</div>
-                        <div class="text-[10px] text-gray-400">${user.mac}</div>
-                        <div class="text-[10px] text-gray-500">iface: ${user.interface}</div>
+                        <div class="text-cyber-green font-semibold">${escapeHtml(user.phone || '-')}</div>
                     </td>
                     <td class="p-3.5">
                         ${statusBadge}
-                        <div class="text-[10px] text-gray-500 mt-1">${user.date}</div>
                     </td>
                     <td class="p-3.5">
-                        <div class="text-[11px] text-gray-300">UPTIME: <span class="text-white">${user.uptime}</span></div>
-                        <div class="text-[10px] text-gray-400 mt-0.5">
-                            <span class="text-cyber-cyan">↓ ${user.download}</span> | <span class="text-cyber-amber">↑ ${user.upload}</span>
-                        </div>
+                        <div class="text-[11px] text-gray-300">${user.timestamp ? new Date(user.timestamp).toLocaleString() : '-'}</div>
                     </td>
                     <td class="p-3.5 text-right">
                         <div class="flex items-center justify-end space-x-1.5">
-                            <button onclick="updateStatus(${user.id}, 'approved')" ${user.status === 'approved' ? 'disabled class="opacity-30 cursor-not-allowed bg-dark-base text-gray-500 px-2 py-1 rounded-lg text-[10px]"' : 'class="bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 px-2.5 py-1 rounded-lg text-[10px] font-semibold transition-all shadow-[0_0_8px_rgba(0,255,102,0.15)]"'}>
+                            <button onclick="updateStatus('${user.username}', 'approved')" ${user.status === 'approved' ? 'disabled class="opacity-30 cursor-not-allowed bg-dark-base text-gray-500 px-2 py-1 rounded-lg text-[10px]"' : 'class="bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 px-2.5 py-1 rounded-lg text-[10px] font-semibold transition-all shadow-[0_0_8px_rgba(0,255,102,0.15)]"'}>
                                 APPROVE
                             </button>
-                            <button onclick="updateStatus(${user.id}, 'rejected')" ${user.status === 'rejected' ? 'disabled class="opacity-30 cursor-not-allowed bg-dark-base text-gray-500 px-2 py-1 rounded-lg text-[10px]"' : 'class="bg-amber-500/10 hover:bg-amber-500/20 text-amber-400 border border-amber-500/30 px-2.5 py-1 rounded-lg text-[10px] font-semibold transition-all shadow-[0_0_8px_rgba(255,204,0,0.15)]"'}>
+                            <button onclick="updateStatus('${user.username}', 'rejected')" ${user.status === 'rejected' ? 'disabled class="opacity-30 cursor-not-allowed bg-dark-base text-gray-500 px-2 py-1 rounded-lg text-[10px]"' : 'class="bg-amber-500/10 hover:bg-amber-500/20 text-amber-400 border border-amber-500/30 px-2.5 py-1 rounded-lg text-[10px] font-semibold transition-all shadow-[0_0_8px_rgba(255,204,0,0.15)]"'}>
                                 BLOCK
                             </button>
-                            <button onclick="deleteUser(${user.id})" class="bg-red-500/10 hover:bg-red-500/20 text-red-400 border border-red-500/30 px-2.5 py-1 rounded-lg text-[10px] font-semibold transition-all shadow-[0_0_8px_rgba(255,24,1,0.15)]">
+                            <button onclick="deleteUser('${user.username}')" class="bg-red-500/10 hover:bg-red-500/20 text-red-400 border border-red-500/30 px-2.5 py-1 rounded-lg text-[10px] font-semibold transition-all shadow-[0_0_8px_rgba(255,24,1,0.15)]">
                                 DROP
                             </button>
                         </div>
@@ -522,30 +480,52 @@
             document.getElementById('statRejected').innerText = usersData.filter(u => u.status === 'rejected').length;
         }
 
-        // Update Action (Approve / Reject)
-        function updateStatus(id, newStatus) {
-            const user = usersData.find(u => u.id === id);
-            if (user) {
-                user.status = newStatus;
-                if (newStatus === 'approved') {
-                    user.uptime = "00h 01m 15s";
+        // Update Status to Server API
+        async function updateStatus(username, newStatus) {
+            try {
+                const endpoint = newStatus === 'approved' ? 'approve' : 'reject';
+                const response = await fetch(`${BACKEND_URL}/api/admin/${endpoint}`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ username, adminName: 'Erfin' })
+                });
+                const result = await response.json();
+
+                if (result.success || response.ok) {
+                    showNotification(`User '${username}' status changed to ${newStatus.toUpperCase()}`, newStatus === 'approved' ? 'success' : 'error');
+                    logTerminal(`RADIUS: Updated client [${username}] status to ${newStatus.toUpperCase()}`);
+                    await fetchRealUsers();
+                } else {
+                    showNotification(result.message || 'Gagal mengubah status', 'error');
                 }
-                filterUsers();
-                updateStats();
-                showNotification(`User '${user.username}' RADIUS state changed to ${newStatus.toUpperCase()}`, newStatus === 'approved' ? 'success' : 'error');
-                logTerminal(`RADIUS: Updated client [${user.mac}] status to ${newStatus.toUpperCase()}`);
+            } catch (error) {
+                console.error('Error updating status:', error);
+                showNotification('Kesalahan koneksi ke server.', 'error');
             }
         }
 
-        // Delete User Lease
-        function deleteUser(id) {
-            const idx = usersData.findIndex(u => u.id === id);
-            if (idx !== -1) {
-                const removed = usersData.splice(idx, 1)[0];
-                filterUsers();
-                updateStats();
-                showNotification(`Lease for '${removed.username}' removed from gateway.`, 'error');
-                logTerminal(`DHCP: Binding removed for IP ${removed.ip} (${removed.mac})`);
+        // Delete User Lease from Server API
+        async function deleteUser(username) {
+            if (!confirm(`Hapus registrasi untuk user '${username}'?`)) return;
+
+            try {
+                const response = await fetch(`${BACKEND_URL}/api/admin/delete`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ username })
+                });
+                const result = await response.json();
+
+                if (result.success || response.ok) {
+                    showNotification(`Registrasi untuk '${username}' dihapus.`, 'error');
+                    logTerminal(`DHCP: Binding removed for user ${username}`);
+                    await fetchRealUsers();
+                } else {
+                    showNotification(result.message || 'Gagal menghapus user', 'error');
+                }
+            } catch (error) {
+                console.error('Error deleting user:', error);
+                showNotification('Kesalahan koneksi ke server.', 'error');
             }
         }
 
@@ -555,11 +535,9 @@
             const statusFilter = document.getElementById('statusFilter').value;
 
             const filtered = usersData.filter(u => {
-                const matchesSearch = u.name.toLowerCase().includes(query) ||
-                                      u.email.toLowerCase().includes(query) ||
-                                      u.username.toLowerCase().includes(query) ||
-                                      u.ip.includes(query) ||
-                                      u.mac.toLowerCase().includes(query);
+                const matchesSearch = (u.name && u.name.toLowerCase().includes(query)) ||
+                                      (u.email && u.email.toLowerCase().includes(query)) ||
+                                      (u.username && u.username.toLowerCase().includes(query));
                 
                 const matchesStatus = (statusFilter === 'ALL') || (u.status === statusFilter);
                 return matchesSearch && matchesStatus;
@@ -568,21 +546,21 @@
             renderTable(filtered);
         }
 
-        // Refresh Data Simulation
-        function refreshData() {
+        // Refresh Data from Server
+        async function refreshData() {
             const icon = document.getElementById('refreshIcon');
             const packetBadge = document.getElementById('packetBadge');
             
             icon.classList.add('animate-spin');
             packetBadge.classList.remove('hidden');
 
+            await fetchRealUsers();
+
             setTimeout(() => {
                 icon.classList.remove('animate-spin');
                 packetBadge.classList.add('hidden');
-                filterUsers();
-                updateStats();
-                showNotification("Network packet table re-synced with RouterOS lease table.", "success");
-                logTerminal("DHCP/RADIUS: Synced active bindings (0 loss, latency 11ms).");
+                showNotification("Network packet table re-synced with Redis database.", "success");
+                logTerminal("DHCP/RADIUS: Synced active bindings from cloud storage.");
             }, 600);
         }
 
@@ -598,28 +576,33 @@
             banner.classList.remove('hidden', 'bg-emerald-950/40', 'border-emerald-500/40', 'text-emerald-400', 'bg-red-950/40', 'border-red-500/40', 'text-red-400');
             
             if (type === 'success') {
-                banner.classList.add('bg-emerald-950/40', 'border-emerald-500/40', 'text-emerald-400');
+                banner.classList.add('bg-emerald-950/40', 'border-emerald-500/40', 'text-emerald-400', 'shadow-[0_0_15px_rgba(0,255,102,0.2)]');
             } else {
-                banner.classList.add('bg-red-950/40', 'border-red-500/40', 'text-red-400');
+                banner.classList.add('bg-red-950/40', 'border-red-500/40', 'text-red-400', 'shadow-[0_0_15px_rgba(255,24,1,0.2)]');
             }
 
+            banner.style.display = 'block';
             setTimeout(() => {
                 banner.classList.add('hidden');
-            }, 3500);
+            }, 4000);
         }
 
-        // Live Ping Simulation
+        // HTML Escape Helper
+        function escapeHtml(str) {
+            if (!str) return '';
+            return String(str).replace(/&/g, "&amp;")
+                              .replace(/</g, "&lt;")
+                              .replace(/>/g, "&gt;")
+                              .replace(/"/g, "&quot;")
+                              .replace(/'/g, "&#039;");
+        }
+
+        // Simulasi Latency Real-time
         function startLatencySimulation() {
             setInterval(() => {
-                const lat = Math.floor(Math.random() * 8) + 9; // 9ms - 16ms
-                const el = document.getElementById('latencyValue');
-                if (el) el.innerText = `${lat} ms`;
-            }, 3000);
-        }
-
-        // Helper XSS Escape
-        function escapeHtml(str) {
-            return str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#039;");
+                const randomPing = Math.floor(Math.random() * 8) + 9;
+                document.getElementById('latencyValue').innerText = `${randomPing} ms`;
+            }, 5000);
         }
     </script>
 </body>
