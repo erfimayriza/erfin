@@ -15,8 +15,13 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, 'public')));
 
-// Debug log incoming request
+// ==========================================
+// FIX REWRITE VERCEL (AGAR URL /api/... TERBACA)
+// ==========================================
 app.use((req, res, next) => {
+    if (req.headers['x-matched-path']) {
+        req.url = req.headers['x-matched-path'];
+    }
     console.log(`[REQ] ${req.method} ${req.url}`);
     next();
 });
