@@ -92,10 +92,10 @@
         </div>
     </div>
 
-    <!-- SCRIPT LOGIC -->
+   <!-- SCRIPT LOGIC -->
     <script>
-        // Menggunakan domain produksi utama Vercel secara mutlak untuk menghindari jebakan IP Captive Portal
-        const BACKEND_URL = 'https://erfin.vercel.app';
+        // Menggunakan origin aktif secara otomatis (cocok untuk domain utama maupun preview deployment Vercel)
+        const BACKEND_URL = window.location.origin;
 
         const form = document.getElementById('registerForm');
         const submitBtn = document.getElementById('submitBtn');
