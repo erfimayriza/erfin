@@ -94,9 +94,8 @@
 
     <!-- SCRIPT LOGIC -->
     <script>
-        const BACKEND_URL = window.location.origin.includes('vercel.app') 
-            ? window.location.origin 
-            : '';
+        // Menggunakan domain produksi utama Vercel secara mutlak untuk menghindari jebakan IP Captive Portal
+        const BACKEND_URL = 'https://erfin.vercel.app';
 
         const form = document.getElementById('registerForm');
         const submitBtn = document.getElementById('submitBtn');
@@ -134,7 +133,7 @@
 
                 const data = await response.json();
 
-                if (data.success) {
+                if (response.ok && data.success) {
                     showMessage(data.message + ' Mengalihkan ke halaman login...', 'success');
                     form.reset();
 
@@ -142,11 +141,12 @@
                         window.location.href = 'login.html';
                     }, 2000);
                 } else {
-                    showMessage(data.message, 'error');
+                    showMessage(data.message || 'Gagal mendaftarkan akun.', 'error');
                     submitBtn.disabled = false;
                     btnText.textContent = 'Daftar Sekarang';
                 }
             } catch (error) {
+                console.error('Fetch error:', error);
                 showMessage('Terjadi kesalahan koneksi ke server backend.', 'error');
                 submitBtn.disabled = false;
                 btnText.textContent = 'Daftar Sekarang';
@@ -169,4 +169,3 @@
     </script>
 </body>
 </html>
- 
