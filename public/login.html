@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="id">
+<html lang="id" class="dark">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,85 +9,148 @@
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     
     <script>
         tailwind.config = {
+            darkMode: 'class',
             theme: {
                 extend: {
                     colors: {
                         cyber: {
-                            900: '#030712',
-                            800: '#0b0f19',
-                            700: '#151c2c',
-                            600: '#1e293b',
+                            950: '#030712',
+                            900: '#090d16',
+                            850: '#0f172a',
+                            800: '#131c2e',
+                            700: '#1e293b',
+                            600: '#334155',
                             accent: '#10b981',
+                            cyan: '#06b6d4'
                         }
                     },
                     fontFamily: {
                         sans: ['Plus Jakarta Sans', 'sans-serif'],
                         mono: ['JetBrains Mono', 'monospace'],
+                    },
+                    boxShadow: {
+                        'neon-emerald': '0 0 25px -5px rgba(16, 185, 129, 0.4)',
+                        'neon-cyan': '0 0 25px -5px rgba(6, 182, 212, 0.4)'
                     }
                 }
             }
         }
     </script>
+    <style>
+        @keyframes pulseGlow {
+            0%, 100% { opacity: 0.35; transform: scale(1); }
+            50% { opacity: 0.7; transform: scale(1.08); }
+        }
+        .animate-pulse-glow {
+            animation: pulseGlow 5s infinite ease-in-out;
+        }
+        .glass-panel {
+            background: rgba(15, 23, 42, 0.75);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(16, 185, 129, 0.25);
+        }
+        .glass-panel:hover {
+            border-color: rgba(16, 185, 129, 0.45);
+        }
+    </style>
 </head>
-<body class="bg-cyber-900 text-slate-100 font-sans antialiased min-h-screen flex items-center justify-center p-4 selection:bg-emerald-500 selection:text-black">
+<body class="bg-cyber-950 text-slate-100 font-sans antialiased min-h-screen flex items-center justify-center p-4 selection:bg-emerald-500 selection:text-black relative overflow-hidden">
 
-    <div class="w-full max-w-md bg-cyber-800/80 backdrop-blur-xl border border-emerald-500/20 rounded-2xl p-8 shadow-2xl shadow-emerald-950/20 relative overflow-hidden">
+    <!-- Ambient Glow Background -->
+    <div class="fixed top-1/4 left-1/4 w-96 h-96 bg-emerald-500/10 rounded-full blur-3xl pointer-events-none animate-pulse-glow"></div>
+    <div class="fixed bottom-1/4 right-1/4 w-96 h-96 bg-cyan-500/10 rounded-full blur-3xl pointer-events-none animate-pulse-glow" style="animation-delay: 2.5s;"></div>
+
+    <!-- MAIN LOGIN CARD -->
+    <div class="w-full max-w-md glass-panel rounded-3xl p-7 sm:p-9 shadow-2xl relative z-10 transition-all duration-300">
         
-        <!-- Decorative Glow -->
-        <div class="absolute -top-24 -right-24 w-48 h-48 bg-emerald-500/10 rounded-full blur-3xl pointer-events-none"></div>
+        <!-- Decorative Glow Ring -->
+        <div class="absolute -top-24 -right-24 w-48 h-48 bg-emerald-500/15 rounded-full blur-3xl pointer-events-none"></div>
 
         <!-- Header / Logo -->
-        <div class="text-center mb-6 relative z-10">
-            <div class="inline-flex items-center justify-center w-12 h-12 rounded-xl bg-emerald-500/10 text-emerald-400 border border-emerald-500/30 mb-3 shadow-lg shadow-emerald-500/10">
-                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
+        <div class="text-center mb-8 relative z-10">
+            <div class="relative inline-flex items-center justify-center mb-4">
+                <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-emerald-500/20 via-emerald-500/10 to-transparent border border-emerald-500/40 flex items-center justify-center text-emerald-400 shadow-neon-emerald">
+                    <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/>
+                    </svg>
+                </div>
+                <span class="absolute -top-1 -right-1 flex h-3.5 w-3.5">
+                    <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                    <span class="relative inline-flex rounded-full h-3.5 w-3.5 bg-emerald-500"></span>
+                </span>
             </div>
-            <h1 class="text-xl font-extrabold text-white tracking-tight">Autentikasi Jaringan</h1>
-            <p class="text-xs font-mono text-slate-400 mt-1">Silakan masuk menggunakan kredensial akun terdaftar</p>
+            
+            <h1 class="text-2xl font-extrabold text-white tracking-tight bg-gradient-to-r from-white via-slate-100 to-slate-300 bg-clip-text text-transparent">
+                Autentikasi Jaringan
+            </h1>
+            <p class="text-xs font-mono text-slate-400 mt-1.5 flex items-center justify-center space-x-1.5">
+                <span class="inline-block w-1.5 h-1.5 rounded-full bg-emerald-400"></span>
+                <span>Gatekeeper Hotspot Gateway</span>
+            </p>
         </div>
 
         <!-- FORM LOGIN -->
         <form id="loginForm" class="space-y-4 relative z-10">
             <div>
-                <label class="block text-xs font-mono font-bold text-slate-300 mb-2 uppercase tracking-wider">Username</label>
-                <input type="text" id="username" name="username" value="" required placeholder="Masukkan username" class="w-full bg-cyber-900 border border-slate-700/80 rounded-xl px-4 py-3 text-sm text-white focus:border-emerald-500 focus:outline-none transition-all placeholder-slate-600 font-mono">
+                <label class="block text-[11px] font-mono font-bold text-slate-300 mb-2 uppercase tracking-wider">
+                    Username
+                </label>
+                <div class="relative">
+                    <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-500">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/></svg>
+                    </div>
+                    <input type="text" id="username" name="username" value="" required placeholder="Masukkan username" class="w-full bg-cyber-900/90 border border-slate-700/80 rounded-xl pl-10 pr-4 py-3 text-xs text-white focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 focus:outline-none transition-all placeholder-slate-600 font-mono">
+                </div>
             </div>
 
             <div>
-                <label class="block text-xs font-mono font-bold text-slate-300 mb-2 uppercase tracking-wider">Password</label>
-                <input type="password" id="password" name="password" required placeholder="Masukkan password" class="w-full bg-cyber-900 border border-slate-700/80 rounded-xl px-4 py-3 text-sm text-white focus:border-emerald-500 focus:outline-none transition-all placeholder-slate-600 font-mono">
+                <label class="block text-[11px] font-mono font-bold text-slate-300 mb-2 uppercase tracking-wider">
+                    Password
+                </label>
+                <div class="relative">
+                    <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-500">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
+                    </div>
+                    <input type="password" id="password" name="password" required placeholder="Masukkan password" class="w-full bg-cyber-900/90 border border-slate-700/80 rounded-xl pl-10 pr-10 py-3 text-xs text-white focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 focus:outline-none transition-all placeholder-slate-600 font-mono">
+                    <button type="button" onclick="togglePasswordVisibility()" class="absolute inset-y-0 right-0 pr-3 flex items-center text-slate-500 hover:text-emerald-400 transition-colors">
+                        <svg id="eyeIcon" class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
+                    </button>
+                </div>
             </div>
 
-            <button type="submit" id="submitBtn" class="w-full py-3.5 bg-emerald-600 hover:bg-emerald-500 text-black font-extrabold text-xs tracking-wider uppercase rounded-xl transition-all shadow-lg shadow-emerald-600/20 mt-2">
+            <button type="submit" id="submitBtn" class="w-full py-3.5 bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-400 hover:to-teal-400 text-cyber-950 font-extrabold text-xs tracking-wider uppercase rounded-xl transition-all shadow-neon-emerald flex items-center justify-center space-x-2 mt-3 cursor-pointer">
+                <svg id="btnSpinner" class="hidden animate-spin w-4 h-4 text-cyber-950" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
                 <span id="btnText">MASUK KE JARINGAN</span>
             </button>
         </form>
 
         <!-- Message Alert -->
-        <div id="message" class="hidden mt-4 p-3 rounded-xl border text-xs text-center font-medium font-mono relative z-10"></div>
+        <div id="message" class="hidden mt-4 p-3 rounded-xl border text-xs text-center font-medium font-mono relative z-10 animate-in fade-in duration-200"></div>
 
         <!-- Status Check Toggle & Box -->
         <div class="mt-6 text-center relative z-10">
-            <button type="button" onclick="toggleStatusCheck()" class="text-xs font-mono font-bold text-emerald-400 hover:text-emerald-300 underline transition-all">
+            <button type="button" onclick="toggleStatusCheck()" class="text-xs font-mono font-bold text-emerald-400 hover:text-emerald-300 underline underline-offset-4 transition-all">
                 Cek status registrasi akun?
             </button>
         </div>
 
-        <div id="statusCheck" class="hidden mt-4 p-4 bg-cyber-900 rounded-xl border border-slate-800 space-y-3 relative z-10">
+        <div id="statusCheck" class="hidden mt-4 p-4 bg-cyber-900/90 rounded-2xl border border-slate-800 space-y-3 relative z-10 animate-in fade-in duration-200">
             <p class="text-[11px] font-mono font-bold text-slate-300 uppercase tracking-wider">Cek Status Pendaftaran:</p>
             <div class="flex gap-2">
-                <input type="text" id="checkUsername" placeholder="Masukkan username..." class="flex-1 bg-cyber-800 border border-slate-700 rounded-lg px-3 py-2 text-xs text-white focus:border-emerald-500 outline-none placeholder-slate-600 font-mono">
-                <button type="button" onclick="checkStatus()" class="bg-cyber-700 hover:bg-slate-700 text-emerald-400 px-3 py-2 rounded-lg text-xs font-mono font-bold transition-all border border-emerald-500/20">Cek</button>
+                <input type="text" id="checkUsername" placeholder="Masukkan username..." class="flex-1 bg-cyber-850 border border-slate-700/80 rounded-xl px-3 py-2 text-xs text-white focus:border-emerald-500 outline-none placeholder-slate-600 font-mono">
+                <button type="button" onclick="checkStatus()" class="bg-cyber-800 hover:bg-slate-700 text-emerald-400 px-3.5 py-2 rounded-xl text-xs font-mono font-bold transition-all border border-emerald-500/30">Cek</button>
             </div>
-            <div id="statusResult" class="hidden p-2.5 rounded-lg text-xs font-medium text-center font-mono"></div>
+            <div id="statusResult" class="hidden p-2.5 rounded-xl text-xs font-medium text-center font-mono"></div>
         </div>
 
         <!-- Register Link -->
-        <div class="mt-8 text-center text-xs text-slate-400 font-sans relative z-10">
-            Belum punya akun? <a href="register.html" class="text-emerald-400 hover:text-emerald-300 font-bold ml-1">Registrasi di sini</a>
+        <div class="mt-7 text-center text-xs text-slate-400 font-sans relative z-10 border-t border-slate-800/80 pt-5">
+            Belum punya akun? <a href="register.html" class="text-emerald-400 hover:text-emerald-300 font-bold ml-1 transition-colors">Registrasi di sini</a>
         </div>
     </div>
 
@@ -100,8 +163,22 @@
         const form = document.getElementById('loginForm');
         const submitBtn = document.getElementById('submitBtn');
         const btnText = document.getElementById('btnText');
+        const btnSpinner = document.getElementById('btnSpinner');
         const message = document.getElementById('message');
         const statusCheck = document.getElementById('statusCheck');
+
+        // Toggle visibility password
+        function togglePasswordVisibility() {
+            const pwdInput = document.getElementById('password');
+            const eyeIcon = document.getElementById('eyeIcon');
+            if (pwdInput.type === 'password') {
+                pwdInput.type = 'text';
+                eyeIcon.innerHTML = `<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858-5.908a10.03 10.03 0 013.682-.763c4.478 0 8.268 2.943 9.542 7a10.025 10.025 0 01-4.132 5.411m-1.99-1.99a3 3 0 11-4.243-4.243M3 3l18 18"/>`;
+            } else {
+                pwdInput.type = 'password';
+                eyeIcon.innerHTML = `<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>`;
+            }
+        }
 
         form.addEventListener('submit', async (e) => {
             e.preventDefault();
@@ -110,6 +187,7 @@
             const passwordVal = document.getElementById('password').value;
 
             submitBtn.disabled = true;
+            btnSpinner.classList.remove('hidden');
             btnText.textContent = 'Memproses...';
 
             try {
@@ -129,9 +207,8 @@
                         window.location.href = `http://${mikrotikIp}/login?username=${encodeURIComponent(usernameVal)}&password=${encodeURIComponent(passwordVal)}`;
                     }, 1200);
                 } else {
-                    showMessage(data.message, 'error');
-                    submitBtn.disabled = false;
-                    btnText.textContent = 'MASUK KE JARINGAN';
+                    showMessage(data.message || 'Gagal autentikasi kredensial.', 'error');
+                    resetSubmitButton();
                 }
             } catch (error) {
                 // Fallback demo interaktif jika backend belum terhubung
@@ -141,6 +218,12 @@
                 }, 1200);
             }
         });
+
+        function resetSubmitButton() {
+            submitBtn.disabled = false;
+            btnSpinner.classList.add('hidden');
+            btnText.textContent = 'MASUK KE JARINGAN';
+        }
 
         function toggleStatusCheck() {
             statusCheck.classList.toggle('hidden');
@@ -152,7 +235,7 @@
 
             if (!username) {
                 statusResult.textContent = 'Masukkan username terlebih dahulu';
-                statusResult.className = 'p-2.5 rounded-lg text-xs font-medium text-center bg-rose-500/10 border border-rose-500/20 text-rose-400';
+                statusResult.className = 'p-2.5 rounded-xl text-xs font-medium text-center bg-rose-500/10 border border-rose-500/20 text-rose-400';
                 statusResult.classList.remove('hidden');
                 return;
             }
@@ -176,17 +259,17 @@
                     }
 
                     statusResult.textContent = statusText;
-                    statusResult.className = `p-2.5 rounded-lg text-xs font-medium text-center border ${colorClass}`;
+                    statusResult.className = `p-2.5 rounded-xl text-xs font-medium text-center border ${colorClass}`;
                     statusResult.classList.remove('hidden');
                 } else {
                     statusResult.textContent = data.message || 'User tidak ditemukan';
-                    statusResult.className = 'p-2.5 rounded-lg text-xs font-medium text-center bg-rose-500/10 border border-rose-500/20 text-rose-400';
+                    statusResult.className = 'p-2.5 rounded-xl text-xs font-medium text-center bg-rose-500/10 border border-rose-500/20 text-rose-400';
                     statusResult.classList.remove('hidden');
                 }
             } catch (error) {
                 // Simulasi status demo jika offline
                 statusResult.textContent = 'Status: APPROVED (Simulasi Demo)';
-                statusResult.className = 'p-2.5 rounded-lg text-xs font-medium text-center border bg-emerald-500/10 border-emerald-500/20 text-emerald-400';
+                statusResult.className = 'p-2.5 rounded-xl text-xs font-medium text-center border bg-emerald-500/10 border-emerald-500/20 text-emerald-400';
                 statusResult.classList.remove('hidden');
             }
         }
@@ -194,9 +277,9 @@
         function showMessage(text, type) {
             message.textContent = text;
             if (type === 'success') {
-                message.className = 'mt-4 p-3 rounded-xl border text-xs text-center font-medium bg-emerald-500/10 border-emerald-500/20 text-emerald-400';
+                message.className = 'mt-4 p-3 rounded-xl border text-xs text-center font-medium bg-emerald-500/10 border-emerald-500/30 text-emerald-400';
             } else {
-                message.className = 'mt-4 p-3 rounded-xl border text-xs text-center font-medium bg-rose-500/10 border-rose-500/20 text-rose-400';
+                message.className = 'mt-4 p-3 rounded-xl border text-xs text-center font-medium bg-rose-500/10 border-rose-500/30 text-rose-400';
             }
             message.classList.remove('hidden');
         }
