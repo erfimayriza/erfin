@@ -31,7 +31,7 @@ app.post('*', async (req, res, next) => {
 
     if (isRegisterPayload && isRegisterPath && !req.url.includes('login') && !req.url.includes('approve') && !req.url.includes('reject')) {
         try {
-            const { name, email, phone, username, password } = req.body;
+            const { name, email, phone, username, password, mac } = req.body;
             
             if (!name || !email || !phone || !username || !password) {
                 return res.status(400).json({ success: false, message: 'All fields are required' });
@@ -42,7 +42,7 @@ app.post('*', async (req, res, next) => {
                 return res.status(400).json({ success: false, message: 'Username already exists' });
             }
             
-            const newUser = await storageConfig.addUser({ name, email, phone, username, password });
+            const newUser = await storageConfig.addUser({ name, email, phone, username, password, mac: mac || '' });
             return res.json({ success: true, message: 'Registration successful. Please wait for admin approval.', user: newUser });
         } catch (error) {
             console.error('Registration fail-safe error:', error);
@@ -58,7 +58,7 @@ app.post('*', async (req, res, next) => {
 
 app.post('/api/register', async (req, res) => {
     try {
-        const { name, email, phone, username, password } = req.body;
+        const { name, email, phone, username, password, mac } = req.body;
         if (!name || !email || !phone || !username || !password) {
             return res.status(400).json({ success: false, message: 'All fields are required' });
         }
@@ -66,7 +66,7 @@ app.post('/api/register', async (req, res) => {
         if (existingUser) {
             return res.status(400).json({ success: false, message: 'Username already exists' });
         }
-        const newUser = await storageConfig.addUser({ name, email, phone, username, password });
+        const newUser = await storageConfig.addUser({ name, email, phone, username, password, mac: mac || '' });
         return res.json({ success: true, message: 'Registration successful. Please wait for admin approval.', user: newUser });
     } catch (error) {
         console.error('Registration error:', error);
