@@ -4,9 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Enterprise Gateway - Registrasi Akun</title>
-    <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet">
@@ -17,10 +15,11 @@
                 extend: {
                     colors: {
                         cyber: {
-                            950: '#030712',
-                            900: '#0b0f19',
-                            800: '#111827',
-                            700: '#1f2937',
+                            950: '#020617',
+                            900: '#030712',
+                            800: '#0b0f19',
+                            700: '#151c2c',
+                            600: '#1e293b',
                             accent: '#10b981',
                         }
                     },
@@ -33,30 +32,20 @@
         }
     </script>
     <style>
-        /* Custom scrollbar agar tidak merusak tampilan */
-        ::-webkit-scrollbar {
-            width: 6px;
-        }
-        ::-webkit-scrollbar-track {
-            background: #030712;
-        }
-        ::-webkit-scrollbar-thumb {
-            background: #1f2937;
-            border-radius: 4px;
-        }
-        ::-webkit-scrollbar-thumb:hover {
-            background: #10b981;
-        }
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: #030712; }
+        ::-webkit-scrollbar-thumb { background: #1e293b; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #10b981; }
     </style>
 </head>
 <body class="bg-cyber-950 text-slate-100 font-sans antialiased min-h-screen flex items-center justify-center p-4 sm:p-6 overflow-y-auto selection:bg-emerald-500 selection:text-black">
 
-    <div class="w-full max-w-lg bg-cyber-900 border border-emerald-500/20 rounded-2xl p-6 sm:p-8 shadow-2xl shadow-emerald-950/30 relative overflow-hidden my-auto">
+    <div class="w-full max-w-lg bg-cyber-800/80 backdrop-blur-xl border border-emerald-500/20 rounded-2xl p-6 sm:p-8 shadow-2xl shadow-emerald-950/30 relative overflow-hidden my-auto">
         
-        <!-- Ambient Glow Effect -->
+        <!-- Ambient Glow -->
         <div class="absolute -top-20 -right-20 w-40 h-40 bg-emerald-500/10 rounded-full blur-3xl pointer-events-none"></div>
 
-        <!-- Header / Logo -->
+        <!-- Header -->
         <div class="text-center mb-6">
             <div class="inline-flex items-center justify-center w-12 h-12 rounded-xl bg-emerald-500/10 text-emerald-400 border border-emerald-500/30 mb-3 shadow-lg shadow-emerald-500/10">
                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -70,49 +59,58 @@
         <!-- FORM REGISTRASI -->
         <form id="registerForm" class="space-y-4">
             
-            <!-- Grid 2 Kolom di Layar Komputer / Laptop -->
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
                 <div>
                     <label class="block text-[11px] font-mono font-bold text-slate-300 mb-1 uppercase tracking-wider">Nama Lengkap</label>
-                    <input type="text" id="name" name="name" required placeholder="Nama lengkap" class="w-full bg-cyber-800 border border-slate-700/80 rounded-xl px-3.5 py-2.5 text-xs text-white focus:border-emerald-500 focus:outline-none transition-all placeholder-slate-500 font-sans">
+                    <input type="text" id="name" name="name" required placeholder="Nama lengkap" class="w-full bg-cyber-900 border border-slate-700/80 rounded-xl px-3.5 py-2.5 text-xs text-white focus:border-emerald-500 focus:outline-none transition-all placeholder-slate-600 font-sans">
                 </div>
 
                 <div>
                     <label class="block text-[11px] font-mono font-bold text-slate-300 mb-1 uppercase tracking-wider">Email</label>
-                    <input type="email" id="email" name="email" required placeholder="alamat@email.com" class="w-full bg-cyber-800 border border-slate-700/80 rounded-xl px-3.5 py-2.5 text-xs text-white focus:border-emerald-500 focus:outline-none transition-all placeholder-slate-500 font-sans">
+                    <input type="email" id="email" name="email" required placeholder="alamat@email.com" class="w-full bg-cyber-900 border border-slate-700/80 rounded-xl px-3.5 py-2.5 text-xs text-white focus:border-emerald-500 focus:outline-none transition-all placeholder-slate-600 font-sans">
                 </div>
             </div>
 
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
                 <div>
                     <label class="block text-[11px] font-mono font-bold text-slate-300 mb-1 uppercase tracking-wider">Nomor Telepon</label>
-                    <input type="tel" id="phone" name="phone" required placeholder="08123456789" class="w-full bg-cyber-800 border border-slate-700/80 rounded-xl px-3.5 py-2.5 text-xs text-white focus:border-emerald-500 focus:outline-none transition-all placeholder-slate-500 font-mono">
+                    <input type="tel" id="phone" name="phone" required placeholder="08123456789" class="w-full bg-cyber-900 border border-slate-700/80 rounded-xl px-3.5 py-2.5 text-xs text-white focus:border-emerald-500 focus:outline-none transition-all placeholder-slate-600 font-mono">
                 </div>
 
                 <div>
                     <label class="block text-[11px] font-mono font-bold text-slate-300 mb-1 uppercase tracking-wider">Username</label>
-                    <input type="text" id="username" name="username" required placeholder="username_unik" class="w-full bg-cyber-800 border border-slate-700/80 rounded-xl px-3.5 py-2.5 text-xs text-white focus:border-emerald-500 focus:outline-none transition-all placeholder-slate-500 font-mono">
+                    <input type="text" id="username" name="username" required placeholder="username_unik" class="w-full bg-cyber-900 border border-slate-700/80 rounded-xl px-3.5 py-2.5 text-xs text-white focus:border-emerald-500 focus:outline-none transition-all placeholder-slate-600 font-mono">
                 </div>
             </div>
 
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
                 <div>
                     <label class="block text-[11px] font-mono font-bold text-slate-300 mb-1 uppercase tracking-wider">Password</label>
-                    <input type="password" id="password" name="password" required placeholder="••••••••" class="w-full bg-cyber-800 border border-slate-700/80 rounded-xl px-3.5 py-2.5 text-xs text-white focus:border-emerald-500 focus:outline-none transition-all placeholder-slate-500 font-mono">
+                    <div class="relative">
+                        <input type="password" id="password" name="password" required placeholder="••••••••" class="w-full bg-cyber-900 border border-slate-700/80 rounded-xl px-3.5 py-2.5 pr-8 text-xs text-white focus:border-emerald-500 focus:outline-none transition-all placeholder-slate-600 font-mono">
+                        <button type="button" onclick="togglePass('password')" class="absolute right-2.5 top-3 text-slate-500 hover:text-slate-300">
+                            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
+                        </button>
+                    </div>
                 </div>
 
                 <div>
                     <label class="block text-[11px] font-mono font-bold text-slate-300 mb-1 uppercase tracking-wider">Konfirmasi Password</label>
-                    <input type="password" id="confirmPassword" name="confirmPassword" required placeholder="••••••••" class="w-full bg-cyber-800 border border-slate-700/80 rounded-xl px-3.5 py-2.5 text-xs text-white focus:border-emerald-500 focus:outline-none transition-all placeholder-slate-500 font-mono">
+                    <div class="relative">
+                        <input type="password" id="confirmPassword" name="confirmPassword" required placeholder="••••••••" class="w-full bg-cyber-900 border border-slate-700/80 rounded-xl px-3.5 py-2.5 pr-8 text-xs text-white focus:border-emerald-500 focus:outline-none transition-all placeholder-slate-600 font-mono">
+                        <button type="button" onclick="togglePass('confirmPassword')" class="absolute right-2.5 top-3 text-slate-500 hover:text-slate-300">
+                            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
+                        </button>
+                    </div>
                 </div>
             </div>
 
-            <button type="submit" id="submitBtn" class="w-full py-3 bg-emerald-500 hover:bg-emerald-400 text-black font-extrabold text-xs tracking-wider uppercase rounded-xl transition-all shadow-lg shadow-emerald-500/20 mt-3">
+            <button type="submit" id="submitBtn" class="w-full py-3 bg-emerald-500 hover:bg-emerald-400 text-black font-extrabold text-xs tracking-wider uppercase rounded-xl transition-all shadow-lg shadow-emerald-500/20 mt-3 flex items-center justify-center space-x-2">
                 <span id="btnText">Daftar Sekarang</span>
             </button>
         </form>
 
-        <!-- Message Alert -->
+        <!-- Alert Message -->
         <div id="message" class="hidden mt-4 p-3 rounded-xl border text-xs text-center font-mono"></div>
 
         <!-- Login Link -->
@@ -121,7 +119,6 @@
         </div>
     </div>
 
-    <!-- SCRIPT LOGIC -->
     <script>
         const BACKEND_URL = window.location.origin;
 
@@ -129,6 +126,11 @@
         const submitBtn = document.getElementById('submitBtn');
         const btnText = document.getElementById('btnText');
         const message = document.getElementById('message');
+
+        function togglePass(id) {
+            const el = document.getElementById(id);
+            el.type = el.type === 'password' ? 'text' : 'password';
+        }
 
         form.addEventListener('submit', async (e) => {
             e.preventDefault();
@@ -164,21 +166,15 @@
                 if (response.ok && data.success) {
                     showMessage((data.message || 'Pendaftaran berhasil!') + ' Mengalihkan...', 'success');
                     form.reset();
-
-                    setTimeout(() => {
-                        window.location.href = 'login.html';
-                    }, 2000);
+                    setTimeout(() => { window.location.href = 'login.html'; }, 2000);
                 } else {
                     showMessage(data.message || 'Gagal mendaftarkan akun.', 'error');
                     submitBtn.disabled = false;
                     btnText.textContent = 'Daftar Sekarang';
                 }
             } catch (error) {
-                // Fallback demo simulasi jika backend/API Vercel belum aktif
                 showMessage('Pendaftaran berhasil (Mode Demo). Mengalihkan...', 'success');
-                setTimeout(() => {
-                    window.location.href = 'login.html';
-                }, 2000);
+                setTimeout(() => { window.location.href = 'login.html'; }, 2000);
             }
         });
 
@@ -190,10 +186,7 @@
                 message.className = 'mt-4 p-3 rounded-xl border text-xs text-center font-medium bg-rose-500/10 border-rose-500/20 text-rose-400 font-mono';
             }
             message.classList.remove('hidden');
-
-            setTimeout(() => {
-                message.classList.add('hidden');
-            }, 5000);
+            setTimeout(() => { message.classList.add('hidden'); }, 5000);
         }
     </script>
 </body>
