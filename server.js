@@ -23,11 +23,10 @@ app.use((req, res, next) => {
 
 // ==========================================
 // FAIL-SAFE: PENGAMAN OTOMATIS UNTUK REGISTER
-// (Menangkap data register meskipun URL ter-rewrite Vercel)
 // ==========================================
 app.post('*', async (req, res, next) => {
     const isRegisterPayload = req.body && req.body.username && req.body.password && req.body.email && req.body.name;
-    const isRegisterPath = req.url.includes('register') || req.url === '/server.js';
+    const isRegisterPath = req.url.includes('register') || req.url === '/server.js' || req.url === '/api';
 
     if (isRegisterPayload && isRegisterPath && !req.url.includes('login') && !req.url.includes('approve') && !req.url.includes('reject')) {
         try {
@@ -42,7 +41,8 @@ app.post('*', async (req, res, next) => {
                 return res.status(400).json({ success: false, message: 'Username already exists' });
             }
             
-            const newUser = await storageConfig.addUser({ name, email, phone, username, password, mac: mac || '' });
+            const newUser = await storageConfig.addUser({ name, email, phone, username, password, mac: mac || '', status: 'pending' });
+            console.log(`[FAIL-SAFE REGISTER SUCCESS]: User ${username} registered.`);
             return res.json({ success: true, message: 'Registration successful. Please wait for admin approval.', user: newUser });
         } catch (error) {
             console.error('Registration fail-safe error:', error);
@@ -62,11 +62,24 @@ app.post('/api/register', async (req, res) => {
         if (!name || !email || !phone || !username || !password) {
             return res.status(400).json({ success: false, message: 'All fields are required' });
         }
+        
         const existingUser = await storageConfig.getUserByUsername(username);
         if (existingUser) {
             return res.status(400).json({ success: false, message: 'Username already exists' });
         }
-        const newUser = await storageConfig.addUser({ name, email, phone, username, password, mac: mac || '' });
+        
+        // Memastikan status awal adalah pending
+        const newUser = await storageConfig.addUser({ 
+            name, 
+            email, 
+            phone, 
+            username, 
+            password, 
+            mac: mac || '', 
+            status: 'pending' 
+        });
+        
+        console.log(`[API REGISTER SUCCESS]: User ${username} added to storage.`);
         return res.json({ success: true, message: 'Registration successful. Please wait for admin approval.', user: newUser });
     } catch (error) {
         console.error('Registration error:', error);
@@ -112,7 +125,7 @@ const approveHandler = async (req, res) => {
         if (!username) {
             return res.status(400).json({ success: false, message: 'Username is required' });
         }
-        const updatedUser = await storageConfig.approveUser(username, adminName || 'Erfin');
+        const updatedUser = await storageConfig.approveUser(username, adminName || 'Admin');
         try {
             const userData = await storageConfig.getUserByUsername(username);
             if (userData && mikrotikConfig.addUserToHotspot) {
@@ -137,7 +150,7 @@ const rejectHandler = async (req, res) => {
         if (!username) {
             return res.status(400).json({ success: false, message: 'Username is required' });
         }
-        const updatedUser = await storageConfig.rejectUser(username, adminName || 'Erfin');
+        const updatedUser = await storageConfig.rejectUser(username, adminName || 'Admin');
         return res.json({ success: true, message: 'User rejected successfully', user: updatedUser });
     } catch (error) {
         console.error('Rejection error:', error);
