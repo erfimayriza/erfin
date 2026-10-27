@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Enterprise Gateway - CyberOS Registrasi Akun</title>
-    <!-- Tailwind CSS -->
+    <title>Enterprise Gateway - Registrasi Akun</title>
+    <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -17,10 +17,10 @@
                 extend: {
                     colors: {
                         cyber: {
-                            900: '#030712',
-                            800: '#0b0f19',
-                            700: '#151c2c',
-                            600: '#1e293b',
+                            950: '#030712',
+                            900: '#0b0f19',
+                            800: '#111827',
+                            700: '#1f2937',
                             accent: '#10b981',
                         }
                     },
@@ -32,70 +32,96 @@
             }
         }
     </script>
+    <style>
+        /* Custom scrollbar agar tidak merusak tampilan */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #030712;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #1f2937;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #10b981;
+        }
+    </style>
 </head>
-<body class="bg-cyber-900 text-slate-100 font-sans antialiased min-h-screen flex items-center justify-center p-4 selection:bg-emerald-500 selection:text-black">
+<body class="bg-cyber-950 text-slate-100 font-sans antialiased min-h-screen flex items-center justify-center p-4 sm:p-6 overflow-y-auto selection:bg-emerald-500 selection:text-black">
 
-    <div class="w-full max-w-md bg-cyber-800/80 backdrop-blur-xl border border-emerald-500/20 rounded-2xl p-8 shadow-2xl shadow-emerald-950/20 relative overflow-hidden my-6">
+    <div class="w-full max-w-lg bg-cyber-900 border border-emerald-500/20 rounded-2xl p-6 sm:p-8 shadow-2xl shadow-emerald-950/30 relative overflow-hidden my-auto">
         
-        <!-- Decorative Glow -->
-        <div class="absolute -top-24 -right-24 w-48 h-48 bg-emerald-500/10 rounded-full blur-3xl pointer-events-none"></div>
+        <!-- Ambient Glow Effect -->
+        <div class="absolute -top-20 -right-20 w-40 h-40 bg-emerald-500/10 rounded-full blur-3xl pointer-events-none"></div>
 
         <!-- Header / Logo -->
-        <div class="text-center mb-6 relative z-10">
+        <div class="text-center mb-6">
             <div class="inline-flex items-center justify-center w-12 h-12 rounded-xl bg-emerald-500/10 text-emerald-400 border border-emerald-500/30 mb-3 shadow-lg shadow-emerald-500/10">
-                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z"/></svg>
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z"/>
+                </svg>
             </div>
             <h1 class="text-xl font-extrabold text-white tracking-tight">Pendaftaran Akun Baru</h1>
-            <p class="text-xs font-mono text-slate-400 mt-1">Lengkapi data diri untuk mendapatkan akses jaringan hotspot</p>
+            <p class="text-xs font-mono text-slate-400 mt-1">Lengkapi data diri untuk akses jaringan hotspot</p>
         </div>
 
         <!-- FORM REGISTRASI -->
-        <form id="registerForm" class="space-y-4 relative z-10">
-            <div>
-                <label class="block text-xs font-mono font-bold text-slate-300 mb-1.5 uppercase tracking-wider">Nama Lengkap</label>
-                <input type="text" id="name" name="name" required placeholder="Masukkan nama lengkap" class="w-full bg-cyber-900 border border-slate-700/80 rounded-xl px-4 py-2.5 text-sm text-white focus:border-emerald-500 focus:outline-none transition-all placeholder-slate-600 font-mono">
+        <form id="registerForm" class="space-y-4">
+            
+            <!-- Grid 2 Kolom di Layar Komputer / Laptop -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
+                <div>
+                    <label class="block text-[11px] font-mono font-bold text-slate-300 mb-1 uppercase tracking-wider">Nama Lengkap</label>
+                    <input type="text" id="name" name="name" required placeholder="Nama lengkap" class="w-full bg-cyber-800 border border-slate-700/80 rounded-xl px-3.5 py-2.5 text-xs text-white focus:border-emerald-500 focus:outline-none transition-all placeholder-slate-500 font-sans">
+                </div>
+
+                <div>
+                    <label class="block text-[11px] font-mono font-bold text-slate-300 mb-1 uppercase tracking-wider">Email</label>
+                    <input type="email" id="email" name="email" required placeholder="alamat@email.com" class="w-full bg-cyber-800 border border-slate-700/80 rounded-xl px-3.5 py-2.5 text-xs text-white focus:border-emerald-500 focus:outline-none transition-all placeholder-slate-500 font-sans">
+                </div>
             </div>
 
-            <div>
-                <label class="block text-xs font-mono font-bold text-slate-300 mb-1.5 uppercase tracking-wider">Email</label>
-                <input type="email" id="email" name="email" required placeholder="Masukkan alamat email" class="w-full bg-cyber-900 border border-slate-700/80 rounded-xl px-4 py-2.5 text-sm text-white focus:border-emerald-500 focus:outline-none transition-all placeholder-slate-600 font-mono">
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
+                <div>
+                    <label class="block text-[11px] font-mono font-bold text-slate-300 mb-1 uppercase tracking-wider">Nomor Telepon</label>
+                    <input type="tel" id="phone" name="phone" required placeholder="08123456789" class="w-full bg-cyber-800 border border-slate-700/80 rounded-xl px-3.5 py-2.5 text-xs text-white focus:border-emerald-500 focus:outline-none transition-all placeholder-slate-500 font-mono">
+                </div>
+
+                <div>
+                    <label class="block text-[11px] font-mono font-bold text-slate-300 mb-1 uppercase tracking-wider">Username</label>
+                    <input type="text" id="username" name="username" required placeholder="username_unik" class="w-full bg-cyber-800 border border-slate-700/80 rounded-xl px-3.5 py-2.5 text-xs text-white focus:border-emerald-500 focus:outline-none transition-all placeholder-slate-500 font-mono">
+                </div>
             </div>
 
-            <div>
-                <label class="block text-xs font-mono font-bold text-slate-300 mb-1.5 uppercase tracking-wider">Nomor Telepon</label>
-                <input type="tel" id="phone" name="phone" required placeholder="Masukkan nomor telepon" class="w-full bg-cyber-900 border border-slate-700/80 rounded-xl px-4 py-2.5 text-sm text-white focus:border-emerald-500 focus:outline-none transition-all placeholder-slate-600 font-mono">
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
+                <div>
+                    <label class="block text-[11px] font-mono font-bold text-slate-300 mb-1 uppercase tracking-wider">Password</label>
+                    <input type="password" id="password" name="password" required placeholder="••••••••" class="w-full bg-cyber-800 border border-slate-700/80 rounded-xl px-3.5 py-2.5 text-xs text-white focus:border-emerald-500 focus:outline-none transition-all placeholder-slate-500 font-mono">
+                </div>
+
+                <div>
+                    <label class="block text-[11px] font-mono font-bold text-slate-300 mb-1 uppercase tracking-wider">Konfirmasi Password</label>
+                    <input type="password" id="confirmPassword" name="confirmPassword" required placeholder="••••••••" class="w-full bg-cyber-800 border border-slate-700/80 rounded-xl px-3.5 py-2.5 text-xs text-white focus:border-emerald-500 focus:outline-none transition-all placeholder-slate-500 font-mono">
+                </div>
             </div>
 
-            <div>
-                <label class="block text-xs font-mono font-bold text-slate-300 mb-1.5 uppercase tracking-wider">Username</label>
-                <input type="text" id="username" name="username" required placeholder="Buat username unik" class="w-full bg-cyber-900 border border-slate-700/80 rounded-xl px-4 py-2.5 text-sm text-white focus:border-emerald-500 focus:outline-none transition-all placeholder-slate-600 font-mono">
-            </div>
-
-            <div>
-                <label class="block text-xs font-mono font-bold text-slate-300 mb-1.5 uppercase tracking-wider">Password</label>
-                <input type="password" id="password" name="password" required placeholder="Buat kata sandi" class="w-full bg-cyber-900 border border-slate-700/80 rounded-xl px-4 py-2.5 text-sm text-white focus:border-emerald-500 focus:outline-none transition-all placeholder-slate-600 font-mono">
-            </div>
-
-            <div>
-                <label class="block text-xs font-mono font-bold text-slate-300 mb-1.5 uppercase tracking-wider">Konfirmasi Password</label>
-                <input type="password" id="confirmPassword" name="confirmPassword" required placeholder="Ulangi kata sandi" class="w-full bg-cyber-900 border border-slate-700/80 rounded-xl px-4 py-2.5 text-sm text-white focus:border-emerald-500 focus:outline-none transition-all placeholder-slate-600 font-mono">
-            </div>
-
-            <button type="submit" id="submitBtn" class="w-full py-3.5 bg-emerald-600 hover:bg-emerald-500 text-black font-extrabold text-xs tracking-wider uppercase rounded-xl transition-all shadow-lg shadow-emerald-600/20 mt-2">
+            <button type="submit" id="submitBtn" class="w-full py-3 bg-emerald-500 hover:bg-emerald-400 text-black font-extrabold text-xs tracking-wider uppercase rounded-xl transition-all shadow-lg shadow-emerald-500/20 mt-3">
                 <span id="btnText">Daftar Sekarang</span>
             </button>
         </form>
 
         <!-- Message Alert -->
-        <div id="message" class="hidden mt-4 p-3 rounded-xl border text-xs text-center font-medium font-mono relative z-10"></div>
+        <div id="message" class="hidden mt-4 p-3 rounded-xl border text-xs text-center font-mono"></div>
 
         <!-- Login Link -->
-        <div class="mt-6 text-center text-xs text-slate-400 font-sans relative z-10">
-            Sudah punya akun? <a href="login.html" class="text-emerald-400 hover:text-emerald-300 font-bold ml-1">Login di sini</a>
+        <div class="mt-6 text-center text-xs text-slate-400 font-sans">
+            Sudah punya akun? <a href="login.html" class="text-emerald-400 hover:text-emerald-300 font-bold ml-1 underline">Login di sini</a>
         </div>
     </div>
 
-   <!-- SCRIPT LOGIC -->
+    <!-- SCRIPT LOGIC -->
     <script>
         const BACKEND_URL = window.location.origin;
 
@@ -124,7 +150,7 @@
             };
 
             submitBtn.disabled = true;
-            btnText.innerHTML = 'Memproses Pendaftaran...';
+            btnText.textContent = 'Memproses Pendaftaran...';
 
             try {
                 const response = await fetch(`${BACKEND_URL}/api/register`, {
@@ -136,7 +162,7 @@
                 const data = await response.json();
 
                 if (response.ok && data.success) {
-                    showMessage(data.message + ' Mengalihkan ke halaman login...', 'success');
+                    showMessage((data.message || 'Pendaftaran berhasil!') + ' Mengalihkan...', 'success');
                     form.reset();
 
                     setTimeout(() => {
@@ -148,8 +174,8 @@
                     btnText.textContent = 'Daftar Sekarang';
                 }
             } catch (error) {
-                // Fallback demo simulasi jika backend belum aktif
-                showMessage('Pendaftaran berhasil (Mode Simulasi Demo). Mengalihkan...', 'success');
+                // Fallback demo simulasi jika backend/API Vercel belum aktif
+                showMessage('Pendaftaran berhasil (Mode Demo). Mengalihkan...', 'success');
                 setTimeout(() => {
                     window.location.href = 'login.html';
                 }, 2000);
