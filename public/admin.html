@@ -1,302 +1,304 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Enterprise Gateway - Dashboard Admin</title>
-    <!-- Tailwind CSS -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Google Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet">
-    
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        navy: {
-                            900: '#0a192f',
-                            800: '#112240',
-                            700: '#1d3557',
-                            600: '#2563eb',
-                            500: '#3b82f6',
-                        }
-                    },
-                    fontFamily: {
-                        sans: ['Inter', 'sans-serif'],
-                        heading: ['Plus Jakarta Sans', 'sans-serif'],
-                    }
-                }
-            }
-        }
-    </script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Enterprise Gateway - Dashboard Admin</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        navy: {
+                            900: '#0a192f',
+                            800: '#112240',
+                            700: '#1d3557',
+                            600: '#2563eb',
+                            500: '#3b82f6',
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        heading: ['Plus Jakarta Sans', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
 </head>
 <body class="bg-navy-900 text-slate-100 font-sans antialiased min-h-screen flex flex-col justify-between">
 
-    <!-- LOGIN MODAL -->
-    <div id="loginModal" class="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/80 backdrop-blur-sm p-4">
-        <div class="w-full max-w-md bg-navy-800 border border-navy-700/80 rounded-2xl p-8 shadow-2xl relative overflow-hidden">
-            <div class="text-center mb-6">
-                <div class="inline-flex items-center justify-center w-12 h-12 rounded-xl bg-blue-500/10 text-blue-400 border border-blue-500/20 mb-3">
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
-                </div>
-                <h2 class="text-xl font-heading font-extrabold text-white tracking-tight">Portal Administrator</h2>
-                <p class="text-xs text-slate-400 mt-1">Masukkan kata sandi otentikasi jaringan</p>
-            </div>
+    <!-- LOGIN MODAL -->
+    <div id="loginModal" class="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/80 backdrop-blur-sm p-4">
+        <div class="w-full max-w-md bg-navy-800 border border-navy-700/80 rounded-2xl p-8 shadow-2xl relative overflow-hidden">
+            <div class="text-center mb-6">
+                <div class="inline-flex items-center justify-center w-12 h-12 rounded-xl bg-blue-500/10 text-blue-400 border border-blue-500/20 mb-3">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
+                </div>
+                <h2 class="text-xl font-heading font-extrabold text-white tracking-tight">Portal Administrator</h2>
+                <p class="text-xs text-slate-400 mt-1">Masukkan kata sandi otentikasi jaringan</p>
+            </div>
 
-            <form id="loginForm" class="space-y-4">
-                <div>
-                    <label class="block text-xs font-heading font-bold text-slate-300 mb-2 uppercase tracking-wider">KATA SANDI ADMIN</label>
-                    <input type="password" id="adminPassword" placeholder="••••••••" required class="w-full bg-navy-900/90 border border-navy-700 rounded-xl px-4 py-3 text-sm text-white focus:border-navy-500 focus:outline-none transition-all placeholder-slate-600">
-                </div>
-                <button type="submit" class="w-full py-3.5 bg-navy-600 hover:bg-blue-600 text-white font-heading font-bold text-xs tracking-wider uppercase rounded-xl transition-all shadow-lg shadow-blue-600/20">
-                    MASUK KE SYSTEM
-                </button>
-            </form>
-            <div id="loginError" class="hidden mt-4 p-3 rounded-xl bg-red-500/10 border border-red-500/20 text-red-400 text-xs text-center font-medium">
-                Akses Ditolak: Kata sandi salah
-            </div>
-        </div>
-    </div>
+            <form id="loginForm" class="space-y-4">
+                <div>
+                    <label class="block text-xs font-heading font-bold text-slate-300 mb-2 uppercase tracking-wider">KATA SANDI ADMIN</label>
+                    <input type="password" id="adminPassword" placeholder="••••••••" required class="w-full bg-navy-900/90 border border-navy-700 rounded-xl px-4 py-3 text-sm text-white focus:border-navy-500 focus:outline-none transition-all placeholder-slate-600">
+                </div>
+                <button type="submit" class="w-full py-3.5 bg-navy-600 hover:bg-blue-600 text-white font-heading font-bold text-xs tracking-wider uppercase rounded-xl transition-all shadow-lg shadow-blue-600/20">
+                    MASUK KE SYSTEM
+                </button>
+            </form>
+            <div id="loginError" class="hidden mt-4 p-3 rounded-xl bg-red-500/10 border border-red-500/20 text-red-400 text-xs text-center font-medium">
+                Akses Ditolak: Kata sandi salah
+            </div>
+        </div>
+    </div>
 
-    <!-- MAIN DASHBOARD -->
-    <div id="dashboardApp" class="hidden flex-1 flex flex-col max-w-7xl w-full mx-auto p-4 sm:p-6 lg:p-8 space-y-6">
-        <!-- HEADER -->
-        <header class="bg-navy-800 border border-navy-700/80 rounded-2xl p-5 sm:px-6 flex flex-col sm:flex-row sm:items-center justify-between gap-4 shadow-xl">
-            <div class="flex items-center space-x-3.5">
-                <div class="w-10 h-10 rounded-xl bg-blue-500/10 border border-blue-500/20 flex items-center justify-center text-blue-400">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/></svg>
-                </div>
-                <div>
-                    <h1 class="text-base font-heading font-extrabold text-white tracking-tight">GATEKEEPER CORE</h1>
-                    <p class="text-xs text-slate-400">RouterOS v7.12 • Hotspot Access Gateway</p>
-                </div>
-            </div>
-            <div class="flex items-center space-x-3">
-                <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
-                    <span class="w-2 h-2 rounded-full bg-emerald-400 mr-2"></span> Sistem Aktif
-                </span>
-                <button onclick="logout()" class="bg-navy-900 hover:bg-slate-800 text-slate-300 border border-navy-700 px-4 py-2 rounded-xl text-xs font-heading font-bold transition-all">
-                    KELUAR
-                </button>
-            </div>
-        </header>
+    <!-- MAIN DASHBOARD -->
+    <div id="dashboardApp" class="hidden flex-1 flex flex-col max-w-7xl w-full mx-auto p-4 sm:p-6 lg:p-8 space-y-6">
+        <!-- HEADER -->
+        <header class="bg-navy-800 border border-navy-700/80 rounded-2xl p-5 sm:px-6 flex flex-col sm:flex-row sm:items-center justify-between gap-4 shadow-xl">
+            <div class="flex items-center space-x-3.5">
+                <div class="w-10 h-10 rounded-xl bg-blue-500/10 border border-blue-500/20 flex items-center justify-center text-blue-400">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/></svg>
+                </div>
+                <div>
+                    <h1 class="text-base font-heading font-extrabold text-white tracking-tight">GATEKEEPER CORE</h1>
+                    <p class="text-xs text-slate-400">RouterOS v7.12 • Hotspot Access Gateway</p>
+                </div>
+            </div>
+            <div class="flex items-center space-x-3">
+                <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
+                    <span class="w-2 h-2 rounded-full bg-emerald-400 mr-2"></span> Sistem Aktif
+                </span>
+                <button onclick="logout()" class="bg-navy-900 hover:bg-slate-800 text-slate-300 border border-navy-700 px-4 py-2 rounded-xl text-xs font-heading font-bold transition-all">
+                    KELUAR
+                </button>
+            </div>
+        </header>
 
-        <!-- STATS OVERVIEW -->
-        <section class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-            <div class="bg-navy-800 border border-navy-700/80 rounded-2xl p-5 shadow-lg">
-                <div class="text-xs font-heading font-bold text-slate-400 uppercase tracking-wider mb-1">Total Pendaftar</div>
-                <div id="statTotal" class="text-2xl font-heading font-extrabold text-white">0</div>
-            </div>
-            <div class="bg-navy-800 border border-navy-700/80 rounded-2xl p-5 shadow-lg">
-                <div class="text-xs font-heading font-bold text-amber-400 uppercase tracking-wider mb-1">Menunggu Persetujuan</div>
-                <div id="statPending" class="text-2xl font-heading font-extrabold text-amber-400">0</div>
-            </div>
-            <div class="bg-navy-800 border border-navy-700/80 rounded-2xl p-5 shadow-lg">
-                <div class="text-xs font-heading font-bold text-emerald-400 uppercase tracking-wider mb-1">Disetujui / Aktif</div>
-                <div id="statApproved" class="text-2xl font-heading font-extrabold text-emerald-400">0</div>
-            </div>
-            <div class="bg-navy-800 border border-navy-700/80 rounded-2xl p-5 shadow-lg">
-                <div class="text-xs font-heading font-bold text-red-400 uppercase tracking-wider mb-1">Ditolak / Diblokir</div>
-                <div id="statRejected" class="text-2xl font-heading font-extrabold text-red-400">0</div>
-            </div>
-        </section>
+        <!-- STATS OVERVIEW -->
+        <section class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+            <div class="bg-navy-800 border border-navy-700/80 rounded-2xl p-5 shadow-lg">
+                <div class="text-xs font-heading font-bold text-slate-400 uppercase tracking-wider mb-1">Total Pendaftar</div>
+                <div id="statTotal" class="text-2xl font-heading font-extrabold text-white">0</div>
+            </div>
+            <div class="bg-navy-800 border border-navy-700/80 rounded-2xl p-5 shadow-lg">
+                <div class="text-xs font-heading font-bold text-amber-400 uppercase tracking-wider mb-1">Menunggu Persetujuan</div>
+                <div id="statPending" class="text-2xl font-heading font-extrabold text-amber-400">0</div>
+            </div>
+            <div class="bg-navy-800 border border-navy-700/80 rounded-2xl p-5 shadow-lg">
+                <div class="text-xs font-heading font-bold text-emerald-400 uppercase tracking-wider mb-1">Disetujui / Aktif</div>
+                <div id="statApproved" class="text-2xl font-heading font-extrabold text-emerald-400">0</div>
+            </div>
+            <div class="bg-navy-800 border border-navy-700/80 rounded-2xl p-5 shadow-lg">
+                <div class="text-xs font-heading font-bold text-red-400 uppercase tracking-wider mb-1">Ditolak / Diblokir</div>
+                <div id="statRejected" class="text-2xl font-heading font-extrabold text-red-400">0</div>
+            </div>
+        </section>
 
-        <!-- MAIN TABLE PANEL -->
-        <main class="bg-navy-800 border border-navy-700/80 rounded-2xl p-6 shadow-xl flex-1 flex flex-col">
-            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
-                <div>
-                    <h2 class="text-base font-heading font-extrabold text-white">Daftar Sesi Pelanggan</h2>
-                    <p class="text-xs text-slate-400 mt-0.5">Kelola otorisasi akses user pada router MikroTik</p>
-                </div>
-                <button onclick="refreshData()" class="bg-navy-900 hover:bg-slate-800 text-slate-300 border border-navy-700 px-4 py-2.5 rounded-xl text-xs font-heading font-bold transition-all flex items-center justify-center space-x-2">
-                    <svg id="refreshSpinner" class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
-                    <span>Segarkan Data</span>
-                </button>
-            </div>
+        <!-- MAIN TABLE PANEL -->
+        <main class="bg-navy-800 border border-navy-700/80 rounded-2xl p-6 shadow-xl flex-1 flex flex-col">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
+                <div>
+                    <h2 class="text-base font-heading font-extrabold text-white">Daftar Sesi Pelanggan</h2>
+                    <p class="text-xs text-slate-400 mt-0.5">Kelola otorisasi akses user pada router MikroTik</p>
+                </div>
+                <button onclick="refreshData()" class="bg-navy-900 hover:bg-slate-800 text-slate-300 border border-navy-700 px-4 py-2.5 rounded-xl text-xs font-heading font-bold transition-all flex items-center justify-center space-x-2">
+                    <svg id="refreshSpinner" class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
+                    <span>Segarkan Data</span>
+                </button>
+            </div>
 
-            <!-- TABLE -->
-            <div class="overflow-x-auto rounded-xl border border-navy-700/60">
-                <table class="w-full text-left border-collapse">
-                    <thead>
-                        <tr class="bg-navy-900/80 border-b border-navy-700/60 text-[11px] font-heading font-bold text-slate-400 uppercase tracking-wider">
-                            <th class="p-4">Identitas Pengguna</th>
-                            <th class="p-4">Nomor Telepon</th>
-                            <th class="p-4">Status Akses</th>
-                            <th class="p-4">Lalu Lintas Data</th>
-                            <th class="p-4 text-right">Tindakan Otorisasi</th>
-                        </tr>
-                    </thead>
-                    <tbody id="userTableBody" class="divide-y divide-navy-700/40 text-xs">
-                        <!-- Rendered via JS -->
-                    </tbody>
-                </table>
-            </div>
+            <!-- TABLE -->
+            <div class="overflow-x-auto rounded-xl border border-navy-700/60">
+                <table class="w-full text-left border-collapse">
+                    <thead>
+                        <tr class="bg-navy-900/80 border-b border-navy-700/60 text-[11px] font-heading font-bold text-slate-400 uppercase tracking-wider">
+                            <th class="p-4">Identitas Pengguna</th>
+                            <th class="p-4">Nomor Telepon</th>
+                            <th class="p-4">Status Akses</th>
+                            <th class="p-4">Lalu Lintas Data</th>
+                            <th class="p-4 text-right">Tindakan Otorisasi</th>
+                        </tr>
+                    </thead>
+                    <tbody id="userTableBody" class="divide-y divide-navy-700/40 text-xs">
+                        <!-- Rendered via JS -->
+                    </tbody>
+                </table>
+            </div>
 
-            <!-- EMPTY STATE -->
-            <div id="emptyState" class="hidden py-16 text-center text-slate-400 font-sans text-xs">
-                Belum ada data pendaftaran pengguna yang tersimpan di database.
-            </div>
-        </main>
-    </div>
+            <!-- EMPTY STATE -->
+            <div id="emptyState" class="hidden py-16 text-center text-slate-400 font-sans text-xs">
+                Belum ada data pendaftaran pengguna yang tersimpan di database.
+            </div>
+        </main>
+    </div>
 
-    <!-- SCRIPT LOGIC -->
-    <script>
-        let usersData = [];
-        
-        // BACKEND_URL DI-HARDCODE KE DOMAIN VERCEL ANDA
-        const BACKEND_URL = 'https://erfin-gt9jp6a1a-emayrizap-9440.vercel.app';
+    <!-- SCRIPT LOGIC -->
+    <script>
+        let usersData = [];
+        
+        // DIPERBAIKI: Menggunakan window.location.origin secara dinamis agar terhindar dari error CORS pada preview deployment Vercel
+        const BACKEND_URL = window.location.origin;
 
-        // Login Handler
-        document.getElementById('loginForm').addEventListener('submit', async function(e) {
-            e.preventDefault();
-            const password = document.getElementById('adminPassword').value;
+        // Login Handler
+        document.getElementById('loginForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            const password = document.getElementById('adminPassword').value;
 
-            try {
-                const res = await fetch(`${BACKEND_URL}/api/admin/login`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ password })
-                });
-                const data = await res.json();
+            try {
+                const res = await fetch(`${BACKEND_URL}/api/admin/login`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ password })
+                });
+                const data = await res.json();
 
-                if (data.success) {
-                    document.getElementById('loginModal').classList.add('hidden');
-                    document.getElementById('dashboardApp').classList.remove('hidden');
-                    fetchRealUsers();
-                } else {
-                    showError();
-                }
-            } catch (err) {
-                showError();
-            }
-        });
+                if (data.success) {
+                    document.getElementById('loginModal').classList.add('hidden');
+                    document.getElementById('dashboardApp').classList.remove('hidden');
+                    fetchRealUsers();
+                } else {
+                    showError();
+                }
+            } catch (err) {
+                showError();
+            }
+        });
 
-        function showError() {
-            const err = document.getElementById('loginError');
-            err.classList.remove('hidden');
-            setTimeout(() => err.classList.add('hidden'), 3000);
-        }
+        function showError() {
+            const err = document.getElementById('loginError');
+            err.classList.remove('hidden');
+            setTimeout(() => err.classList.add('hidden'), 3000);
+        }
 
-        function logout() {
-            document.getElementById('dashboardApp').classList.add('hidden');
-            document.getElementById('loginModal').classList.remove('hidden');
-            document.getElementById('adminPassword').value = '';
-        }
+        function logout() {
+            document.getElementById('dashboardApp').classList.add('hidden');
+            document.getElementById('loginModal').classList.remove('hidden');
+            document.getElementById('adminPassword').value = '';
+        }
 
-        // Fetch Data /api/users
-        async function fetchRealUsers() {
-            try {
-                const response = await fetch(`${BACKEND_URL}/api/users`);
-                const result = await response.json();
-                
-                if (result.success && result.users) {
-                    usersData = result.users;
-                    renderTable(usersData);
-                    updateStats();
-                }
-            } catch (error) {
-                console.error('Gagal mengambil data:', error);
-            }
-        }
+        // Fetch Data /api/users
+        async function fetchRealUsers() {
+            try {
+                const response = await fetch(`${BACKEND_URL}/api/users`);
+                const result = await response.json();
+                
+                if (result.success && result.users) {
+                    usersData = result.users;
+                    renderTable(usersData);
+                    updateStats();
+                }
+            } catch (error) {
+                console.error('Gagal mengambil data:', error);
+            }
+        }
 
-        function renderTable(data) {
-            const tbody = document.getElementById('userTableBody');
-            const emptyState = document.getElementById('emptyState');
-            tbody.innerHTML = '';
+        function renderTable(data) {
+            const tbody = document.getElementById('userTableBody');
+            const emptyState = document.getElementById('emptyState');
+            tbody.innerHTML = '';
 
-            if (data.length === 0) {
-                emptyState.classList.remove('hidden');
-                return;
-            } else {
-                emptyState.classList.add('hidden');
-            }
+            if (data.length === 0) {
+                emptyState.classList.remove('hidden');
+                return;
+            } else {
+                emptyState.classList.add('hidden');
+            }
 
-            data.forEach(user => {
-                let statusBadge = '';
-                if (user.status === 'approved') {
-                    statusBadge = `<span class="px-2.5 py-1 rounded-full text-[10px] font-heading font-bold bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">DISETUJUI</span>`;
-                } else if (user.status === 'pending') {
-                    statusBadge = `<span class="px-2.5 py-1 rounded-full text-[10px] font-heading font-bold bg-amber-500/10 text-amber-400 border border-amber-500/20">PENDING</span>`;
-                } else {
-                    statusBadge = `<span class="px-2.5 py-1 rounded-full text-[10px] font-heading font-bold bg-red-500/10 text-red-400 border border-red-500/20">DIBLOKIR</span>`;
-                }
+            data.forEach(user => {
+                let statusBadge = '';
+                if (user.status === 'approved') {
+                    statusBadge = `<span class="px-2.5 py-1 rounded-full text-[10px] font-heading font-bold bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">DISETUJUI</span>`;
+                } else if (user.status === 'pending') {
+                    statusBadge = `<span class="px-2.5 py-1 rounded-full text-[10px] font-heading font-bold bg-amber-500/10 text-amber-400 border border-amber-500/20">PENDING</span>`;
+                } else {
+                    statusBadge = `<span class="px-2.5 py-1 rounded-full text-[10px] font-heading font-bold bg-red-500/10 text-red-400 border border-red-500/20">DIBLOKIR</span>`;
+                }
 
-                const tr = document.createElement('tr');
-                tr.className = "hover:bg-navy-900/50 transition-colors";
-                tr.innerHTML = `
-                    <td class="p-4">
-                        <div class="font-heading font-bold text-white">${escapeHtml(user.name)}</div>
-                        <div class="text-slate-400 text-[11px]">${escapeHtml(user.email)}</div>
-                        <div class="text-blue-400 text-[11px] font-medium mt-0.5">Username: ${escapeHtml(user.username)}</div>
-                    </td>
-                    <td class="p-4 text-slate-300 font-medium">${escapeHtml(user.phone || '-')}</td>
-                    <td class="p-4">${statusBadge}</td>
-                    <td class="p-4 text-slate-300 text-[11px]">
-                        Uptime: <span class="text-white font-medium">${user.uptime || 'Off'}</span><br>
-                        <span class="text-blue-400">↓ ${user.bytesIn || 0} B</span> | <span class="text-amber-400">↑ ${user.bytesOut || 0} B</span>
-                    </td>
-                    <td class="p-4 text-right space-x-1.5">
-                        <button onclick="updateStatus('${user.username}', 'approve')" class="px-3 py-1.5 bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 rounded-lg text-[11px] font-heading font-bold transition-all">Setuju</button>
-                        <button onclick="updateStatus('${user.username}', 'reject')" class="px-3 py-1.5 bg-amber-500/10 hover:bg-amber-500/20 text-amber-400 border border-amber-500/30 rounded-lg text-[11px] font-heading font-bold transition-all">Tolak</button>
-                        <button onclick="deleteUser('${user.username}')" class="px-3 py-1.5 bg-red-500/10 hover:bg-red-500/20 text-red-400 border border-red-500/30 rounded-lg text-[11px] font-heading font-bold transition-all">Hapus</button>
-                    </td>
-                `;
-                tbody.appendChild(tr);
-            });
-        }
+                const tr = document.createElement('tr');
+                tr.className = "hover:bg-navy-900/50 transition-colors";
+                tr.innerHTML = `
+                    <td class="p-4">
+                        <div class="font-heading font-bold text-white">${escapeHtml(user.name)}</div>
+                        <div class="text-slate-400 text-[11px]">${escapeHtml(user.email)}</div>
+                        <div class="text-blue-400 text-[11px] font-medium mt-0.5">Username: ${escapeHtml(user.username)}</div>
+                    </td>
+                    <td class="p-4 text-slate-300 font-medium">${escapeHtml(user.phone || '-')}</td>
+                    <td class="p-4">${statusBadge}</td>
+                    <td class="p-4 text-slate-300 text-[11px]">
+                        Uptime: <span class="text-white font-medium">${user.uptime || 'Off'}</span><br>
+                        <span class="text-blue-400">↓ ${user.bytesIn || 0} B</span> | <span class="text-amber-400">↑ ${user.bytesOut || 0} B</span>
+                    </td>
+                    <td class="p-4 text-right space-x-1.5">
+                        <button onclick="updateStatus('${user.username}', 'approve')" class="px-3 py-1.5 bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 rounded-lg text-[11px] font-heading font-bold transition-all">Setuju</button>
+                        <button onclick="updateStatus('${user.username}', 'reject')" class="px-3 py-1.5 bg-amber-500/10 hover:bg-amber-500/20 text-amber-400 border border-amber-500/30 rounded-lg text-[11px] font-heading font-bold transition-all">Tolak</button>
+                        <button onclick="deleteUser('${user.username}')" class="px-3 py-1.5 bg-red-500/10 hover:bg-red-500/20 text-red-400 border border-red-500/30 rounded-lg text-[11px] font-heading font-bold transition-all">Hapus</button>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
 
-        function updateStats() {
-            document.getElementById('statTotal').innerText = usersData.length;
-            document.getElementById('statPending').innerText = usersData.filter(u => u.status === 'pending').length;
-            document.getElementById('statApproved').innerText = usersData.filter(u => u.status === 'approved').length;
-            document.getElementById('statRejected').innerText = usersData.filter(u => u.status === 'rejected').length;
-        }
+        function updateStats() {
+            document.getElementById('statTotal').innerText = usersData.length;
+            document.getElementById('statPending').innerText = usersData.filter(u => u.status === 'pending').length;
+            document.getElementById('statApproved').innerText = usersData.filter(u => u.status === 'approved').length;
+            document.getElementById('statRejected').innerText = usersData.filter(u => u.status === 'rejected').length;
+        }
 
-        async function updateStatus(username, action) {
-            try {
-                const endpoint = action === 'approve' ? '/api/approve' : '/api/reject';
-                const res = await fetch(`${BACKEND_URL}${endpoint}`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ username, adminName: 'Admin' })
-                });
-                const result = await res.json();
-                if (result.success) {
-                    fetchRealUsers();
-                } else {
-                    alert(result.message);
-                }
-            } catch (err) {
-                alert('Gagal memperbarui status user.');
-            }
-        }
+        async function updateStatus(username, action) {
+            try {
+                const endpoint = action === 'approve' ? '/api/approve' : '/api/reject';
+                const res = await fetch(`${BACKEND_URL}${endpoint}`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ username, adminName: 'Admin' })
+                });
+                const result = await res.json();
+                if (result.success) {
+                    fetchRealUsers();
+                } else {
+                    alert(result.message);
+                }
+            } catch (err) {
+                alert('Gagal memperbarui status user.');
+            }
+        }
 
-        async function deleteUser(username) {
-            if (!confirm(`Hapus akun ${username}?`)) return;
-            try {
-                const res = await fetch(`${BACKEND_URL}${endpoint}`, { method: 'DELETE' }); // Terjaga ke BACKEND_URL
-                const resReal = await fetch(`${BACKEND_URL}/api/users/${username}`, { method: 'DELETE' });
-                const result = await resReal.json();
-                if (result.success) fetchRealUsers();
-                else alert(result.message);
-            } catch (err) {
-                alert('Gagal menghapus user.');
-            }
-        }
+        async function deleteUser(username) {
+            if (!confirm(`Hapus akun ${username}?`)) return;
+            try {
+                const res = await fetch(`${BACKEND_URL}/api/users/${username}`, { method: 'DELETE' });
+                const result = await res.json();
+                if (result.success) {
+                    fetchRealUsers();
+                } else {
+                    alert(result.message);
+                }
+            } catch (err) {
+                alert('Gagal menghapus user.');
+            }
+        }
 
-        function refreshData() {
-            const spinner = document.getElementById('refreshSpinner');
-            spinner.classList.add('animate-spin');
-            fetchRealUsers().finally(() => setTimeout(() => spinner.classList.remove('animate-spin'), 400));
-        }
+        function refreshData() {
+            const spinner = document.getElementById('refreshSpinner');
+            spinner.classList.add('animate-spin');
+            fetchRealUsers().finally(() => setTimeout(() => spinner.classList.remove('animate-spin'), 400));
+        }
 
-        function escapeHtml(str) {
-            if (!str) return '';
-            return String(str).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
-        }
-    </script>
+        function escapeHtml(str) {
+            if (!str) return '';
+            return String(str).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+        }
+    </script>
 </body>
 </html>
