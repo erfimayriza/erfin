@@ -48,6 +48,9 @@
 
         <!-- FORM REGISTRASI -->
         <form id="registerForm" class="space-y-4">
+            <!-- Input tersembunyi untuk menangkap MAC Address secara otomatis dari MikroTik -->
+            <input type="hidden" id="mac" name="mac">
+
             <div>
                 <label class="block text-xs font-heading font-bold text-slate-300 mb-1.5 uppercase tracking-wider">Nama Lengkap</label>
                 <input type="text" id="name" name="name" required placeholder="Masukkan nama lengkap" class="w-full bg-navy-900/90 border border-navy-700 rounded-xl px-4 py-2.5 text-sm text-white focus:border-navy-500 focus:outline-none transition-all placeholder-slate-600">
@@ -94,8 +97,18 @@
 
    <!-- SCRIPT LOGIC -->
     <script>
-        // Menggunakan origin aktif secara otomatis (cocok untuk domain utama maupun preview deployment Vercel)
-        const BACKEND_URL = window.location.origin;
+        // BACKEND_URL OTOMATIS: Mendeteksi Vercel atau menggunakan fallback domain Vercel secara penuh
+        const BACKEND_URL = window.location.origin.includes('vercel.app') 
+            ? window.location.origin 
+            : 'https://erfin-gt9jp6a1a-emayrizap-9440.vercel.app';
+
+        // Menangkap parameter MAC address yang dikirim otomatis oleh MikroTik melalui URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const macAddress = urlParams.get('mac');
+        if (macAddress) {
+            document.getElementById('mac').value = macAddress;
+            console.log("MAC Address otomatis terdeteksi:", macAddress);
+        }
 
         const form = document.getElementById('registerForm');
         const submitBtn = document.getElementById('submitBtn');
@@ -118,7 +131,8 @@
                 email: document.getElementById('email').value,
                 phone: document.getElementById('phone').value,
                 username: document.getElementById('username').value,
-                password: password
+                password: password,
+                mac: document.getElementById('mac').value // Menyertakan MAC Address secara otomatis
             };
 
             submitBtn.disabled = true;
