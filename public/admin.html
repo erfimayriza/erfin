@@ -6,7 +6,7 @@
     <title>Enterprise Gateway - Dashboard Admin</title>
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Google Fonts: Plus Jakarta Sans & Inter -->
+    <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet">
@@ -17,11 +17,11 @@
                 extend: {
                     colors: {
                         navy: {
-                            900: '#0a192f', /* Biru Tua Utama Background */
-                            800: '#112240', /* Biru Tua Card & Modal */
-                            700: '#1d3557', /* Border & Accent */
-                            600: '#2563eb', /* Biru Utama Tombol */
-                            500: '#3b82f6', /* Blue Glow */
+                            900: '#0a192f',
+                            800: '#112240',
+                            700: '#1d3557',
+                            600: '#2563eb',
+                            500: '#3b82f6',
                         }
                     },
                     fontFamily: {
@@ -63,7 +63,6 @@
 
     <!-- MAIN DASHBOARD -->
     <div id="dashboardApp" class="hidden flex-1 flex flex-col max-w-7xl w-full mx-auto p-4 sm:p-6 lg:p-8 space-y-6">
-        
         <!-- HEADER -->
         <header class="bg-navy-800 border border-navy-700/80 rounded-2xl p-5 sm:px-6 flex flex-col sm:flex-row sm:items-center justify-between gap-4 shadow-xl">
             <div class="flex items-center space-x-3.5">
@@ -146,9 +145,9 @@
     <!-- SCRIPT LOGIC -->
     <script>
         let usersData = [];
-        const BACKEND_URL = window.location.origin.includes('vercel.app') 
-            ? window.location.origin 
-            : '';
+        
+        // BACKEND_URL DI-HARDCODE KE DOMAIN VERCEL ANDA
+        const BACKEND_URL = 'https://erfin-gt9jp6a1a-emayrizap-9440.vercel.app';
 
         // Login Handler
         document.getElementById('loginForm').addEventListener('submit', async function(e) {
@@ -278,8 +277,9 @@
         async function deleteUser(username) {
             if (!confirm(`Hapus akun ${username}?`)) return;
             try {
-                const res = await fetch(`${BACKEND_URL}/api/users/${username}`, { method: 'DELETE' });
-                const result = await res.json();
+                const res = await fetch(`${BACKEND_URL}${endpoint}`, { method: 'DELETE' }); // Terjaga ke BACKEND_URL
+                const resReal = await fetch(`${BACKEND_URL}/api/users/${username}`, { method: 'DELETE' });
+                const result = await resReal.json();
                 if (result.success) fetchRealUsers();
                 else alert(result.message);
             } catch (err) {
@@ -300,4 +300,3 @@
     </script>
 </body>
 </html>
- 
