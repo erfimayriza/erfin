@@ -46,7 +46,7 @@
             <p class="text-xs text-slate-400 mt-1">Silakan masuk menggunakan kredensial akun terdaftar</p>
         </div>
 
-        <!-- FORM LOGIN (Tanpa action bawaan mikrotik agar tidak 404 di Vercel) -->
+        <!-- FORM LOGIN -->
         <form id="loginForm" class="space-y-4">
             <div>
                 <label class="block text-xs font-heading font-bold text-slate-300 mb-2 uppercase tracking-wider">Username</label>
@@ -90,9 +90,10 @@
 
     <!-- SCRIPT LOGIC -->
     <script>
+        // BACKEND_URL OTOMATIS: Mendeteksi Vercel atau menggunakan fallback domain Vercel Anda secara penuh
         const BACKEND_URL = window.location.origin.includes('vercel.app') 
             ? window.location.origin 
-            : '';
+            : 'https://erfin-gt9jp6a1a-emayrizap-9440.vercel.app';
 
         const form = document.getElementById('loginForm');
         const submitBtn = document.getElementById('submitBtn');
@@ -121,9 +122,9 @@
                 if (data.success) {
                     showMessage(`Login berhasil, mengalihkan ke jaringan...`, 'success');
                     
-                    // Alihkan langsung ke IP Hotspot MikroTik Anda agar router memproses sesi aktifnya
+                    // Alihkan ke IP Hotspot MikroTik Anda (192.168.11.2) agar router memproses sesi aktifnya
                     setTimeout(() => {
-                        const mikrotikIp = "192.168.88.1"; // <-- Ganti dengan IP Gateway/Hotspot MikroTik Anda jika berbeda
+                        const mikrotikIp = "192.168.11.2"; 
                         window.location.href = `http://${mikrotikIp}/login?username=${encodeURIComponent(usernameVal)}&password=${encodeURIComponent(passwordVal)}`;
                     }, 1200);
                 } else {
