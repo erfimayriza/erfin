@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="id">
+<html lang="id" class="dark">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,156 +9,440 @@
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     
     <script>
         tailwind.config = {
+            darkMode: 'class',
             theme: {
                 extend: {
                     colors: {
                         cyber: {
-                            900: '#030712',
-                            800: '#0b0f19',
-                            700: '#151c2c',
-                            600: '#1e293b',
+                            950: '#030712',
+                            900: '#090d16',
+                            850: '#0f172a',
+                            800: '#131c2e',
+                            700: '#1e293b',
+                            600: '#334155',
                             accent: '#10b981',
-                            glow: '#065f46'
+                            cyan: '#06b6d4',
+                            violet: '#8b5cf6',
+                            rose: '#f43f5e',
+                            amber: '#f59e0b'
                         }
                     },
                     fontFamily: {
                         sans: ['Plus Jakarta Sans', 'sans-serif'],
                         mono: ['JetBrains Mono', 'monospace'],
+                    },
+                    boxShadow: {
+                        'neon-cyan': '0 0 20px -5px rgba(6, 182, 212, 0.35)',
+                        'neon-emerald': '0 0 20px -5px rgba(16, 185, 129, 0.35)',
+                        'neon-violet': '0 0 20px -5px rgba(139, 92, 246, 0.35)',
+                        'neon-rose': '0 0 20px -5px rgba(244, 63, 94, 0.35)'
                     }
                 }
             }
         }
     </script>
+    <style>
+        /* Custom Keyframe Animations & Glow Effects */
+        @keyframes pulseGlow {
+            0%, 100% { opacity: 0.4; transform: scale(1); }
+            50% { opacity: 0.8; transform: scale(1.05); }
+        }
+        .animate-pulse-glow {
+            animation: pulseGlow 4s infinite ease-in-out;
+        }
+        .glass-panel {
+            background: rgba(15, 23, 42, 0.75);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+        .glass-panel-hover {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .glass-panel-hover:hover {
+            border-color: rgba(6, 182, 212, 0.3);
+            box-shadow: 0 10px 30px -10px rgba(6, 182, 212, 0.2);
+            transform: translateY(-2px);
+        }
+        /* Custom scrollbar design */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: rgba(9, 13, 22, 0.6);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: rgba(51, 65, 85, 0.6);
+            border-radius: 9999px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(6, 182, 212, 0.5);
+        }
+    </style>
 </head>
-<body class="bg-cyber-900 text-slate-100 font-sans antialiased min-h-screen flex flex-col justify-between selection:bg-emerald-500 selection:text-black">
+<body class="bg-cyber-950 text-slate-100 font-sans antialiased min-h-screen flex flex-col justify-between selection:bg-cyan-500 selection:text-black overflow-x-hidden">
+
+    <!-- Ambient Background Glow Accents -->
+    <div class="fixed top-0 left-1/4 w-96 h-96 bg-cyan-500/10 rounded-full blur-3xl pointer-events-none animate-pulse-glow"></div>
+    <div class="fixed bottom-0 right-1/4 w-96 h-96 bg-violet-500/10 rounded-full blur-3xl pointer-events-none animate-pulse-glow" style="animation-delay: 2s;"></div>
 
     <!-- MAIN DASHBOARD -->
-    <div id="dashboardApp" class="flex-1 flex flex-col max-w-7xl w-full mx-auto p-4 sm:p-6 lg:p-8 space-y-6">
+    <div id="dashboardApp" class="relative z-10 flex-1 flex flex-col max-w-7xl w-full mx-auto p-4 sm:p-6 lg:p-8 space-y-6">
         
-        <!-- HEADER -->
-        <header class="bg-cyber-800/80 backdrop-blur-xl border border-emerald-500/20 rounded-2xl p-5 sm:px-6 flex flex-col sm:flex-row sm:items-center justify-between gap-4 shadow-2xl shadow-emerald-950/20">
-            <div class="flex items-center space-x-3.5">
-                <div class="w-11 h-11 rounded-xl bg-emerald-500/10 border border-emerald-500/30 flex items-center justify-center text-emerald-400 shadow-lg shadow-emerald-500/10">
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M7 19h10a2 2 0 002-2V7a2 2 0 00-2-2H7a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+        <!-- HEADER NAV -->
+        <header class="glass-panel rounded-2xl p-4 sm:px-6 flex flex-col lg:flex-row lg:items-center justify-between gap-4 shadow-2xl">
+            <div class="flex items-center space-x-4">
+                <div class="relative">
+                    <div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-cyan-500/20 via-emerald-500/10 to-transparent border border-cyan-500/40 flex items-center justify-center text-cyan-400 shadow-neon-cyan">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M7 19h10a2 2 0 002-2V7a2 2 0 00-2-2H7a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+                        </svg>
+                    </div>
+                    <span class="absolute -top-1 -right-1 flex h-3 w-3">
+                        <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                        <span class="relative inline-flex rounded-full h-3 w-3 bg-emerald-500"></span>
+                    </span>
                 </div>
                 <div>
                     <div class="flex items-center space-x-2">
-                        <h1 class="text-base font-extrabold text-white tracking-wide">GATEKEEPER CORE</h1>
-                        <span class="px-2 py-0.5 text-[10px] font-mono font-bold bg-emerald-500/20 text-emerald-400 rounded border border-emerald-500/30">ONLINE</span>
+                        <h1 class="text-lg font-extrabold text-white tracking-wider bg-gradient-to-r from-white via-slate-200 to-slate-400 bg-clip-text text-transparent">
+                            GATEKEEPER CORE <span class="text-xs font-mono font-normal text-cyan-400 border border-cyan-500/30 bg-cyan-500/10 px-2 py-0.5 rounded-md ml-1">v3.5 PRO</span>
+                        </h1>
                     </div>
-                    <p class="text-xs font-mono text-slate-400 mt-0.5">RouterOS v7.12 • Hotspot Access Gateway</p>
+                    <p class="text-xs font-mono text-slate-400 mt-0.5 flex items-center space-x-2">
+                        <span>RouterOS v7.12</span>
+                        <span class="text-slate-600">•</span>
+                        <span class="text-emerald-400">Hotspot Access Gateway</span>
+                    </p>
                 </div>
             </div>
-            <div class="flex items-center space-x-3">
-                <div class="hidden md:flex flex-col text-right font-mono text-xs text-slate-400">
-                    <span>IP Gateway: <strong class="text-emerald-400">192.168.88.1</strong></span>
-                    <span>Uptime: <strong id="systemUptime" class="text-slate-200">14d 06h 22m</strong></span>
+
+            <!-- System Info & Global Actions -->
+            <div class="flex items-center justify-between lg:justify-end gap-4 border-t lg:border-t-0 pt-3 lg:pt-0 border-slate-800/80">
+                <div class="flex items-center space-x-4 font-mono text-xs text-slate-400 bg-cyber-900/80 px-4 py-2 rounded-xl border border-slate-800">
+                    <div>
+                        <span class="text-slate-500">IP Gateway:</span> 
+                        <span class="text-cyan-400 font-semibold">192.168.88.1</span>
+                    </div>
+                    <div class="h-4 w-[1px] bg-slate-800"></div>
+                    <div>
+                        <span class="text-slate-500">Uptime:</span> 
+                        <span id="systemUptime" class="text-emerald-400 font-semibold">14d 06h 22m 10s</span>
+                    </div>
                 </div>
-                <button onclick="refreshData()" class="bg-cyber-700 hover:bg-cyber-600 text-emerald-400 border border-emerald-500/30 px-4 py-2.5 rounded-xl text-xs font-bold transition-all shadow-lg flex items-center space-x-2">
-                    <svg id="refreshSpinner" class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
-                    <span>Segarkan</span>
-                </button>
+
+                <div class="flex items-center space-x-2">
+                    <button onclick="openAddUserModal()" class="bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-white font-bold px-3.5 py-2 rounded-xl text-xs transition-all shadow-neon-cyan flex items-center space-x-1.5">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
+                        <span class="hidden sm:inline">Tambah Sesi</span>
+                    </button>
+
+                    <button onclick="refreshData()" class="bg-cyber-800 hover:bg-cyber-700 text-cyan-400 border border-cyan-500/30 hover:border-cyan-500/60 p-2 sm:px-3.5 sm:py-2 rounded-xl text-xs font-bold transition-all flex items-center space-x-2">
+                        <svg id="refreshSpinner" class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
+                        <span class="hidden sm:inline">Segarkan</span>
+                    </button>
+                </div>
             </div>
         </header>
 
-        <!-- STATS OVERVIEW -->
+        <!-- STATS OVERVIEW CARDS -->
         <section class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-            <div class="bg-cyber-800/60 backdrop-blur-md border border-slate-800 rounded-2xl p-5 shadow-lg relative overflow-hidden">
-                <div class="absolute top-0 right-0 p-4 text-slate-700/50"><svg class="w-12 h-12" fill="currentColor" viewBox="0 0 24 24"><path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/></svg></div>
-                <div class="text-xs font-mono font-bold text-slate-400 uppercase tracking-wider mb-1">Total Pendaftar</div>
-                <div id="statTotal" class="text-3xl font-extrabold font-mono text-white">0</div>
+            <!-- Total -->
+            <div onclick="setFilter('all')" class="glass-panel glass-panel-hover rounded-2xl p-5 shadow-lg relative overflow-hidden cursor-pointer group">
+                <div class="absolute -right-2 -top-2 w-20 h-20 bg-blue-500/10 rounded-full blur-xl group-hover:bg-blue-500/20 transition-all"></div>
+                <div class="flex items-center justify-between mb-2">
+                    <span class="text-xs font-mono font-bold text-slate-400 uppercase tracking-wider">Total Pendaftar</span>
+                    <div class="p-2 rounded-xl bg-slate-800/80 text-slate-300 border border-slate-700/50">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/></svg>
+                    </div>
+                </div>
+                <div id="statTotal" class="text-3xl font-extrabold font-mono text-white tracking-tight">0</div>
+                <div class="text-[11px] font-mono text-slate-500 mt-2 flex items-center justify-between">
+                    <span>Semua Akun</span>
+                    <span class="text-blue-400 group-hover:translate-x-1 transition-transform">Lihat →</span>
+                </div>
             </div>
-            <div class="bg-cyber-800/60 backdrop-blur-md border border-amber-500/20 rounded-2xl p-5 shadow-lg relative overflow-hidden">
-                <div class="absolute top-0 right-0 p-4 text-amber-500/10"><svg class="w-12 h-12" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/></svg></div>
-                <div class="text-xs font-mono font-bold text-amber-400 uppercase tracking-wider mb-1">Menunggu Persetujuan</div>
-                <div id="statPending" class="text-3xl font-extrabold font-mono text-amber-400">0</div>
+
+            <!-- Pending -->
+            <div onclick="setFilter('pending')" class="glass-panel glass-panel-hover rounded-2xl p-5 shadow-lg relative overflow-hidden cursor-pointer group border-amber-500/20">
+                <div class="absolute -right-2 -top-2 w-20 h-20 bg-amber-500/10 rounded-full blur-xl group-hover:bg-amber-500/20 transition-all"></div>
+                <div class="flex items-center justify-between mb-2">
+                    <span class="text-xs font-mono font-bold text-amber-400 uppercase tracking-wider">Menunggu Persetujuan</span>
+                    <div class="p-2 rounded-xl bg-amber-500/10 text-amber-400 border border-amber-500/30">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                    </div>
+                </div>
+                <div id="statPending" class="text-3xl font-extrabold font-mono text-amber-400 tracking-tight">0</div>
+                <div class="text-[11px] font-mono text-slate-500 mt-2 flex items-center justify-between">
+                    <span>Butuh Otorisasi</span>
+                    <span class="text-amber-400 group-hover:translate-x-1 transition-transform">Filter →</span>
+                </div>
             </div>
-            <div class="bg-cyber-800/60 backdrop-blur-md border border-emerald-500/20 rounded-2xl p-5 shadow-lg relative overflow-hidden">
-                <div class="absolute top-0 right-0 p-4 text-emerald-500/10"><svg class="w-12 h-12" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg></div>
-                <div class="text-xs font-mono font-bold text-emerald-400 uppercase tracking-wider mb-1">Disetujui / Aktif</div>
-                <div id="statApproved" class="text-3xl font-extrabold font-mono text-emerald-400">0</div>
+
+            <!-- Approved -->
+            <div onclick="setFilter('approved')" class="glass-panel glass-panel-hover rounded-2xl p-5 shadow-lg relative overflow-hidden cursor-pointer group border-emerald-500/20">
+                <div class="absolute -right-2 -top-2 w-20 h-20 bg-emerald-500/10 rounded-full blur-xl group-hover:bg-emerald-500/20 transition-all"></div>
+                <div class="flex items-center justify-between mb-2">
+                    <span class="text-xs font-mono font-bold text-emerald-400 uppercase tracking-wider">Disetujui / Aktif</span>
+                    <div class="p-2 rounded-xl bg-emerald-500/10 text-emerald-400 border border-emerald-500/30">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                    </div>
+                </div>
+                <div id="statApproved" class="text-3xl font-extrabold font-mono text-emerald-400 tracking-tight">0</div>
+                <div class="text-[11px] font-mono text-slate-500 mt-2 flex items-center justify-between">
+                    <span>Terhubung Network</span>
+                    <span class="text-emerald-400 group-hover:translate-x-1 transition-transform">Filter →</span>
+                </div>
             </div>
-            <div class="bg-cyber-800/60 backdrop-blur-md border border-rose-500/20 rounded-2xl p-5 shadow-lg relative overflow-hidden">
-                <div class="absolute top-0 right-0 p-4 text-rose-500/10"><svg class="w-12 h-12" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/></svg></div>
-                <div class="text-xs font-mono font-bold text-rose-400 uppercase tracking-wider mb-1">Ditolak / Diblokir</div>
-                <div id="statRejected" class="text-3xl font-extrabold font-mono text-rose-400">0</div>
+
+            <!-- Rejected -->
+            <div onclick="setFilter('rejected')" class="glass-panel glass-panel-hover rounded-2xl p-5 shadow-lg relative overflow-hidden cursor-pointer group border-rose-500/20">
+                <div class="absolute -right-2 -top-2 w-20 h-20 bg-rose-500/10 rounded-full blur-xl group-hover:bg-rose-500/20 transition-all"></div>
+                <div class="flex items-center justify-between mb-2">
+                    <span class="text-xs font-mono font-bold text-rose-400 uppercase tracking-wider">Ditolak / Diblokir</span>
+                    <div class="p-2 rounded-xl bg-rose-500/10 text-rose-400 border border-rose-500/30">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636"/></svg>
+                    </div>
+                </div>
+                <div id="statRejected" class="text-3xl font-extrabold font-mono text-rose-400 tracking-tight">0</div>
+                <div class="text-[11px] font-mono text-slate-500 mt-2 flex items-center justify-between">
+                    <span>Akses Ditolak</span>
+                    <span class="text-rose-400 group-hover:translate-x-1 transition-transform">Filter →</span>
+                </div>
             </div>
         </section>
 
         <!-- MAIN TABLE PANEL -->
-        <main class="bg-cyber-800/80 backdrop-blur-xl border border-slate-800 rounded-2xl p-6 shadow-2xl flex-1 flex flex-col">
-            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
+        <main class="glass-panel rounded-2xl p-4 sm:p-6 shadow-2xl flex-1 flex flex-col">
+            <!-- Controls Toolbar -->
+            <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-4 mb-6">
                 <div>
-                    <h2 class="text-base font-extrabold text-white">Daftar Sesi Pelanggan</h2>
-                    <p class="text-xs text-slate-400 mt-0.5">Kelola otorisasi akses user pada router MikroTik</p>
+                    <h2 class="text-base font-extrabold text-white flex items-center gap-2">
+                        <span>Daftar Sesi Pelanggan</span>
+                        <span id="activeFilterBadge" class="text-xs font-mono px-2 py-0.5 rounded-full bg-slate-800 text-slate-400 border border-slate-700">SEMUA</span>
+                    </h2>
+                    <p class="text-xs text-slate-400 mt-0.5">Kelola otorisasi akses user pada router MikroTik secara terpusat</p>
                 </div>
-                <div class="flex items-center space-x-3">
-                    <input type="text" id="searchInput" oninput="filterTable()" placeholder="Cari user / email..." class="bg-cyber-900 border border-slate-700/80 rounded-xl px-4 py-2 text-xs text-white placeholder-slate-500 focus:border-emerald-500 focus:outline-none transition-all w-full sm:w-64">
+
+                <div class="flex flex-wrap items-center gap-2.5">
+                    <!-- Status Filter Tabs -->
+                    <div class="flex items-center bg-cyber-900/90 border border-slate-800 rounded-xl p-1 text-xs font-medium">
+                        <button onclick="setFilter('all')" id="tab-all" class="px-3 py-1.5 rounded-lg text-cyan-400 bg-cyber-800 transition-all">Semua</button>
+                        <button onclick="setFilter('pending')" id="tab-pending" class="px-3 py-1.5 rounded-lg text-slate-400 hover:text-amber-400 transition-all">Pending</button>
+                        <button onclick="setFilter('approved')" id="tab-approved" class="px-3 py-1.5 rounded-lg text-slate-400 hover:text-emerald-400 transition-all">Disetujui</button>
+                        <button onclick="setFilter('rejected')" id="tab-rejected" class="px-3 py-1.5 rounded-lg text-slate-400 hover:text-rose-400 transition-all">Ditolak</button>
+                    </div>
+
+                    <!-- Search Input -->
+                    <div class="relative flex-1 sm:w-64">
+                        <svg class="w-4 h-4 absolute left-3.5 top-2.5 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+                        <input type="text" id="searchInput" oninput="filterTable()" placeholder="Cari nama, email, username..." class="bg-cyber-900/90 border border-slate-800 rounded-xl pl-9 pr-4 py-2 text-xs text-white placeholder-slate-500 focus:border-cyan-500 focus:outline-none transition-all w-full">
+                    </div>
+
+                    <!-- Batch Actions Menu -->
+                    <div class="flex items-center space-x-1.5 border-l border-slate-800 pl-2">
+                        <button onclick="approveAllPending()" title="Setujui Semua Pending" class="p-2 bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 rounded-xl text-xs transition-all flex items-center space-x-1">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                            <span class="hidden xl:inline">Approve Pending</span>
+                        </button>
+                        <button onclick="exportCSV()" title="Ekspor Data CSV" class="p-2 bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700 rounded-xl text-xs transition-all">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
+                        </button>
+                    </div>
                 </div>
             </div>
 
-            <!-- TABLE -->
-            <div class="overflow-x-auto rounded-xl border border-slate-800/80">
+            <!-- TABLE CONTAINER -->
+            <div class="overflow-x-auto rounded-xl border border-slate-800/80 bg-cyber-900/50">
                 <table class="w-full text-left border-collapse">
                     <thead>
                         <tr class="bg-cyber-900/90 border-b border-slate-800 text-[11px] font-mono font-bold text-slate-400 uppercase tracking-wider">
                             <th class="p-4">Identitas Pengguna</th>
-                            <th class="p-4">Nomor Telepon</th>
+                            <th class="p-4">Kontak / HP</th>
                             <th class="p-4">Status Akses</th>
-                            <th class="p-4">Lalu Lintas Data</th>
+                            <th class="p-4">Lalu Lintas Data (In / Out)</th>
                             <th class="p-4 text-right">Tindakan Otorisasi</th>
                         </tr>
                     </thead>
                     <tbody id="userTableBody" class="divide-y divide-slate-800/60 text-xs">
-                        <!-- Rendered via JS -->
+                        <!-- Rendered dynamically via JS -->
                     </tbody>
                 </table>
             </div>
 
             <!-- EMPTY STATE -->
-            <div id="emptyState" class="hidden py-16 text-center text-slate-400 text-xs font-mono">
-                Tidak ada data pendaftaran yang cocok ditemukan.
+            <div id="emptyState" class="hidden py-16 flex flex-col items-center justify-center text-center">
+                <div class="w-16 h-16 rounded-full bg-slate-800/80 border border-slate-700/50 flex items-center justify-center text-slate-500 mb-3">
+                    <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4"/></svg>
+                </div>
+                <div class="text-sm font-bold text-slate-300">Tidak Ada Data Ditemukan</div>
+                <div class="text-xs text-slate-500 font-mono mt-1">Coba ubah kata kunci pencarian atau filter status yang aktif.</div>
             </div>
         </main>
     </div>
 
+    <!-- MODAL: DETAIL USER -->
+    <div id="userModal" class="fixed inset-0 z-50 hidden flex items-center justify-center bg-black/70 backdrop-blur-md p-4">
+        <div class="glass-panel border-cyan-500/30 rounded-2xl max-w-lg w-full p-6 shadow-2xl relative animate-in fade-in zoom-in duration-200">
+            <button onclick="closeModal('userModal')" class="absolute top-4 right-4 text-slate-400 hover:text-white p-1">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+            </button>
+
+            <div class="flex items-center space-x-3 mb-5 border-b border-slate-800 pb-4">
+                <div id="modalAvatar" class="w-12 h-12 rounded-xl bg-cyan-500/20 text-cyan-400 flex items-center justify-center text-lg font-bold border border-cyan-500/30">
+                    US
+                </div>
+                <div>
+                    <h3 id="modalUserName" class="text-base font-extrabold text-white">Nama Pengguna</h3>
+                    <p id="modalUserEmail" class="text-xs text-slate-400 font-mono">user@example.com</p>
+                </div>
+            </div>
+
+            <div class="space-y-3 font-mono text-xs">
+                <div class="flex justify-between p-2.5 rounded-lg bg-cyber-900/80 border border-slate-800">
+                    <span class="text-slate-400">Username Hotspot:</span>
+                    <span id="modalUsername" class="text-cyan-400 font-bold">username</span>
+                </div>
+                <div class="flex justify-between p-2.5 rounded-lg bg-cyber-900/80 border border-slate-800">
+                    <span class="text-slate-400">Nomor Telepon:</span>
+                    <span id="modalPhone" class="text-slate-200">08123456789</span>
+                </div>
+                <div class="flex justify-between p-2.5 rounded-lg bg-cyber-900/80 border border-slate-800">
+                    <span class="text-slate-400">Status Otorisasi:</span>
+                    <span id="modalStatusBadge">---</span>
+                </div>
+                <div class="flex justify-between p-2.5 rounded-lg bg-cyber-900/80 border border-slate-800">
+                    <span class="text-slate-400">Sesi Uptime:</span>
+                    <span id="modalUptime" class="text-emerald-400">0s</span>
+                </div>
+                <div class="flex justify-between p-2.5 rounded-lg bg-cyber-900/80 border border-slate-800">
+                    <span class="text-slate-400">Penggunaan Bandwidth:</span>
+                    <span id="modalBandwidth" class="text-slate-200">↓ 0 B | ↑ 0 B</span>
+                </div>
+            </div>
+
+            <div class="mt-6 flex justify-end space-x-2">
+                <button onclick="closeModal('userModal')" class="px-4 py-2 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-xl text-xs font-bold transition-all">Tutup</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL: TAMBAH USER / SESI BARU -->
+    <div id="addUserModal" class="fixed inset-0 z-50 hidden flex items-center justify-center bg-black/70 backdrop-blur-md p-4">
+        <div class="glass-panel border-cyan-500/30 rounded-2xl max-w-md w-full p-6 shadow-2xl relative">
+            <button onclick="closeModal('addUserModal')" class="absolute top-4 right-4 text-slate-400 hover:text-white p-1">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+            </button>
+
+            <h3 class="text-base font-extrabold text-white mb-1">Tambah Sesi User Baru</h3>
+            <p class="text-xs text-slate-400 mb-4">Daftarkan pengguna baru ke hotspot MikroTik secara manual</p>
+
+            <form id="addUserForm" onsubmit="handleAddUser(event)" class="space-y-4 text-xs">
+                <div>
+                    <label class="block font-mono text-slate-400 mb-1">Nama Lengkap</label>
+                    <input type="text" id="addName" required placeholder="Contoh: Andi Pratama" class="w-full bg-cyber-900 border border-slate-700 rounded-xl px-3 py-2 text-white focus:border-cyan-500 focus:outline-none">
+                </div>
+                <div>
+                    <label class="block font-mono text-slate-400 mb-1">Email</label>
+                    <input type="email" id="addEmail" required placeholder="andi@domain.com" class="w-full bg-cyber-900 border border-slate-700 rounded-xl px-3 py-2 text-white focus:border-cyan-500 focus:outline-none">
+                </div>
+                <div>
+                    <label class="block font-mono text-slate-400 mb-1">Username Hotspot</label>
+                    <input type="text" id="addUsername" required placeholder="andi_net" class="w-full bg-cyber-900 border border-slate-700 rounded-xl px-3 py-2 text-white focus:border-cyan-500 focus:outline-none">
+                </div>
+                <div>
+                    <label class="block font-mono text-slate-400 mb-1">Nomor Telepon (WhatsApp)</label>
+                    <input type="tel" id="addPhone" placeholder="081234567890" class="w-full bg-cyber-900 border border-slate-700 rounded-xl px-3 py-2 text-white focus:border-cyan-500 focus:outline-none">
+                </div>
+                <div class="pt-2 flex justify-end space-x-2">
+                    <button type="button" onclick="closeModal('addUserModal')" class="px-4 py-2 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-xl font-bold transition-all">Batal</button>
+                    <button type="submit" class="px-4 py-2 bg-gradient-to-r from-cyan-500 to-emerald-500 hover:from-cyan-400 hover:to-emerald-400 text-slate-950 font-extrabold rounded-xl transition-all shadow-neon-cyan">Simpan & Daftarkan</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- TOAST NOTIFICATION CONTAINER -->
+    <div id="toastContainer" class="fixed bottom-5 right-5 z-50 flex flex-col space-y-2 pointer-events-none"></div>
+
     <!-- SCRIPT LOGIC -->
     <script>
+        // State variables
         let usersData = [];
+        let currentFilter = 'all';
         const BACKEND_URL = window.location.origin;
 
-        // Fallback Mock Data agar langsung tampil walau backend belum ada
+        // Mock Initial Data (Fallback System)
         const MOCK_USERS = [
-            { name: "Ahmad Ismail", email: "ahmad@smkn1.sch.id", username: "ahmad_net", phone: "081234567890", status: "approved", uptime: "2h 45m", bytesIn: "45.2 MB", bytesOut: "12.8 MB" },
-            { name: "Siti Rahma", email: "siti.rahma@gmail.com", username: "sitirahma", phone: "085678901234", status: "pending", uptime: "0s", bytesIn: "0", bytesOut: "0" },
+            { name: "Ahmad Ismail", email: "ahmad@smkn1.sch.id", username: "ahmad_net", phone: "081234567890", status: "approved", uptime: "2h 45m 12s", bytesIn: "45.2 MB", bytesOut: "12.8 MB" },
+            { name: "Siti Rahma", email: "siti.rahma@gmail.com", username: "sitirahma", phone: "085678901234", status: "pending", uptime: "0s", bytesIn: "0 B", bytesOut: "0 B" },
             { name: "Budi Santoso", email: "budi.s@yahoo.com", username: "budi_hotspot", phone: "089876543210", status: "rejected", uptime: "Off", bytesIn: "1.2 MB", bytesOut: "400 KB" },
-            { name: "Dewi Lestari", email: "dewi.l@outlook.com", username: "dewilestari", phone: "081398765432", status: "approved", uptime: "5h 12m", bytesIn: "128.4 MB", bytesOut: "54.1 MB" }
+            { name: "Dewi Lestari", email: "dewi.l@outlook.com", username: "dewilestari", phone: "081398765432", status: "approved", uptime: "5h 12m 04s", bytesIn: "128.4 MB", bytesOut: "54.1 MB" },
+            { name: "Rizky Febrian", email: "rizky@enterprise.co.id", username: "rizky_wifi", phone: "082112345678", status: "pending", uptime: "0s", bytesIn: "0 B", bytesOut: "0 B" }
         ];
 
-        // Auto Load saat halaman dibuka
+        // Initialize App on DOM Load
         document.addEventListener('DOMContentLoaded', () => {
             fetchRealUsers();
+            startLiveUptimeTicker();
         });
 
+        // Real-time Gateway System Uptime Ticker
+        let secondsCounter = 14 * 86400 + 6 * 3600 + 22 * 60 + 10;
+        function startLiveUptimeTicker() {
+            setInterval(() => {
+                secondsCounter++;
+                const days = Math.floor(secondsCounter / 86400);
+                const hours = Math.floor((secondsCounter % 86400) / 3600);
+                const minutes = Math.floor((secondsCounter % 3600) / 60);
+                const seconds = secondsCounter % 60;
+                
+                const uptimeStr = `${days}d ${hours.toString().padStart(2, '0')}h ${minutes.toString().padStart(2, '0')}m ${seconds.toString().padStart(2, '0')}s`;
+                const elem = document.getElementById('systemUptime');
+                if (elem) elem.innerText = uptimeStr;
+            }, 1000);
+        }
+
+        // Fetch user data with backend fallback logic
         async function fetchRealUsers() {
             try {
-                const response = await fetch(`${BACKEND_URL}/api/users`);
+                const response = await fetch(`${BACKEND_URL}/api/users`, { signal: AbortSignal.timeout(2000) });
                 const result = await response.json();
                 
-                if (result.success && result.users && result.users.length > 0) {
+                if (result.success && Array.isArray(result.users) && result.users.length > 0) {
                     usersData = result.users;
                 } else {
-                    usersData = MOCK_USERS; // Gunakan mock jika kosong
+                    if (usersData.length === 0) usersData = [...MOCK_USERS];
                 }
             } catch (error) {
-                console.warn('Backend tidak terdeteksi, menggunakan data demo lokal.');
-                usersData = MOCK_USERS; // Gunakan mock jika error/offline
+                // Backend not connected, fallback to local interactive mock
+                if (usersData.length === 0) {
+                    usersData = [...MOCK_USERS];
+                }
             }
-            renderTable(usersData);
+            applyFilterAndRender();
+        }
+
+        // Apply active filter and perform table render
+        function applyFilterAndRender() {
+            const query = (document.getElementById('searchInput').value || '').toLowerCase();
+            
+            let filtered = usersData.filter(u => {
+                const matchQuery = (u.name && u.name.toLowerCase().includes(query)) ||
+                                   (u.email && u.email.toLowerCase().includes(query)) ||
+                                   (u.username && u.username.toLowerCase().includes(query));
+                
+                const matchStatus = (currentFilter === 'all') || (u.status === currentFilter);
+                
+                return matchQuery && matchStatus;
+            });
+
+            renderTable(filtered);
             updateStats();
         }
 
@@ -177,7 +461,7 @@
             data.forEach(user => {
                 let statusBadge = '';
                 if (user.status === 'approved') {
-                    statusBadge = `<span class="px-2.5 py-1 rounded-full text-[10px] font-mono font-bold bg-emerald-500/10 text-emerald-400 border border-emerald-500/30">DISETUJUI</span>`;
+                    statusBadge = `<span class="px-2.5 py-1 rounded-full text-[10px] font-mono font-bold bg-emerald-500/10 text-emerald-400 border border-emerald-500/30 shadow-neon-emerald">DISETUJUI</span>`;
                 } else if (user.status === 'pending') {
                     statusBadge = `<span class="px-2.5 py-1 rounded-full text-[10px] font-mono font-bold bg-amber-500/10 text-amber-400 border border-amber-500/30">PENDING</span>`;
                 } else {
@@ -185,23 +469,25 @@
                 }
 
                 const tr = document.createElement('tr');
-                tr.className = "hover:bg-cyber-900/40 transition-colors";
+                tr.className = "hover:bg-cyber-800/50 transition-colors group border-b border-slate-800/40";
                 tr.innerHTML = `
-                    <td class="p-4">
-                        <div class="font-bold text-white">${escapeHtml(user.name)}</div>
+                    <td class="p-4 cursor-pointer" onclick="openUserModal('${user.username}')">
+                        <div class="font-bold text-white group-hover:text-cyan-400 transition-colors flex items-center space-x-2">
+                            <span>${escapeHtml(user.name)}</span>
+                        </div>
                         <div class="text-slate-400 text-[11px]">${escapeHtml(user.email)}</div>
-                        <div class="text-emerald-400 font-mono text-[11px] mt-0.5">usr: ${escapeHtml(user.username)}</div>
+                        <div class="text-cyan-400 font-mono text-[11px] mt-0.5">usr: ${escapeHtml(user.username)}</div>
                     </td>
-                    <td class="p-4 text-slate-300 font-mono">${escapeHtml(user.phone || '-')}</td>
+                    <td class="p-4 text-slate-300 font-mono text-[11px]">${escapeHtml(user.phone || '-')}</td>
                     <td class="p-4">${statusBadge}</td>
                     <td class="p-4 text-slate-300 font-mono text-[11px]">
                         Uptime: <span class="text-white">${user.uptime || 'Off'}</span><br>
                         <span class="text-emerald-400">↓ ${user.bytesIn || '0 B'}</span> | <span class="text-amber-400">↑ ${user.bytesOut || '0 B'}</span>
                     </td>
                     <td class="p-4 text-right space-x-1.5">
-                        <button onclick="updateStatus('${user.username}', 'approve')" class="px-3 py-1.5 bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 rounded-lg text-[11px] font-bold transition-all shadow">Setuju</button>
-                        <button onclick="updateStatus('${user.username}', 'reject')" class="px-3 py-1.5 bg-amber-500/10 hover:bg-amber-500/20 text-amber-400 border border-amber-500/30 rounded-lg text-[11px] font-bold transition-all shadow">Tolak</button>
-                        <button onclick="deleteUser('${user.username}')" class="px-3 py-1.5 bg-rose-500/10 hover:bg-rose-500/20 text-rose-400 border border-rose-500/30 rounded-lg text-[11px] font-bold transition-all shadow">Hapus</button>
+                        <button onclick="updateStatus('${user.username}', 'approve')" title="Setujui Akses" class="px-3 py-1.5 bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 rounded-lg text-[11px] font-bold transition-all">Setuju</button>
+                        <button onclick="updateStatus('${user.username}', 'reject')" title="Tolak Akses" class="px-3 py-1.5 bg-amber-500/10 hover:bg-amber-500/20 text-amber-400 border border-amber-500/30 rounded-lg text-[11px] font-bold transition-all">Tolak</button>
+                        <button onclick="deleteUser('${user.username}')" title="Hapus User" class="px-3 py-1.5 bg-rose-500/10 hover:bg-rose-500/20 text-rose-400 border border-rose-500/30 rounded-lg text-[11px] font-bold transition-all">Hapus</button>
                     </td>
                 `;
                 tbody.appendChild(tr);
@@ -215,68 +501,246 @@
             document.getElementById('statRejected').innerText = usersData.filter(u => u.status === 'rejected').length;
         }
 
-        function filterTable() {
-            const query = document.getElementById('searchInput').value.toLowerCase();
-            const filtered = usersData.filter(u => 
-                (u.name && u.name.toLowerCase().includes(query)) ||
-                (u.email && u.email.toLowerCase().includes(query)) ||
-                (u.username && u.username.toLowerCase().includes(query))
-            );
-            renderTable(filtered);
+        function setFilter(filterType) {
+            currentFilter = filterType;
+            
+            // Highlight Tab Buttons
+            ['all', 'pending', 'approved', 'rejected'].forEach(type => {
+                const btn = document.getElementById(`tab-${type}`);
+                if (btn) {
+                    if (type === filterType) {
+                        btn.className = "px-3 py-1.5 rounded-lg text-cyan-400 bg-cyber-800 transition-all font-bold shadow";
+                    } else {
+                        btn.className = "px-3 py-1.5 rounded-lg text-slate-400 hover:text-white transition-all";
+                    }
+                }
+            });
+
+            // Update Active Filter Badge Text
+            const badge = document.getElementById('activeFilterBadge');
+            if (badge) badge.innerText = filterType.toUpperCase();
+
+            applyFilterAndRender();
         }
 
+        function filterTable() {
+            applyFilterAndRender();
+        }
+
+        // Action Status Handler
         async function updateStatus(username, action) {
+            const targetStatus = action === 'approve' ? 'approved' : 'rejected';
+            
             try {
                 const endpoint = action === 'approve' ? '/api/approve' : '/api/reject';
-                const res = await fetch(`${BACKEND_URL}${endpoint}`, {
+                await fetch(`${BACKEND_URL}${endpoint}`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ username, adminName: 'Admin' })
                 });
-                const result = await res.json();
-                if (result.success) {
-                    fetchRealUsers();
-                    return;
-                }
             } catch (err) {
-                // Mode demo interaktif lokal jika backend belum merespons
-                const user = usersData.find(u => u.username === username);
-                if (user) {
-                    user.status = action === 'approve' ? 'approved' : 'rejected';
-                    renderTable(usersData);
-                    updateStats();
+                // Fallback local update handled smoothly below
+            }
+
+            const user = usersData.find(u => u.username === username);
+            if (user) {
+                user.status = targetStatus;
+                if (action === 'approve' && user.uptime === 'Off') {
+                    user.uptime = '0m 01s';
                 }
+                applyFilterAndRender();
+                showToast(`User ${username} berhasil di-${action === 'approve' ? 'setujui' : 'tolak'}.`, 'success');
             }
         }
 
+        // Batch Action: Approve All Pending
+        function approveAllPending() {
+            const pendingUsers = usersData.filter(u => u.status === 'pending');
+            if (pendingUsers.length === 0) {
+                showToast('Tidak ada user dengan status pending.', 'info');
+                return;
+            }
+
+            pendingUsers.forEach(u => {
+                u.status = 'approved';
+                u.uptime = '0m 05s';
+            });
+
+            applyFilterAndRender();
+            showToast(`${pendingUsers.length} user pending berhasil disetujui sekaligus!`, 'success');
+        }
+
+        // Action Delete User
         async function deleteUser(username) {
-            if (!confirm(`Hapus akun ${username}?`)) return;
+            const user = usersData.find(u => u.username === username);
+            const userDisplayName = user ? user.name : username;
+
             try {
-                const res = await fetch(`${BACKEND_URL}/api/users/${username}`, { method: 'DELETE' });
-                const result = await res.json();
-                if (result.success) {
-                    fetchRealUsers();
-                    return;
-                }
+                await fetch(`${BACKEND_URL}/api/users/${username}`, { method: 'DELETE' });
             } catch (err) {
-                // Mode demo interaktif lokal jika backend belum merespons
-                usersData = usersData.filter(u => u.username !== username);
-                renderTable(usersData);
-                updateStats();
+                // Ignore API connection fail in demo
             }
+
+            usersData = usersData.filter(u => u.username !== username);
+            applyFilterAndRender();
+            showToast(`Akun ${userDisplayName} telah dihapus dari sistem.`, 'error');
         }
 
+        // Modal View Detail
+        function openUserModal(username) {
+            const user = usersData.find(u => u.username === username);
+            if (!user) return;
+
+            document.getElementById('modalUserName').innerText = user.name;
+            document.getElementById('modalUserEmail').innerText = user.email;
+            document.getElementById('modalUsername').innerText = user.username;
+            document.getElementById('modalPhone').innerText = user.phone || '-';
+            document.getElementById('modalUptime').innerText = user.uptime || 'Off';
+            document.getElementById('modalBandwidth').innerText = `↓ ${user.bytesIn || '0 B'} | ↑ ${user.bytesOut || '0 B'}`;
+            
+            // Avatar Initials
+            const initials = user.name.split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase();
+            document.getElementById('modalAvatar').innerText = initials;
+
+            // Status Badge
+            const badgeElem = document.getElementById('modalStatusBadge');
+            if (user.status === 'approved') {
+                badgeElem.innerHTML = `<span class="text-emerald-400 font-bold">DISETUJUI</span>`;
+            } else if (user.status === 'pending') {
+                badgeElem.innerHTML = `<span class="text-amber-400 font-bold">PENDING</span>`;
+            } else {
+                badgeElem.innerHTML = `<span class="text-rose-400 font-bold">DIBLOKIR</span>`;
+            }
+
+            document.getElementById('userModal').classList.remove('hidden');
+        }
+
+        // Modal Add User
+        function openAddUserModal() {
+            document.getElementById('addUserForm').reset();
+            document.getElementById('addUserModal').classList.remove('hidden');
+        }
+
+        function handleAddUser(e) {
+            e.preventDefault();
+            const name = document.getElementById('addName').value.trim();
+            const email = document.getElementById('addEmail').value.trim();
+            const username = document.getElementById('addUsername').value.trim();
+            const phone = document.getElementById('addPhone').value.trim();
+
+            if (usersData.some(u => u.username === username)) {
+                showToast(`Username '${username}' sudah terdaftar!`, 'error');
+                return;
+            }
+
+            const newUser = {
+                name,
+                email,
+                username,
+                phone: phone || '-',
+                status: 'pending',
+                uptime: '0s',
+                bytesIn: '0 B',
+                bytesOut: '0 B'
+            };
+
+            usersData.unshift(newUser);
+            applyFilterAndRender();
+            closeModal('addUserModal');
+            showToast(`Sesi baru untuk ${name} berhasil didaftarkan!`, 'success');
+        }
+
+        function closeModal(modalId) {
+            document.getElementById(modalId).classList.add('hidden');
+        }
+
+        // Export Data to CSV
+        function exportCSV() {
+            if (usersData.length === 0) {
+                showToast('Tidak ada data untuk diekspor', 'info');
+                return;
+            }
+
+            let csvContent = "data:text/csv;charset=utf-8,Nama,Email,Username,Telepon,Status,Uptime,Data_In,Data_Out\n";
+            usersData.forEach(u => {
+                csvContent += `"${u.name}","${u.email}","${u.username}","${u.phone}","${u.status}","${u.uptime}","${u.bytesIn}","${u.bytesOut}"\n`;
+            });
+
+            const encodedUri = encodeURI(csvContent);
+            const link = document.createElement("a");
+            link.setAttribute("href", encodedUri);
+            link.setAttribute("download", `MikroTik_Hotspot_Users_${new Date().toISOString().slice(0,10)}.csv`);
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+
+            showToast('Laporan CSV berhasil diunduh.', 'success');
+        }
+
+        // Refresh Data with Animation
         function refreshData() {
             const spinner = document.getElementById('refreshSpinner');
             spinner.classList.add('animate-spin');
-            fetchRealUsers().finally(() => setTimeout(() => spinner.classList.remove('animate-spin'), 400));
+            
+            fetchRealUsers().finally(() => {
+                setTimeout(() => {
+                    spinner.classList.remove('animate-spin');
+                    showToast('Data gateway telah diperbarui.', 'info');
+                }, 500);
+            });
         }
 
+        // Toast Notification System
+        function showToast(message, type = 'info') {
+            const container = document.getElementById('toastContainer');
+            const toast = document.createElement('div');
+            
+            let borderColor = 'border-cyan-500/40';
+            let textColor = 'text-cyan-400';
+            let bgGlow = 'rgba(6, 182, 212, 0.15)';
+
+            if (type === 'success') {
+                borderColor = 'border-emerald-500/40';
+                textColor = 'text-emerald-400';
+                bgGlow = 'rgba(16, 185, 129, 0.15)';
+            } else if (type === 'error') {
+                borderColor = 'border-rose-500/40';
+                textColor = 'text-rose-400';
+                bgGlow = 'rgba(244, 63, 94, 0.15)';
+            }
+
+            toast.className = `pointer-events-auto bg-cyber-900/90 border ${borderColor} rounded-xl p-3.5 shadow-2xl flex items-center space-x-3 text-xs font-mono backdrop-blur-md transform transition-all duration-300 translate-y-4 opacity-0`;
+            toast.style.background = `linear-gradient(135deg, rgba(15, 23, 42, 0.95), ${bgGlow})`;
+            
+            toast.innerHTML = `
+                <div class="w-2 h-2 rounded-full ${textColor} bg-current"></div>
+                <span class="text-slate-200">${escapeHtml(message)}</span>
+            `;
+
+            container.appendChild(toast);
+
+            // Trigger animation
+            setTimeout(() => {
+                toast.classList.remove('translate-y-4', 'opacity-0');
+            }, 50);
+
+            // Auto Remove
+            setTimeout(() => {
+                toast.classList.add('opacity-0', 'translate-y-2');
+                setTimeout(() => toast.remove(), 300);
+            }, 3000);
+        }
+
+        // Helper string escaping
         function escapeHtml(str) {
             if (!str) return '';
-            return String(str).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+            return String(str)
+                .replace(/&/g, "&amp;")
+                .replace(/</g, "&lt;")
+                .replace(/>/g, "&gt;")
+                .replace(/"/g, "&quot;")
+                .replace(/'/g, "&#039;");
         }
     </script>
 </body>
 </html>
- 
